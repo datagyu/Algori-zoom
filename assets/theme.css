@@ -1,0 +1,127 @@
+:root {
+  --bg: #090c10;
+  --panel: #0d1117;
+  --panel-soft: #11161d;
+  --panel-strong: #161b22;
+  --line: #242b34;
+  --line-strong: #30363d;
+  --text: #f0f6fc;
+  --muted: #8b949e;
+  --muted-2: #59636f;
+  --blue: #58a6ff;
+  --blue-soft: rgba(56, 139, 253, 0.14);
+  --green: #3fb950;
+  --green-soft: rgba(46, 160, 67, 0.14);
+  --red: #ff7b72;
+  --red-soft: rgba(248, 81, 73, 0.14);
+  --yellow: #d29922;
+  --purple: #d2a8ff;
+  --orange: #ffa657;
+  --cyan: #79c0ff;
+  --radius: 12px;
+  --mono: Consolas, "SFMono-Regular", "Roboto Mono", monospace;
+  --sans: Inter, Pretendard, "Noto Sans KR", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--sans);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input[type="range"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* 공통 주의 문구: theme.css를 불러오는 모든 페이지에 자동 표시됩니다. */
+body::before {
+  content: "이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.";
+  position: fixed;
+  top: 12px;
+  right: max(20px, calc((100vw - var(--page-max, 1240px)) / 2));
+  z-index: 1000;
+  max-width: min(360px, calc(100vw - 40px));
+  padding: 7px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--muted);
+  background: rgba(13, 17, 23, 0.92);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: right;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 720px) {
+  body::before {
+    top: 8px;
+    right: 11px;
+    max-width: min(260px, calc(100vw - 22px));
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}
+
+/* 공통 브랜드 로고: 새 문제 페이지에서도 동일 클래스를 재사용합니다. */
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.brand-home-link {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 7px;
+}
+
+.brand-home-link img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 720px) {
+  .brand-logo { width: 34px; height: 34px; border-radius: 8px; }
+  .brand-home-link img { width: 19px; height: 19px; }
+}
