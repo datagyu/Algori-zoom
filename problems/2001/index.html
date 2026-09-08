@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="problem-page">
+  <main class="problem-shell">
+    <header class="problem-header">
+      <a class="brand-back" href="../../">
+        <img src="../../assets/algorizoom-logo.svg" alt="" />
+        <span>알고리줌</span>
+      </a>
+      <div>
+        <p class="eyebrow">SWEA 2001 · D2</p>
+        <h1>파리 퇴치</h1>
+        <p class="problem-subtitle">M×M 파리채를 옮기며 합을 계산하고 최댓값을 찾는 과정을 확인합니다.</p>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>PYTHON</span><span id="codeLineLabel">LINE 7</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0">
+          <pre id="codeView" aria-label="Python 예시 코드"></pre>
+        </div>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>BOARD</span><span id="boardLabel">N=5 · M=2</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0">
+          <div id="board" class="board" aria-label="파리 개수 보드"></div>
+        </div>
+      </article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>STATE</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>i</span><strong id="iValue">0</strong></div>
+          <div><span>j</span><strong id="jValue">0</strong></div>
+          <div><span>r</span><strong id="rValue">-</strong></div>
+          <div><span>c</span><strong id="cValue">-</strong></div>
+          <div><span>total</span><strong id="totalValue">0</strong></div>
+          <div><span>max_value</span><strong id="maxValue">0</strong></div>
+        </div>
+        <div class="explain" id="explainText">첫 번째 파리채 위치부터 확인합니다.</div>
+      </article>
+    </section>
+
+    <section class="player panel" aria-label="실행 컨트롤">
+      <div class="player-buttons">
+        <button type="button" id="prevBtn">← 이전</button>
+        <button type="button" id="playBtn">▶ 자동 실행</button>
+        <button type="button" id="restartBtn">↻ 다시보기</button>
+        <button type="button" id="nextBtn">다음 →</button>
+      </div>
+      <div class="timeline-row">
+        <input id="timeline" type="range" min="0" max="0" value="0" aria-label="실행 단계" />
+        <span id="stepLabel">0 / 0</span>
+      </div>
+    </section>
+
+    <section class="input-panel panel">
+      <div class="panel-head"><span>INPUT</span><span>N M + N×N</span></div>
+      <div class="input-layout">
+        <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
+        <div class="input-actions">
+          <p>N과 M, 그리고 N줄의 보드를 입력합니다.</p>
+          <button type="button" id="applyBtn" class="primary">입력 적용</button>
+          <div class="sample-buttons" id="sampleButtons"></div>
+          <p class="input-error" id="inputError" role="alert"></p>
+        </div>
+      </div>
+    </section>
+
+    <template id="sourceCode">T = int(input())
+for test_case in range(1, T + 1):
+    N, M = map(int, input().split())
+    board = [list(map(int, input().split())) for _ in range(N)]
+    max_value = 0
+
+    for i in range(N-M+1):
+        for j in range(N-M+1):
+            total = 0
+            for r in range(M):
+                for c in range(M):
+                    total += board[i+r][j+c]
+
+            if max_value < total:
+                max_value = total
+
+    print(f'#{test_case} {max_value}')</template>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
