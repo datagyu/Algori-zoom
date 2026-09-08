@@ -24,4 +24,14 @@ window.VISUALIZATIONS = [
     status: "ready",
     searchTerms: ["스택", "stack", "괄호", "push", "pop", "top", "자료구조"],
   },
+  {
+    id: "swea-2001",
+    title: "파리 퇴치",
+    platform: "SWEA",
+    problemNo: "2001",
+    level: "D2",
+    href: "problems/2001/",
+    status: "ready",
+    searchTerms: ["완전탐색", "브루트포스", "2차원 배열", "누적합", "중첩 반복문", "최댓값"],
+  },
 ];
