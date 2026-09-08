@@ -32,6 +32,6 @@ window.VISUALIZATIONS = [
     level: "D2",
     href: "problems/2001/",
     status: "ready",
-    searchTerms: ["완전탐색", "브루트포스", "2차원 배열", "누적합", "중첩 반복문", "최댓값"],
+    searchTerms: ["완전탐색", "브루트포스", "2차원 배열", "영역 합", "중첩 반복문", "최댓값"],
   },
 ];
