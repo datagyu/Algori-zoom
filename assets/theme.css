@@ -21,6 +21,8 @@
   --radius: 12px;
   --mono: Consolas, "SFMono-Regular", "Roboto Mono", monospace;
   --sans: Inter, Pretendard, "Noto Sans KR", system-ui, sans-serif;
+  --mobile-player-bottom: 20px;
+  --mobile-player-clearance: 100px;
 }
 
 * {
@@ -129,11 +131,11 @@ body::before {
 /*
  * 알고리줌 모바일 공통 템플릿
  * 2001 파리 퇴치의 코드 창과 하단 플레이어를 기준으로 모든 문제에 적용합니다.
- * 각 문제 CSS가 뒤에서 로드되더라도 구조가 흐트러지지 않도록 핵심 치수는 !important로 고정합니다.
+ * 새 문제도 mobile-view / mobile-code-viewport / mobile-player 클래스를 사용하면 동일하게 적용됩니다.
  */
 @media (max-width: 760px) {
   .mobile-view {
-    padding-bottom: 86px !important;
+    padding-bottom: var(--mobile-player-clearance) !important;
   }
 
   .mobile-view .mobile-code-viewport {
@@ -201,7 +203,7 @@ body::before {
     position: fixed !important;
     left: 12px !important;
     right: 12px !important;
-    bottom: 10px !important;
+    bottom: var(--mobile-player-bottom) !important;
     z-index: 100 !important;
     display: grid !important;
     grid-template-columns: 48px minmax(0, 1fr) 48px !important;
