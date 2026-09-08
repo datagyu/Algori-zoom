@@ -25,6 +25,23 @@
       </div>
     </header>
 
+    <section class="player panel control-strip" aria-label="실행 컨트롤">
+      <div class="player-buttons">
+        <button type="button" id="prevBtn">← 이전</button>
+        <button type="button" id="playBtn">▶ 자동 실행</button>
+        <button type="button" id="restartBtn">↻ 다시보기</button>
+        <button type="button" id="nextBtn">다음 →</button>
+      </div>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta">
+        <span id="stepLabel">0 / 0</span>
+        <span>재생바를 움직여 원하는 단계로 이동</span>
+      </div>
+      <input id="timeline" class="timeline" type="range" min="0" max="0" value="0" aria-label="실행 단계" />
+    </section>
+
     <section class="workspace">
       <article class="panel code-panel">
         <div class="panel-head"><span>PYTHON</span><span id="codeLineLabel">LINE 7</span></div>
@@ -52,19 +69,6 @@
         </div>
         <div class="explain" id="explainText">첫 번째 파리채 위치부터 확인합니다.</div>
       </article>
-    </section>
-
-    <section class="player panel" aria-label="실행 컨트롤">
-      <div class="player-buttons">
-        <button type="button" id="prevBtn">← 이전</button>
-        <button type="button" id="playBtn">▶ 자동 실행</button>
-        <button type="button" id="restartBtn">↻ 다시보기</button>
-        <button type="button" id="nextBtn">다음 →</button>
-      </div>
-      <div class="timeline-row">
-        <input id="timeline" type="range" min="0" max="0" value="0" aria-label="실행 단계" />
-        <span id="stepLabel">0 / 0</span>
-      </div>
     </section>
 
     <section class="input-panel panel">
