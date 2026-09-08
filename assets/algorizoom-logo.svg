@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#000"/>
+  <g stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M269 357 L516 229 L779 479 L514 735 L266 357"/>
+    <path d="M269 357 L514 520 L514 229"/>
+    <path d="M514 520 L779 479"/>
+    <path d="M514 520 L514 735"/>
+    <path d="M269 357 L514 735"/>
+    <path d="M259 646 L514 229"/>
+    <path d="M259 646 L514 735"/>
+  </g>
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7BEBD7"/><stop offset="1" stop-color="#44CDB7"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C083FF"/><stop offset="1" stop-color="#9562E9"/></linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FF506E"/><stop offset="1" stop-color="#F53461"/></linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFD35C"/><stop offset="1" stop-color="#FFC23E"/></linearGradient>
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#438CFD"/><stop offset="1" stop-color="#2E70E8"/></linearGradient>
+    <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70D8FF"/><stop offset="1" stop-color="#48BEEB"/></linearGradient>
+  </defs>
+  <circle cx="269" cy="357" r="82" fill="url(#g1)"/>
+  <circle cx="514" cy="229" r="84" fill="url(#g2)"/>
+  <circle cx="514" cy="520" r="82" fill="url(#g3)"/>
+  <circle cx="779" cy="479" r="84" fill="url(#g4)"/>
+  <circle cx="259" cy="646" r="82" fill="url(#g5)"/>
+  <circle cx="514" cy="735" r="84" fill="url(#g6)"/>
+</svg>
