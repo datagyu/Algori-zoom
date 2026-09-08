@@ -44,10 +44,24 @@
       <div id="visualGrid" class="visual-grid"></div>
       <div id="emptyState" class="empty-state" hidden>조건에 맞는 시각화가 없습니다.</div>
     </section>
-
   </main>
+
   <script src="assets/visualizer-core.js"></script>
-  <script src="assets/catalog.js"></script>
-  <script src="assets/home.js"></script>
+  <script>
+    // 카탈로그는 새 문제 추가가 즉시 보이도록 매 방문 시 최신 파일을 요청합니다.
+    const catalogScript = document.createElement("script");
+    catalogScript.src = `assets/catalog.js?v=${Date.now()}`;
+    catalogScript.onload = () => {
+      const homeScript = document.createElement("script");
+      homeScript.src = "assets/home.js";
+      document.body.appendChild(homeScript);
+    };
+    catalogScript.onerror = () => {
+      const homeScript = document.createElement("script");
+      homeScript.src = "assets/home.js";
+      document.body.appendChild(homeScript);
+    };
+    document.body.appendChild(catalogScript);
+  </script>
 </body>
 </html>
