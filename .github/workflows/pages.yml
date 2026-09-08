@@ -30,10 +30,50 @@ jobs:
         with:
           enablement: true
 
+      - name: Build static site with cache busting
+        env:
+          BUILD_VERSION: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import shutil
+          import os
+
+          root = Path('.')
+          out = Path('_site')
+          if out.exists():
+              shutil.rmtree(out)
+
+          ignore = {'.git', '.github', '_site'}
+          for path in root.rglob('*'):
+              if any(part in ignore for part in path.parts):
+                  continue
+              dest = out / path
+              if path.is_dir():
+                  dest.mkdir(parents=True, exist_ok=True)
+              else:
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(path, dest)
+
+          version = os.environ['BUILD_VERSION'][:12]
+          pattern = re.compile(r'(?P<prefix>(?:src|href)=["\'])(?P<url>[^"\']+\.(?:css|js))(?P<suffix>["\'])')
+
+          for html in out.rglob('*.html'):
+              text = html.read_text(encoding='utf-8')
+              def repl(match):
+                  url = match.group('url')
+                  if url.startswith(('http://', 'https://', '//')):
+                      return match.group(0)
+                  sep = '&' if '?' in url else '?'
+                  return f"{match.group('prefix')}{url}{sep}v={version}{match.group('suffix')}"
+              html.write_text(pattern.sub(repl, text), encoding='utf-8')
+          PY
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
