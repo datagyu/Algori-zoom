@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="알고리줌에서 보는 SWEA 1218 괄호 짝짓기 코드 실행 시각화" />
+  <meta name="theme-color" content="#0d1117" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>알고리줌</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/algorizoom-logo.svg">
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <template id="sourceCodeTemplate">
+    <pre class="code-block"><code>
+<span class="code-line" data-source-line="1"><span class="ln">1</span><span class="kw">for</span> tc <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">11</span>):</span>
+<span class="code-line" data-source-line="2"><span class="ln">2</span>    N = <span class="fn">int</span>(<span class="fn">input</span>())</span>
+<span class="code-line" data-source-line="3"><span class="ln">3</span>    arr = <span class="fn">input</span>()</span>
+<span class="code-line" data-source-line="4"><span class="ln">4</span>    stack = []</span>
+<span class="code-line" data-source-line="5"><span class="ln">5</span>    top = -<span class="num">1</span></span>
+<span class="code-line" data-source-line="6"><span class="ln">6</span>    result = <span class="num">1</span></span>
+<span class="code-line" data-source-line="7" data-step-types="loop"><span class="ln">7</span>    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(N):</span>
+<span class="code-line" data-source-line="8" data-step-types="open-check"><span class="ln">8</span>        <span class="kw">if</span> arr[i] <span class="kw">in</span> <span class="str">'({[&lt;'</span>:</span>
+<span class="code-line" data-source-line="9" data-step-types="push"><span class="ln">9</span>            stack.<span class="fn">append</span>(arr[i])</span>
+<span class="code-line" data-source-line="10" data-step-types="top-up"><span class="ln">10</span>            top += <span class="num">1</span></span>
+<span class="code-line" data-source-line="11" data-step-types="close-branch"><span class="ln">11</span>        <span class="kw">else</span>:</span>
+<span class="code-line" data-source-line="12" data-step-types="empty-check"><span class="ln">12</span>            <span class="kw">if</span> top == -<span class="num">1</span>:</span>
+<span class="code-line" data-source-line="13" data-step-types="fail-empty"><span class="ln">13</span>                result = <span class="num">0</span>; <span class="kw">break</span></span>
+<span class="code-line" data-source-line="14" data-step-types="match-check"><span class="ln">14</span>            <span class="kw">if</span> 닫는괄호와 stack[top]의 짝이 다르면:</span>
+<span class="code-line" data-source-line="15" data-step-types="fail-mismatch"><span class="ln">15</span>                result = <span class="num">0</span>; <span class="kw">break</span></span>
+<span class="code-line" data-source-line="16" data-step-types="pop"><span class="ln">16</span>            stack.<span class="fn">pop</span>()</span>
+<span class="code-line" data-source-line="17" data-step-types="top-down"><span class="ln">17</span>            top -= <span class="num">1</span></span>
+<span class="code-line" data-source-line="18" data-step-types="final-check"><span class="ln">18</span>    <span class="kw">if</span> top != -<span class="num">1</span>:</span>
+<span class="code-line" data-source-line="19" data-step-types="final-fail"><span class="ln">19</span>        result = <span class="num">0</span></span>
+<span class="code-line" data-source-line="20" data-step-types="done"><span class="ln">20</span>    <span class="fn">print</span>(f<span class="str">'#{tc} {result}'</span>)</span>
+    </code></pre>
+  </template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <p class="eyebrow">SWEA 1218 · D4</p>
+      <h1>괄호 짝짓기</h1>
+      <p class="subtitle">문자열을 한 글자씩 읽으며 Stack의 push / pop과 top 변화를 확인합니다.</p>
+    </header>
+
+    <section class="panel control-strip">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn ghost" type="button">처음</button>
+        <button id="prevBtn" class="btn ghost" type="button">← 이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음 →</button>
+        <button id="playBtn" class="btn ghost" type="button">▶ 자동 실행</button>
+        <button id="replayBtn" class="btn ghost" type="button">↻ 다시보기</button>
+        <button id="skipBtn" class="btn ghost" type="button">⏭ 끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel">
+      <div class="timeline-meta"><span id="timelineStatus">STEP 0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input id="timelineRange" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>PYTHON</span><span id="codeStatus">READY</span></div>
+        <div id="desktopCodeViewport" class="code-viewport" tabindex="0"></div>
+        <p id="explanation" class="explanation">다음 버튼을 눌러 시작합니다.</p>
+      </article>
+
+      <article class="panel flow-panel">
+        <div class="panel-head"><span>STRING</span><span id="stringStatus">i = —</span></div>
+        <div id="stringViewport" class="string-viewport" tabindex="0"><div id="stringTrack" class="string-track"></div></div>
+        <div class="stack-section">
+          <div class="stack-head"><span>STACK</span><span id="stackCount">0 items</span></div>
+          <div id="stackViewport" class="stack-viewport" tabindex="0"><div id="stackView" class="stack-view"><span class="stack-empty">비어 있음</span></div></div>
+        </div>
+      </article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>STATE</span><span id="phaseLabel">READY</span></div>
+        <div id="conditionBox" class="condition-box neutral"><span class="condition-title">CHECK</span><strong id="conditionTitle">아직 검사하지 않았습니다.</strong><span id="conditionDetail">—</span></div>
+        <dl class="vars">
+          <div><dt>i</dt><dd id="varI">—</dd></div>
+          <div><dt>arr[i]</dt><dd id="varChar">—</dd></div>
+          <div><dt>top</dt><dd id="varTop">-1</dd></div>
+          <div><dt>stack[top]</dt><dd id="varStackTop">—</dd></div>
+          <div><dt>result</dt><dd id="varResult">1</dd></div>
+        </dl>
+        <div class="result-box"><div class="result-head"><span>RESULT</span><span id="resultLabel">진행 중</span></div><div id="resultValue" class="result-value">1</div></div>
+      </article>
+    </section>
+
+    <section class="panel input-panel">
+      <div class="panel-head"><span>INPUT</span><span>괄호 문자열</span></div>
+      <div class="input-grid">
+        <textarea id="customInput" rows="5" spellcheck="false">[({([<[<[<<(([{([<((({<{([{[<[<<<([<[<([[{([<[{({([<(<[[][]]<>{}<>[]>){}{}<>>]{}())})}[]]{}>[][][]]()[][]<><>()<>){}}]])[][][]>]>()](){}[])>>><><>{}]>]{}[]}<>][]())}[][]>}<>)()))>{}[]()])[][]}]<>()<>))>>()][]>][][]>]())}<><>{}<>)]</textarea>
+        <div class="input-actions">
+          <p>() [] {} &lt;&gt; 네 종류의 괄호 문자열을 입력합니다.</p>
+          <button id="applyInputBtn" class="btn primary" type="button">입력 적용</button>
+          <div id="sampleButtons" class="sample-buttons"></div>
+        </div>
+      </div>
+      <p id="inputMessage" class="input-message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <main class="mobile-view">
+    <header class="mobile-header">
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <div><span>SWEA 1218</span><h1>괄호 짝짓기</h1></div>
+      <div id="mobileCoord" class="mobile-coord">i = — · top = -1</div>
+    </header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>PYTHON</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"></div></section>
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>STRING</span><strong id="mobilePhase">READY</strong></div>
+      <div id="mobileStringViewport" class="string-viewport" tabindex="0"><div id="mobileStringTrack" class="string-track"></div></div>
+      <div class="stack-section"><div class="stack-head"><span>STACK</span><span id="mobileStackCount">0 items</span></div><div id="mobileStackViewport" class="stack-viewport" tabindex="0"><div id="mobileStackView" class="stack-view"></div></div></div>
+      <p id="mobileExplanation" class="mobile-explanation">오른쪽 화살표를 눌러 시작합니다.</p>
+    </section>
+    <section class="panel mobile-result"><div class="result-head"><span>RESULT</span><span id="mobileResultLabel">진행 중</span></div><div id="mobileResult" class="mobile-result-text">1</div></section>
+    <nav class="panel mobile-player"><button id="mobilePrevBtn" type="button">←</button><div class="mobile-scrubber"><input id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button">→</button></nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="sample-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
