@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="알고리줌에서 보는 SWEA 5356 의석이의 세로로 말해요 코드 실행 시각화" />
+  <meta name="theme-color" content="#0d1117" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>알고리줌</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/algorizoom-logo.svg">
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Python 코드는 한 번만 작성하고 JS가 데스크톱/모바일 뷰에 복제합니다. -->
+  <template id="sourceCodeTemplate">
+    <pre class="code-block"><code>
+<span class="code-line" data-source-line="1"><span class="ln">1</span>T = <span class="fn">int</span>(<span class="fn">input</span>())</span>
+<span class="code-line" data-source-line="2"><span class="ln">2</span></span>
+<span class="code-line" data-source-line="3"><span class="ln">3</span><span class="kw">for</span> test_case <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, T+<span class="num">1</span>):</span>
+<span class="code-line" data-source-line="4"><span class="ln">4</span>    board = [<span class="fn">list</span>(<span class="fn">input</span>()) <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>)]</span>
+<span class="code-line" data-source-line="5"><span class="ln">5</span>    result = []</span>
+<span class="code-line" data-source-line="6" data-step-types="col"><span class="ln">6</span>    <span class="kw">for</span> c <span class="kw">in</span> <span class="fn">range</span>(<span class="num">15</span>):</span>
+<span class="code-line" data-source-line="7" data-step-types="row"><span class="ln">7</span>        <span class="kw">for</span> r <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>):</span>
+<span class="code-line" data-source-line="8" data-step-types="check skip"><span class="ln">8</span>            <span class="kw">if</span> (<span class="fn">len</span>(board[r]) <span class="op">&gt;</span> c):</span>
+<span class="code-line" data-source-line="9" data-step-types="append"><span class="ln">9</span>                result.<span class="fn">append</span>(board[r][c])</span>
+<span class="code-line" data-source-line="10"><span class="ln">10</span>    <span class="fn">print</span>(f<span class="str">'#{test_case}'</span>, <span class="str">''</span>.<span class="fn">join</span>(result))</span>
+    </code></pre>
+  </template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <p class="eyebrow">SWEA 5356 · D3</p>
+      <h1>의석이의 세로로 말해요</h1>
+      <p class="subtitle">현재 코드 줄과 board 좌표를 함께 따라가며 중첩 반복문을 확인합니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 제어">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn ghost" type="button">처음</button>
+        <button id="prevBtn" class="btn ghost" type="button">← 이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음 →</button>
+        <button id="playBtn" class="btn ghost" type="button">▶ 자동 실행</button>
+        <button id="replayBtn" class="btn ghost" type="button">↻ 다시보기</button>
+        <button id="skipBtn" class="btn ghost" type="button">⏭ 끝으로</button>
+      </div>
+      <label class="speed-control">속도
+        <input id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" />
+        <span id="speedLabel">1×</span>
+      </label>
+    </section>
+
+    <section class="panel timeline-panel">
+      <div class="timeline-meta">
+        <span id="timelineStatus">STEP 0 / 0</span>
+        <span>재생바 또는 c 챕터를 선택해 이동</span>
+      </div>
+      <input id="timelineRange" class="timeline" type="range" min="0" max="0" value="0" aria-label="실행 재생바" />
+      <div id="chapterNav" class="chapter-nav" aria-label="열 단위 이동"></div>
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>PYTHON</span><span id="stepLabel">STEP 0 / 0</span></div>
+        <div id="desktopCodeViewport" class="code-viewport" tabindex="0" aria-label="전체 Python 코드"></div>
+        <p id="explanation" class="explanation">다음 버튼을 눌러 시작합니다.</p>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>BOARD</span><span id="coordLabel">c = — · r = —</span></div>
+        <div id="desktopBoardViewport" class="board-viewport" tabindex="0" aria-label="전체 칠판">
+          <div class="board-canvas">
+            <div id="colHeaders" class="col-headers"></div>
+            <div id="board" class="board"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>STATE</span><span id="phaseLabel">READY</span></div>
+        <div id="conditionBox" class="condition-box neutral">
+          <span class="condition-title">CONDITION</span>
+          <strong>len(board[r]) &gt; c</strong>
+          <span id="conditionDetail">아직 검사하지 않았습니다.</span>
+        </div>
+        <dl class="vars">
+          <div><dt>c</dt><dd id="varC">—</dd></div>
+          <div><dt>r</dt><dd id="varR">—</dd></div>
+          <div><dt>board[r]</dt><dd id="varRow">—</dd></div>
+          <div><dt>len(board[r])</dt><dd id="varLen">—</dd></div>
+          <div><dt>board[r][c]</dt><dd id="varValue">—</dd></div>
+        </dl>
+        <div class="result-box">
+          <div class="result-head"><span>RESULT</span><span id="resultCount">0 chars</span></div>
+          <div id="result" class="result-stream"><span class="empty-result">비어 있음</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel input-panel">
+      <div class="panel-head"><span>INPUT</span><span>5줄 직접 입력</span></div>
+      <div class="input-grid">
+        <textarea id="customInput" rows="5" spellcheck="false">AABCDD
+afzz
+09121
+a8EWg6
+P5h3kx</textarea>
+        <div class="input-actions">
+          <p>영문·숫자 1~15글자 문자열을 정확히 5줄 입력합니다.</p>
+          <button id="applyInputBtn" class="btn primary" type="button">입력 적용</button>
+          <div id="sampleButtons" class="sample-buttons" aria-label="샘플 선택"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header">
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <div><span>SWEA 5356</span><h1>의석이의 세로로 말해요</h1></div>
+      <div id="mobileCoord" class="mobile-coord">c = — · r = —</div>
+    </header>
+
+    <section class="panel mobile-code">
+      <div class="mobile-section-head"><span>PYTHON</span><strong id="mobileCodeStatus">READY</strong></div>
+      <div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0" aria-label="전체 Python 코드"></div>
+    </section>
+
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span id="mobilePhase">READY</span><strong id="mobileCondition">시작 전</strong></div>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0" aria-label="전체 칠판">
+        <div id="mobileBoardCanvas" class="mobile-board-canvas"></div>
+      </div>
+      <p id="mobileExplanation" class="mobile-explanation">오른쪽 화살표를 눌러 시작합니다.</p>
+    </section>
+
+    <section class="panel mobile-result">
+      <div class="result-head"><span>RESULT</span><span id="mobileResultCount">0 chars</span></div>
+      <div id="mobileResult" class="mobile-result-text">—</div>
+    </section>
+
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePrevBtn" type="button" aria-label="이전 단계">←</button>
+      <div class="mobile-scrubber">
+        <input id="mobileTimeline" type="range" min="0" max="0" value="0" aria-label="실행 재생바" />
+        <span id="mobileTimelineStatus">0 / 0</span>
+      </div>
+      <button id="mobileNextBtn" type="button" aria-label="다음 단계">→</button>
+    </nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
