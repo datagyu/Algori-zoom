@@ -30,22 +30,20 @@ for test_case in range(1, T + 1):
 
     print(f'#{test_case} {max_value}')</template>
 
-  <main class="desktop-view problem-shell">
-    <header class="problem-header">
-      <a class="brand-back" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" /><span>← 알고리줌</span></a>
-      <div>
-        <p class="eyebrow">SWEA 2001 · D2</p>
-        <h1>파리 퇴치</h1>
-        <p class="problem-subtitle">M×M 파리채를 옮기며 합을 계산하고 최댓값을 찾는 과정을 확인합니다.</p>
-      </div>
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <p class="eyebrow">SWEA 2001 · D2</p>
+      <h1>파리 퇴치</h1>
+      <p class="subtitle">M×M 파리채를 옮기며 합을 계산하고 최댓값을 찾는 과정을 확인합니다.</p>
     </header>
 
     <section class="player panel control-strip" aria-label="실행 컨트롤">
       <div class="player-buttons">
-        <button type="button" id="prevBtn">← 이전</button>
-        <button type="button" id="playBtn">▶ 자동 실행</button>
-        <button type="button" id="restartBtn">↻ 다시보기</button>
-        <button type="button" id="nextBtn">다음 →</button>
+        <button type="button" id="prevBtn" class="btn ghost">← 이전</button>
+        <button type="button" id="playBtn" class="btn ghost">▶ 자동 실행</button>
+        <button type="button" id="restartBtn" class="btn ghost">↻ 다시보기</button>
+        <button type="button" id="nextBtn" class="btn primary">다음 →</button>
       </div>
     </section>
 
@@ -78,9 +76,14 @@ for test_case in range(1, T + 1):
 
     <section class="input-panel panel">
       <div class="panel-head"><span>INPUT</span><span>N M + N×N</span></div>
-      <div class="input-layout">
+      <div class="input-grid">
         <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
-        <div class="input-actions"><p>N과 M, 그리고 N줄의 보드를 입력합니다.</p><button type="button" id="applyBtn" class="primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p></div>
+        <div class="input-actions">
+          <p>N과 M, 그리고 N줄의 보드를 입력합니다.</p>
+          <button type="button" id="applyBtn" class="btn primary">입력 적용</button>
+          <div class="sample-buttons" id="sampleButtons"></div>
+          <p class="input-error" id="inputError" role="alert"></p>
+        </div>
       </div>
     </section>
   </main>
