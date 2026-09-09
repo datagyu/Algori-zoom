@@ -5,6 +5,16 @@
  */
 window.VISUALIZATIONS = [
   {
+    id: "swea-1954",
+    title: "달팽이 숫자",
+    platform: "SWEA",
+    problemNo: "1954",
+    level: "D2",
+    href: "problems/1954/",
+    status: "ready",
+    searchTerms: ["배열", "델타", "방향 전환", "시뮬레이션", "달팽이"],
+  },
+  {
     id: "swea-5356",
     title: "의석이의 세로로 말해요",
     platform: "SWEA",
