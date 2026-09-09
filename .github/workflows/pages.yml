@@ -57,16 +57,20 @@ jobs:
                   shutil.copy2(path, dest)
 
           version = os.environ['BUILD_VERSION'][:12]
-          pattern = re.compile(r'(?P<prefix>(?:src|href)=["\'])(?P<url>[^"\']+\.(?:css|js))(?P<suffix>["\'])')
+          pattern = re.compile(
+              r'(?P<prefix>(?:src|href)=["\'])(?P<url>[^"\']+\.(?:css|js|svg|png|webp|ico|webmanifest))(?P<suffix>["\'])'
+          )
 
           for html in out.rglob('*.html'):
               text = html.read_text(encoding='utf-8')
+
               def repl(match):
                   url = match.group('url')
                   if url.startswith(('http://', 'https://', '//')):
                       return match.group(0)
                   sep = '&' if '?' in url else '?'
                   return f"{match.group('prefix')}{url}{sep}v={version}{match.group('suffix')}"
+
               html.write_text(pattern.sub(repl, text), encoding='utf-8')
           PY
 
