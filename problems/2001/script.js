@@ -24,7 +24,7 @@
     'boardViewport', 'board', 'boardLabel',
     'phaseLabel', 'iValue', 'jValue', 'rValue', 'cValue',
     'totalValue', 'maxValue', 'explainText',
-    'prevBtn', 'playBtn', 'restartBtn', 'nextBtn',
+    'prevBtn', 'playBtn', 'restartBtn', 'skipBtn', 'nextBtn',
     'timeline', 'stepLabel',
     'inputArea', 'applyBtn', 'sampleButtons', 'inputError',
     'mobileCoord', 'mobileCodeStatus', 'mobileCodeViewport', 'mobileCodeView',
@@ -408,6 +408,10 @@
   els.restartBtn.addEventListener('click', () => {
     stopPlayback();
     goTo(0, { follow: true });
+  });
+  els.skipBtn.addEventListener('click', () => {
+    stopPlayback();
+    goTo(state.steps.length - 1, { follow: true });
   });
   els.playBtn.addEventListener('click', togglePlayback);
 
