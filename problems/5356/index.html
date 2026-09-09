@@ -7,28 +7,26 @@
   <meta name="theme-color" content="#0d1117" />
   <meta name="application-name" content="알고리줌" />
   <meta name="apple-mobile-web-app-title" content="알고리줌" />
-  <title>알고리줌</title>
+  <title>의석이의 세로로 말해요 | 알고리줌</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/algorizoom-logo.svg">
   <link rel="manifest" href="../../manifest.webmanifest" />
   <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="visualizer visualizer--compact">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
   <!-- Python 코드는 한 번만 작성하고 JS가 데스크톱/모바일 뷰에 복제합니다. -->
-  <template id="sourceCodeTemplate">
-    <pre class="code-block"><code>
-<span class="code-line" data-source-line="1"><span class="ln">1</span>T = <span class="fn">int</span>(<span class="fn">input</span>())</span>
-<span class="code-line" data-source-line="2"><span class="ln">2</span></span>
-<span class="code-line" data-source-line="3"><span class="ln">3</span><span class="kw">for</span> test_case <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, T+<span class="num">1</span>):</span>
-<span class="code-line" data-source-line="4"><span class="ln">4</span>    board = [<span class="fn">list</span>(<span class="fn">input</span>()) <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>)]</span>
-<span class="code-line" data-source-line="5"><span class="ln">5</span>    result = []</span>
-<span class="code-line" data-source-line="6" data-step-types="col"><span class="ln">6</span>    <span class="kw">for</span> c <span class="kw">in</span> <span class="fn">range</span>(<span class="num">15</span>):</span>
-<span class="code-line" data-source-line="7" data-step-types="row"><span class="ln">7</span>        <span class="kw">for</span> r <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>):</span>
-<span class="code-line" data-source-line="8" data-step-types="check skip"><span class="ln">8</span>            <span class="kw">if</span> (<span class="fn">len</span>(board[r]) <span class="op">&gt;</span> c):</span>
-<span class="code-line" data-source-line="9" data-step-types="append"><span class="ln">9</span>                result.<span class="fn">append</span>(board[r][c])</span>
-<span class="code-line" data-source-line="10"><span class="ln">10</span>    <span class="fn">print</span>(f<span class="str">'#{test_case}'</span>, <span class="str">''</span>.<span class="fn">join</span>(result))</span>
-    </code></pre>
-  </template>
+  <template id="sourceCode">T = int(input())
+
+for test_case in range(1, T+1):
+    board = [list(input()) for _ in range(5)]
+    result = []
+    for c in range(15):
+        for r in range(5):
+            if (len(board[r]) &gt; c):
+                result.append(board[r][c])
+    print(f'#{test_case}', ''.join(result))</template>
 
   <main class="desktop-view app-shell">
     <header class="hero">
@@ -40,12 +38,12 @@
 
     <section class="panel control-strip" aria-label="실행 제어">
       <div class="controls-main">
-        <button id="resetBtn" class="btn ghost" type="button">처음</button>
-        <button id="prevBtn" class="btn ghost" type="button">← 이전</button>
+        <button id="resetBtn" class="btn" type="button">처음</button>
+        <button id="prevBtn" class="btn" type="button">← 이전</button>
         <button id="nextBtn" class="btn primary" type="button">다음 →</button>
-        <button id="playBtn" class="btn ghost" type="button">▶ 자동 실행</button>
-        <button id="replayBtn" class="btn ghost" type="button">↻ 다시보기</button>
-        <button id="skipBtn" class="btn ghost" type="button">⏭ 끝으로</button>
+        <button id="playBtn" class="btn" type="button">▶ 자동 실행</button>
+        <button id="replayBtn" class="btn" type="button">↻ 다시보기</button>
+        <button id="skipBtn" class="btn" type="button">⏭ 끝으로</button>
       </div>
       <label class="speed-control">속도
         <input id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" />
@@ -103,11 +101,7 @@
     <section class="panel input-panel">
       <div class="panel-head"><span>INPUT</span><span>5줄 직접 입력</span></div>
       <div class="input-grid">
-        <textarea id="customInput" rows="5" spellcheck="false">AABCDD
-afzz
-09121
-a8EWg6
-P5h3kx</textarea>
+        <textarea id="customInput" aria-label="문자 보드 입력" rows="5" spellcheck="false"></textarea>
         <div class="input-actions">
           <p>영문·숫자 1~15글자 문자열을 정확히 5줄 입력합니다.</p>
           <button id="applyInputBtn" class="btn primary" type="button">입력 적용</button>

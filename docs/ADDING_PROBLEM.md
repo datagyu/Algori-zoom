@@ -1,181 +1,161 @@
 # 새 알고리즘 시각화 추가 가이드
 
-알고리줌은 문제마다 알고리즘 규칙이 다르므로 **문제 로직까지 하나의 공통 엔진에 억지로 넣지 않습니다.**
-대신 화면 구조, 모바일 UX, 코드 매핑, 배포/캐시 정책과 반복 유틸리티를 공통화합니다.
+알고리줌은 순수 HTML/CSS/JavaScript로 동작합니다. 프레임워크, 패키지 설치, 빌드 없이 GitHub Pages에 배포할 수 있습니다.
 
-## 1. 기본 폴더 구조
+## 파일 역할
 
-```text
-problems/<문제-id>/
-├─ index.html
-├─ styles.css
-└─ script.js
-```
+| 파일                         | 담당                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| `assets/theme.css`           | 색상 변수, 기본 글꼴/reset, focus-visible, 브랜드                           |
+| `assets/visualizer.css`      | panel, 버튼, 헤더, 입력, 코드창, timeline, 모바일 플레이어, 반응형 레이아웃 |
+| `assets/visualizer-core.js`  | DOM 조회, Python 코드 표시, 코드 줄 매핑, 숫자/문자열 처리, 내부 스크롤     |
+| `problems/<번호>/styles.css` | 문제 고유 board/stack/조건/결과 표현                                        |
+| `problems/<번호>/script.js`  | PROBLEM 설정, 입력 검사, buildSteps, render, 재생과 이벤트                  |
+| `assets/catalog.js`          | 홈 카드 및 검색 정보                                                        |
 
-새 문제는 기존 시각화의 **공통 구조를 먼저 복제한 뒤 문제별 시각화만 교체**합니다.
-문제 고유 상수와 샘플은 가능하면 `script.js` 상단에 모읍니다.
+**공통 panel/button/mobile/code-viewer CSS를 문제별 파일에 복사하지 않습니다.** 공통 UI 수정은 `visualizer.css` 한 곳에서 합니다. 기존 화면 차이는 `visualizer--classic`, `visualizer--editor`, `visualizer--compact`라는 재사용 가능한 표시 옵션으로 보존합니다. 문제 번호로 공통 파일을 분기하지 않습니다.
 
-## 2. 공통 화면 구조
+## 새 문제 추가: 8단계
 
-### 데스크톱
+1. `problems/<번호>/` 폴더를 만듭니다.
+2. 기존 문제의 `index.html`을 복사합니다. 세 공통 자원 경로와 공통 UI 클래스를 유지하고 문제 전용 시각화 영역을 교체합니다.
+3. `script.js`의 `PROBLEM` 객체에 문제 정보·샘플·재생 간격을 작성합니다.
+4. HTML의 `sourceCode` template에 Python 코드를 한 번 작성합니다.
+5. `buildSteps()`에서 실행 순서대로 상태를 생성합니다.
+6. 같은 step을 받는 `renderDesktop(step)`과 `renderMobile(step)`을 작성합니다.
+7. 문제 고유 시각화만 `styles.css`에 작성합니다.
+8. `assets/catalog.js`에 카드를 등록하고 아래 검증 목록을 확인합니다.
 
-기본 순서는 다음을 유지합니다.
-
-```text
-헤더
-→ 실행 컨트롤
-→ 재생바
-→ PYTHON / 문제 시각화 / STATE
-→ INPUT
-```
-
-가능한 경우 핵심 workspace는 3열 구조를 우선하고, 화면 폭이 줄어들면 2열 또는 세로 배치로 자연스럽게 전환합니다.
-
-### 모바일
-
-모바일은 다음 순서를 기본 템플릿으로 사용합니다.
-
-```text
-모바일 헤더
-→ PYTHON
-→ 핵심 시각화
-→ STATE / RESULT
-→ 하단 고정 이전 · 재생바 · 다음
-```
-
-공통 모바일 코드 viewport와 하단 플레이어는 `assets/theme.css`가 담당합니다.
-
-- 코드 viewport 높이: 250px
-- 내부 스크롤 사용
-- 현재 코드 줄 자동 추적
-- 재생바는 화면 하단 고정
-- 하단 여백은 공통 CSS 변수 사용
-- 본문이 고정 플레이어에 가리지 않도록 clearance 확보
-
-새 문제에서 `.mobile-code-viewport`, `.mobile-player`, `.mobile-scrubber` 클래스를 그대로 재사용합니다.
-
-## 3. 하드코딩하지 말아야 할 값
-
-다음 값은 HTML/CSS/JS 여러 곳에 반복하지 않습니다.
-
-- 전체 STEP 수
-- board 행/열 수
-- 샘플 개수
-- 현재 실행 코드 줄 번호
-- 재생 속도 기준값
-- 모바일 플레이어의 하단 위치
-
-예시 원칙:
-
-- STEP 수: `buildSteps()` 결과로 재생바에 자동 반영
-- 열 수: JS → CSS 변수 전달
-- 샘플: 설정 배열에서 버튼 자동 생성
-- 코드 줄: `data-step-types` 기반 자동 연결
-- 모바일 플레이어 위치: `theme.css` 공통 변수 사용
-
-## 4. 코드 줄 연결
-
-현재 실행되는 코드 줄에는 `data-step-types`를 붙이는 방식을 우선합니다.
+## HTML 구성
 
 ```html
-<span class="code-line"
-      data-source-line="8"
-      data-step-types="check skip">...</span>
-```
-
-공통 유틸리티의 `createStepLineMap()`을 사용하면 줄 번호가 바뀌어도 별도 숫자 매핑을 고칠 필요가 없습니다.
-
-```js
-const stepLineMap = AlgoriZoomCore.createStepLineMap(root);
-```
-
-단순 줄 번호 Map이 필요하면 `createLineMap()`을 사용합니다.
-
-## 5. 큰 입력 / board / stack
-
-데이터가 커져도 페이지 자체를 가로 또는 세로로 무한히 늘리지 않습니다.
-
-- 전체 데이터는 DOM/상태에 유지
-- 화면은 고정 크기 viewport 사용
-- 현재 위치 자동 정렬
-- 사용자가 직접 스크롤 가능
-- 다음 STEP 조작 시 다시 현재 위치를 추적
-
-자동 정렬은 직접 `offsetLeft`, `offsetTop` 계산을 반복하지 말고 다음 공통 함수를 우선 사용합니다.
-
-```js
-AlgoriZoomCore.centerInsideViewport(viewport, target, {
-  horizontal: true,
-  vertical: true,
-});
-```
-
-큰 board에서는 매 STEP마다 DOM을 새로 만들지 않고, 기존 셀을 캐시해 class만 갱신하는 방식을 우선합니다.
-
-## 6. 공통 유틸리티
-
-모든 문제 페이지에서 다음 파일을 사용합니다.
-
-```html
+<title>문제명 | 알고리줌</title>
 <link rel="stylesheet" href="../../assets/theme.css" />
-<script src="../../assets/visualizer-core.js"></script>
+<link rel="stylesheet" href="../../assets/visualizer.css" />
+<link rel="stylesheet" href="styles.css" />
 ```
 
-`visualizer-core.js`에서 제공하는 주요 기능:
+body에 `class="visualizer visualizer--classic"`을 사용합니다. `editor`는 넓은 코드창, `compact`는 chapter navigation이 있는 화면의 기존 간격을 제공합니다. 옵션은 화면 표현에만 영향을 줍니다.
 
-- `clamp()`
-- `escapeHtml()`
-- `getByIds()`
-- `createLineMap()`
-- `createStepLineMap()`
-- `centerInsideViewport()`
+문제 페이지에는 실제 안내 요소를 둡니다. 홈에는 추가하지 않습니다.
 
-알고리즘 자체의 규칙은 각 문제 `script.js`에 남깁니다.
+```html
+<p class="code-disclaimer">
+  이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.
+</p>
+<template id="sourceCode">for i in range(N): print(i)</template>
+```
 
-## 7. 홈 등록
+template는 HTML이므로 Python의 `<`와 `&`는 각각 `&lt;`, `&amp;`로 적습니다. 구문 강조용 span과 줄 번호는 직접 작성하지 않습니다. 공통 표시기가 자동 생성합니다.
 
-`assets/catalog.js`에 카드 데이터를 하나 추가합니다.
+페이지 끝에는 순서를 지켜 스크립트를 불러옵니다.
 
-```js
+```html
+<script src="../../assets/visualizer-core.js"></script>
+<script src="script.js"></script>
+```
+
+기존 `aria-label`, `role="alert"`, `tabindex`, `alt`, `focus-visible`을 유지합니다. 화살표 버튼과 range input에는 동작을 설명하는 `aria-label`을 붙입니다.
+
+## JS 기본 구조
+
+```javascript
+(() => {
+  const Core = window.AlgoriZoomCore;
+  const PROBLEM = Object.freeze({
+    platform: "SWEA",
+    number: "0000",
+    level: "D2",
+    title: "문제명",
+    autoplayMs: 550,
+    defaultSampleId: "one",
+    samples: [{ id: "one", label: "샘플 1", value: "입력 문자열" }],
+    sourceSteps: [
+      { text: "for i in range(N):", types: "loop" },
+      { text: "print(i)", types: "done" },
+    ],
+  });
+
+  const els = Core.getByIds([
+    "sourceCode",
+    "desktopCodeViewport",
+    "mobileCodeViewport",
+    "prevBtn",
+    "nextBtn",
+    "timelineRange",
+  ]);
+  // state → cache → buildSteps → render → playback → events → init
+})();
+```
+
+샘플은 모두 `PROBLEM.samples`의 `id`, `label`, `value`로 관리합니다. 여러 줄 입력도 하나의 문자열로 저장하고 문제의 입력 처리 함수에서 줄을 나눕니다. 선택 표시와 직접 입력 시 선택 해제도 구현합니다.
+
+DOM 조회는 `Core.getByIds()`를 쓰며, 변수명도 HTML id와 동일하게 사용합니다. 문제별 변수와 함수는 IIFE 안에 두고 window에 노출하지 않습니다.
+
+## Python 줄 연결
+
+```javascript
+const markup = Core.createCodeMarkup(els.sourceCode, PROBLEM.sourceSteps);
+els.desktopCodeViewport.innerHTML = markup;
+els.mobileCodeViewport.innerHTML = markup;
+const desktopLines = Core.createLineMap(els.desktopCodeViewport);
+const mobileLines = Core.createLineMap(els.mobileCodeViewport);
+const stepLines = Core.createStepLineMap(els.desktopCodeViewport);
+```
+
+`sourceSteps`는 줄 번호 대신 **공백을 제외한 해당 코드 줄 전체**를 사용합니다. 위에 줄을 추가해도 연결은 유지됩니다. 코드 줄 내용이 바뀌면 대응하는 `text`도 수정합니다. 같은 코드가 반복되면 `occurrence: 2`처럼 몇 번째인지 지정합니다. 한 줄에 연결되는 단계가 여러 개면 `types: 'check skip'`처럼 공백으로 구분합니다. 연결할 코드가 없으면 명시적으로 오류가 발생합니다.
+
+기존 `pre` 요소 안에 표시할 때는 `{ wrap: false }` 옵션을 사용합니다. 기존 editor 팔레트를 유지할 때는 `{ editor: true }`도 지정할 수 있습니다. 이는 알고리즘 로직과 무관한 표시 옵션입니다.
+
+Python 문법 전체를 분석하는 라이브러리가 아니라 간단한 토큰 강조입니다. 코드 실행은 하지 않습니다. 문제 설명용 의사코드도 원문 그대로 표시합니다.
+
+## 상태와 재생
+
+- `buildSteps()`는 알고리즘 실행 순서·누적값·위치·강조 상태를 한 번 생성합니다.
+- `render()`가 현재 step을 선택하고 desktop/mobile 양쪽에 전달합니다.
+- `goTo(index)`는 `Core.clamp()`로 범위를 제한합니다.
+- `move(delta)`, `startPlayback()`, `stopPlayback()`, `reset()`, `skipToEnd()`로 역할을 나눕니다.
+- 재생은 recursive `setTimeout`을 사용합니다. 시작 전에 기존 timer를 해제하고, 정지할 때 timer를 null로 만듭니다.
+- 재생 중 속도 변경을 지원하면 예약된 timer를 해제한 후 새 속도로 다시 예약합니다.
+- 입력 변경·샘플 선택·끝 이동·timeline 조작 시 기존 재생 중단 여부를 명확히 합니다.
+- timeline의 max는 실제 steps 길이에서 계산합니다. 시작 전 READY를 별도 표시하는 문제는 UI 번호와 배열 index 변환을 명시합니다.
+
+기존 UX 차이: 1218/2001은 첫 실행 단계를 바로 표시하고 5356은 READY부터 시작합니다. 2001의 다시보기는 처음으로 이동하고, 1218/5356의 다시보기는 처음부터 자동 실행합니다. 기존 문제 수정 시 이 동작을 바꾸지 않습니다.
+
+## 큰 board와 모바일
+
+board 행·열 제한, 문자 종류, 파리 수 등은 문제 설정에 둡니다. board 열 수는 CSS 변수 또는 gridTemplateColumns로 전달합니다. 공통 코드에서 문제 번호를 검사하지 않습니다.
+
+코드·board·stack은 내부 viewport에서 스크롤되도록 합니다. 현재 위치 추적은 `Core.centerInsideViewport(viewport, target, options)`를 사용합니다. `clamp`, `escapeHtml`, `formatDecimal`, `getByIds`, `createLineMap`, `createStepLineMap`을 문제 파일에 다시 구현하지 않습니다.
+
+공통 모바일 기준은 `760px`입니다. 코드창 높이와 하단 플레이어는 `visualizer.css`가 관리합니다. `--mobile-player-bottom`, `--mobile-player-clearance`는 공통 변수입니다. 기본 하단 구조는 이전 버튼 / timeline / 다음 버튼입니다. 전체 페이지 가로 스크롤을 만들지 않고, 마지막 콘텐츠가 플레이어 위까지 스크롤될 여백을 확보합니다.
+
+## 홈 등록과 배포
+
+```javascript
 {
-  id: "swea-0000",
-  title: "문제명",
-  platform: "SWEA",
-  problemNo: "0000",
-  level: "D2",
-  href: "problems/0000/",
-  status: "ready",
-  searchTerms: ["완전탐색", "2차원 배열"],
+  id: 'swea-0000',
+  title: '문제명',
+  platform: 'SWEA',
+  problemNo: '0000',
+  level: 'D2',
+  href: 'problems/0000/',
+  status: 'ready',
+  searchTerms: ['스택', '문자열'],
 }
 ```
 
-`searchTerms`는 실제 구현 방식과 맞는 개념만 넣습니다.
+홈은 문제 스크립트를 실행하지 않으므로 카드 정보는 catalog에 별도로 등록합니다. 문제 설정·HTML 제목·카드 정보가 일치하는지 확인합니다.
 
-## 8. 배포와 캐시
+기존 Pages workflow는 정적 파일 복사와 커밋 SHA 기반 캐시 버전만 처리합니다. 로컬에서 HTML을 열거나 정적 HTTP 서버로 제공할 때도 별도 빌드가 필요 없습니다. 임시 `Date.now()` 캐시 코드는 추가하지 않습니다.
 
-GitHub Pages 배포 시 `.github/workflows/pages.yml`에서 CSS/JS 파일에 현재 커밋 SHA 기반 버전값을 자동으로 붙입니다.
+## 완료 전 검증
 
-따라서 HTML에 `Date.now()` 같은 임시 캐시 무효화 코드를 추가하지 않습니다.
-
-```text
-assets/theme.css?v=<commit-sha>
-script.js?v=<commit-sha>
-```
-
-이 방식으로 새 문제나 UI 수정 후 일반 새로고침만으로 최신 정적 파일을 받도록 유지합니다.
-
-## 9. 새 문제 완료 체크리스트
-
-배포 전에 아래 항목을 확인합니다.
-
-- 데스크톱 컨트롤/재생바 위치가 기존 문제와 같은가
-- desktop workspace의 STATE 위치가 통일되어 있는가
-- 모바일 코드창이 공통 스타일을 사용하는가
-- 모바일 재생바가 하단에 고정되는가
-- 페이지 전체에 불필요한 가로 스크롤이 없는가
-- 큰 데이터는 내부 viewport에서 스크롤되는가
-- STEP 수가 동적으로 계산되는가
-- 코드 줄 번호가 불필요하게 JS에 하드코딩되지 않았는가
-- 샘플/입력 변경 후 재생 상태가 정상 초기화되는가
-- 홈 카드가 `catalog.js`에 등록되어 있는가
-- 검색 키워드가 실제 구현 방식과 일치하는가
+- 홈: 로고, 카드, 검색, 결과 없음, 문제 링크, 모바일
+- 각 문제: 모든 샘플, 직접 입력과 오류, 이전/다음, 자동 실행/정지, 다시보기, 끝 이동, timeline, 최종 정답
+- 문제 특수 상태: stack, best 영역, 빈 칸 skip, chapter navigation 등
+- desktop/mobile이 같은 단계·결과·코드 줄을 표시하는지 확인
+- 너비 `1440, 1280, 1024, 768, 430, 390, 375, 360`에서 확인
+- 페이지 가로 스크롤 없음, 코드/board 내부 스크롤 정상, 하단 콘텐츠와 버튼이 가려지지 않음
+- 콘솔 오류와 자원 404 없음
+- 공통 UI CSS 복사, !important 추가, 전역 변수 노출 없음
