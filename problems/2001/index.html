@@ -42,12 +42,14 @@ for test_case in range(1, T + 1):
 
     <section class="panel control-strip" aria-label="실행 컨트롤">
       <div class="controls-main">
-        <button type="button" id="prevBtn" class="btn">← 이전</button>
-        <button type="button" id="playBtn" class="btn">▶ 자동 실행</button>
-        <button type="button" id="restartBtn" class="btn">↻ 다시보기</button>
-        <button type="button" id="skipBtn" class="btn">⏭ 끝으로</button>
-        <button type="button" id="nextBtn" class="btn primary">다음 →</button>
+        <button id="resetBtn" class="btn" type="button">처음</button>
+        <button id="prevBtn" class="btn" type="button">← 이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음 →</button>
+        <button id="playBtn" class="btn" type="button">▶ 자동 실행</button>
+        <button id="replayBtn" class="btn" type="button">↻ 다시보기</button>
+        <button id="skipBtn" class="btn" type="button">⏭ 끝으로</button>
       </div>
+      <label class="speed-control">속도 <input id="speedRange" aria-label="재생 속도" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
     </section>
 
     <section class="panel timeline-panel" aria-label="재생바">
