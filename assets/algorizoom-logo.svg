@@ -1,50 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-label="알고리줌 로고">
   <defs>
     <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#59E6D5"/>
-      <stop offset="1" stop-color="#39CDBB"/>
+      <stop offset="0" stop-color="#58e6d5"/>
+      <stop offset="1" stop-color="#3bcebc"/>
     </linearGradient>
     <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#B873FF"/>
-      <stop offset="1" stop-color="#9860EC"/>
+      <stop offset="0" stop-color="#c088ff"/>
+      <stop offset="1" stop-color="#a56ef2"/>
     </linearGradient>
     <linearGradient id="red" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#FF4468"/>
-      <stop offset="1" stop-color="#F52F58"/>
+      <stop offset="0" stop-color="#ff4c72"/>
+      <stop offset="1" stop-color="#ff355f"/>
     </linearGradient>
     <linearGradient id="yellow" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#FFD84B"/>
-      <stop offset="1" stop-color="#FFC53B"/>
+      <stop offset="0" stop-color="#ffd73e"/>
+      <stop offset="1" stop-color="#f7ca18"/>
     </linearGradient>
     <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2D9CFF"/>
-      <stop offset="1" stop-color="#1D7FEF"/>
+      <stop offset="0" stop-color="#36a0ff"/>
+      <stop offset="1" stop-color="#2089f7"/>
     </linearGradient>
     <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#59CFFF"/>
-      <stop offset="1" stop-color="#43B9EA"/>
+      <stop offset="0" stop-color="#67d4ff"/>
+      <stop offset="1" stop-color="#56c2f2"/>
     </linearGradient>
   </defs>
 
   <rect width="1080" height="1080" fill="#000"/>
 
-  <g fill="none" stroke="#fff" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M221 340 L557 175"/>
-    <path d="M221 340 L551 510"/>
-    <path d="M221 340 L550 888"/>
-    <path d="M177 750 L557 175"/>
-    <path d="M177 750 L550 888"/>
+  <g fill="none" stroke="#f6f6f6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M218 338 L557 175"/>
+    <path d="M218 338 L551 510"/>
+    <path d="M218 338 L547 886"/>
+    <path d="M177 749 L557 175"/>
+    <path d="M177 749 L547 886"/>
     <path d="M557 175 L551 510"/>
-    <path d="M557 175 L893 524"/>
-    <path d="M551 510 L893 524"/>
-    <path d="M551 510 L550 888"/>
-    <path d="M550 888 L893 524"/>
+    <path d="M557 175 L887 525"/>
+    <path d="M551 510 L887 525"/>
+    <path d="M551 510 L547 886"/>
+    <path d="M547 886 L887 525"/>
   </g>
 
-  <circle cx="221" cy="340" r="111" fill="url(#mint)"/>
+  <circle cx="218" cy="338" r="109" fill="url(#mint)"/>
   <circle cx="557" cy="175" r="111" fill="url(#purple)"/>
-  <circle cx="551" cy="510" r="109" fill="url(#red)"/>
-  <circle cx="893" cy="524" r="111" fill="url(#yellow)"/>
-  <circle cx="177" cy="750" r="111" fill="url(#blue)"/>
-  <circle cx="550" cy="888" r="111" fill="url(#sky)"/>
+  <circle cx="551" cy="510" r="110" fill="url(#red)"/>
+  <circle cx="887" cy="525" r="111" fill="url(#yellow)"/>
+  <circle cx="177" cy="749" r="111" fill="url(#blue)"/>
+  <circle cx="547" cy="886" r="111" fill="url(#sky)"/>
 </svg>
