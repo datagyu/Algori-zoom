@@ -55,7 +55,10 @@
     "explainText",
     "prevBtn",
     "playBtn",
-    "restartBtn",
+    "resetBtn",
+    "replayBtn",
+    "speedRange",
+    "speedLabel",
     "skipBtn",
     "nextBtn",
     "timeline",
@@ -91,6 +94,7 @@
     steps: [],
     stepIndex: 0,
     timer: null,
+    speed: 1,
     selectedSample: defaultSample.id,
     cells: [],
     mobileCells: [],
@@ -452,7 +456,7 @@
       }
       goTo(state.stepIndex + 1, { follow: true });
       scheduleNext();
-    }, PROBLEM.autoplayMs);
+    }, PROBLEM.autoplayMs / state.speed);
   }
 
   function reset() {
@@ -504,7 +508,19 @@
   els.nextBtn.addEventListener("click", () => move(1));
   els.mobilePrevBtn.addEventListener("click", () => move(-1));
   els.mobileNextBtn.addEventListener("click", () => move(1));
-  els.restartBtn.addEventListener("click", reset);
+  els.resetBtn.addEventListener("click", reset);
+  els.replayBtn.addEventListener("click", () => {
+    reset();
+    startPlayback();
+  });
+  els.speedRange.addEventListener("input", () => {
+    state.speed = Number(els.speedRange.value);
+    els.speedLabel.textContent = `${Core.formatDecimal(state.speed)}×`;
+    if (state.timer) {
+      clearTimeout(state.timer);
+      scheduleNext();
+    }
+  });
   els.skipBtn.addEventListener("click", skipToEnd);
   els.playBtn.addEventListener("click", togglePlayback);
 
