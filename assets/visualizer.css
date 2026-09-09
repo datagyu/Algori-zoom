@@ -165,7 +165,7 @@
   gap: 8px;
 }
 
-:where(.visualizer--classic, .visualizer--compact) .speed-control {
+.speed-control {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -178,7 +178,7 @@
   white-space: nowrap;
 }
 
-:where(.visualizer--classic, .visualizer--compact) .speed-control input {
+.speed-control input {
   accent-color: var(--blue);
 }
 
