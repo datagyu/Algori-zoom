@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="application-name" content="알고리줌" />
   <meta name="apple-mobile-web-app-title" content="알고리줌" />
-  <title>알고리줌</title>
+  <title>파리 퇴치 | 알고리줌</title>
   <link rel="manifest" href="../../manifest.webmanifest" />
   <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
   <template id="sourceCode">T = int(input())
 for test_case in range(1, T + 1):
     N, M = map(int, input().split())
@@ -38,12 +40,12 @@ for test_case in range(1, T + 1):
       <p class="subtitle">M×M 파리채를 옮기며 합을 계산하고 최댓값을 찾는 과정을 확인합니다.</p>
     </header>
 
-    <section class="player panel control-strip" aria-label="실행 컨트롤">
-      <div class="player-buttons">
-        <button type="button" id="prevBtn" class="btn ghost">← 이전</button>
-        <button type="button" id="playBtn" class="btn ghost">▶ 자동 실행</button>
-        <button type="button" id="restartBtn" class="btn ghost">↻ 다시보기</button>
-        <button type="button" id="skipBtn" class="btn ghost">⏭ 끝으로</button>
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button type="button" id="prevBtn" class="btn">← 이전</button>
+        <button type="button" id="playBtn" class="btn">▶ 자동 실행</button>
+        <button type="button" id="restartBtn" class="btn">↻ 다시보기</button>
+        <button type="button" id="skipBtn" class="btn">⏭ 끝으로</button>
         <button type="button" id="nextBtn" class="btn primary">다음 →</button>
       </div>
     </section>

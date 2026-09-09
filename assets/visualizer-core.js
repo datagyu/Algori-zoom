@@ -5,7 +5,9 @@
  * 여러 시각화에서 반복되는 DOM·코드 매핑·스크롤 기능만 이곳에서 공유합니다.
  */
 (() => {
-  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduceMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -13,23 +15,27 @@
 
   function escapeHtml(value) {
     return String(value)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;');
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
   }
 
   function formatDecimal(value) {
-    return Number(value).toFixed(2).replace(/\.?0+$/, '');
+    return Number(value)
+      .toFixed(2)
+      .replace(/\.?0+$/, "");
   }
 
   function getByIds(ids) {
-    return Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+    return Object.fromEntries(
+      ids.map((id) => [id, document.getElementById(id)]),
+    );
   }
 
   function createLineMap(root) {
     return new Map(
-      [...root.querySelectorAll('.code-line')].map((line) => [
+      [...root.querySelectorAll(".code-line")].map((line) => [
         Number(line.dataset.sourceLine ?? line.dataset.line),
         line,
       ]),
@@ -39,7 +45,7 @@
   function createStepLineMap(root) {
     const map = new Map();
 
-    for (const line of root.querySelectorAll('.code-line[data-step-types]')) {
+    for (const line of root.querySelectorAll(".code-line[data-step-types]")) {
       const sourceLine = Number(line.dataset.sourceLine ?? line.dataset.line);
       for (const type of line.dataset.stepTypes.split(/\s+/).filter(Boolean)) {
         map.set(type, sourceLine);
@@ -47,6 +53,93 @@
     }
 
     return map;
+  }
+
+  // Tokenize before escaping: strings and comments must not be highlighted again.
+  function highlightPython(line, { editor = false } = {}) {
+    const keywords = new Set([
+      "for",
+      "in",
+      "if",
+      "else",
+      "elif",
+      "break",
+      "continue",
+      "while",
+      "def",
+      "return",
+      "and",
+      "or",
+      "not",
+    ]);
+    const functions = new Set([
+      "range",
+      "int",
+      "input",
+      "map",
+      "list",
+      "len",
+      "print",
+      "append",
+      "pop",
+      "join",
+    ]);
+    const tokens =
+      /#[^\n]*|(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*\b/g;
+    let end = 0;
+    let markup = "";
+    for (const match of line.matchAll(tokens)) {
+      markup += escapeHtml(line.slice(end, match.index));
+      const token = match[0];
+      let kind = keywords.has(token)
+        ? "kw"
+        : functions.has(token)
+          ? "fn"
+          : /^\d/.test(token)
+            ? "num"
+            : /^["']/.test(token)
+              ? "str"
+              : "";
+      if (editor && token === "print") kind = "kw";
+      if (editor && kind === "str") kind = ""; // Preserve the existing editor palette.
+      markup += kind
+        ? `<span class="${kind}">${escapeHtml(token)}</span>`
+        : escapeHtml(token);
+      end = match.index + token.length;
+    }
+    return markup + escapeHtml(line.slice(end));
+  }
+
+  // Anchors live beside buildSteps(), so inserted source lines don't break mapping.
+  function createCodeMarkup(
+    template,
+    anchors = [],
+    { wrap = true, editor = false } = {},
+  ) {
+    const lines = template.content.textContent
+      .replace(/^\r?\n/, "")
+      .trimEnd()
+      .split(/\r?\n/);
+    const steps = new Map();
+    for (const { text, types, occurrence = 1 } of anchors) {
+      let seen = 0;
+      const index = lines.findIndex(
+        (line) => line.trim() === text && ++seen === occurrence,
+      );
+      if (index < 0) throw new Error(`Python source anchor not found: ${text}`);
+      steps.set(index, types);
+    }
+    const markup = lines
+      .map((line, index) => {
+        const types = steps.has(index)
+          ? ` data-step-types="${escapeHtml(steps.get(index))}"`
+          : "";
+        return `<span class="code-line" data-source-line="${index + 1}"${types}><span class="ln">${index + 1}</span><span>${highlightPython(line, { editor })}</span></span>`;
+      })
+      .join(wrap ? "\n" : "");
+    return wrap
+      ? `<pre class="code-block"><code>\n${markup}\n    </code></pre>`
+      : markup;
   }
 
   function centerInsideViewport(
@@ -61,22 +154,24 @@
     const position = {};
 
     if (horizontal) {
-      position.left = viewport.scrollLeft
-        + targetRect.left
-        - viewportRect.left
-        - (viewport.clientWidth - targetRect.width) / 2;
+      position.left =
+        viewport.scrollLeft +
+        targetRect.left -
+        viewportRect.left -
+        (viewport.clientWidth - targetRect.width) / 2;
     }
 
     if (vertical) {
-      position.top = viewport.scrollTop
-        + targetRect.top
-        - viewportRect.top
-        - (viewport.clientHeight - targetRect.height) / 2;
+      position.top =
+        viewport.scrollTop +
+        targetRect.top -
+        viewportRect.top -
+        (viewport.clientHeight - targetRect.height) / 2;
     }
 
     viewport.scrollTo({
       ...position,
-      behavior: reduceMotionQuery.matches ? 'auto' : 'smooth',
+      behavior: reduceMotionQuery.matches ? "auto" : "smooth",
     });
   }
 
@@ -87,6 +182,7 @@
     getByIds,
     createLineMap,
     createStepLineMap,
+    createCodeMarkup,
     centerInsideViewport,
   });
 })();

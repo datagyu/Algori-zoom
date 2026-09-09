@@ -63,9 +63,9 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 
-/* 공통 주의 문구: theme.css를 불러오는 모든 페이지에 자동 표시됩니다. */
-body::before {
-  content: "이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.";
+/* 문제 페이지의 실제 안내 요소 */
+.code-disclaimer {
+  margin: 0;
   position: fixed;
   top: 12px;
   right: max(20px, calc((100vw - var(--page-max, 1240px)) / 2));
@@ -86,7 +86,7 @@ body::before {
 }
 
 @media (max-width: 720px) {
-  body::before {
+  .code-disclaimer {
     top: 8px;
     right: 11px;
     max-width: min(260px, calc(100vw - 22px));
@@ -96,12 +96,6 @@ body::before {
 }
 
 /* 공통 브랜드 로고: 새 문제 페이지에서도 동일 클래스를 재사용합니다. */
-.brand-lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .brand-logo {
   width: 42px;
   height: 42px;
@@ -110,7 +104,7 @@ body::before {
 }
 
 .brand-home-link {
-  display: inline-flex !important;
+  display: inline-flex;
   align-items: center;
   gap: 7px;
 }
@@ -124,131 +118,21 @@ body::before {
 }
 
 @media (max-width: 720px) {
-  .brand-logo { width: 34px; height: 34px; border-radius: 8px; }
-  .brand-home-link img { width: 19px; height: 19px; }
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+  }
+  .brand-home-link img {
+    width: 19px;
+    height: 19px;
+  }
 }
 
-/*
- * 알고리줌 모바일 공통 템플릿
- * 2001 파리 퇴치의 코드 창과 하단 플레이어를 기준으로 모든 문제에 적용합니다.
- * 새 문제도 mobile-view / mobile-code-viewport / mobile-player 클래스를 사용하면 동일하게 적용됩니다.
- */
-@media (max-width: 760px) {
-  .mobile-view {
-    padding-bottom: var(--mobile-player-clearance) !important;
-  }
-
-  .mobile-view .mobile-code-viewport {
-    height: 250px !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    overflow: auto !important;
-    overscroll-behavior: contain !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: #1e1e1e !important;
-    scrollbar-width: thin;
-    scrollbar-color: #555 #1e1e1e;
-  }
-
-  .mobile-view .mobile-code-viewport::-webkit-scrollbar {
-    width: 11px;
-    height: 11px;
-  }
-
-  .mobile-view .mobile-code-viewport::-webkit-scrollbar-track {
-    background: #1e1e1e;
-  }
-
-  .mobile-view .mobile-code-viewport::-webkit-scrollbar-thumb {
-    border: 3px solid #1e1e1e;
-    border-radius: 10px;
-    background: #555;
-  }
-
-  .mobile-view .mobile-code-viewport .code-block {
-    min-width: max-content !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #1e1e1e !important;
-    font: 13px/1.65 var(--mono) !important;
-  }
-
-  .mobile-view .mobile-code-viewport .code-line {
-    min-height: 0 !important;
-    padding: 3px 14px 3px 0 !important;
-    border-left: 0 !important;
-    background: transparent;
-    color: #d4d4d4 !important;
-    font: 13px/1.65 var(--mono) !important;
-    white-space: pre !important;
-  }
-
-  .mobile-view .mobile-code-viewport .code-line .ln,
-  .mobile-view .mobile-code-viewport .ln {
-    display: inline-block !important;
-    width: 44px !important;
-    padding-right: 14px !important;
-    color: #858585 !important;
-    text-align: right !important;
-    user-select: none;
-  }
-
-  .mobile-view .mobile-code-viewport .code-line.active {
-    background: #26374a !important;
-    box-shadow: inset 3px 0 #4ba3ff !important;
-  }
-
-  .mobile-view .mobile-player {
-    position: fixed !important;
-    left: 12px !important;
-    right: 12px !important;
-    bottom: var(--mobile-player-bottom) !important;
-    z-index: 100 !important;
-    display: grid !important;
-    grid-template-columns: 48px minmax(0, 1fr) 48px !important;
-    align-items: center !important;
-    gap: 10px !important;
-    width: auto !important;
-    margin: 0 !important;
-    padding: 10px 12px !important;
-    border: 1px solid #2a2d31 !important;
-    border-radius: 14px !important;
-    background: #111315 !important;
-    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45) !important;
-  }
-
-  .mobile-view .mobile-player > button {
-    width: 48px !important;
-    height: 42px !important;
-    min-width: 0 !important;
-    padding: 0 !important;
-    border: 1px solid #353941 !important;
-    border-radius: 8px !important;
-    background: #202328 !important;
-    color: #e5e5e5 !important;
-    font-size: 18px !important;
-    font-weight: 700 !important;
-  }
-
-  .mobile-view .mobile-scrubber {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 9px !important;
-    min-width: 0 !important;
-  }
-
-  .mobile-view .mobile-scrubber input {
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    accent-color: var(--blue);
-  }
-
-  .mobile-view .mobile-scrubber span {
-    color: #8c9198 !important;
-    font: 11px var(--mono) !important;
-    white-space: nowrap !important;
-  }
+/* Visualizer page background; home keeps its existing theme. */
+:root:has(.visualizer) {
+  --page-max: 1500px;
+}
+.visualizer {
+  background: linear-gradient(180deg, #0b0f14 0%, #0d1117 46%, #0a0e13 100%);
 }
