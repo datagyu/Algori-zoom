@@ -5,6 +5,22 @@
  */
 window.VISUALIZATIONS = [
   {
+  "id": "swea-4831",
+  "title": "전기버스",
+  "platform": "SWEA",
+  "problemNo": "4831",
+  "level": "D3",
+  "href": "problems/4831/",
+  "status": "ready",
+  "searchTerms": [
+    "그리디",
+    "탐욕",
+    "while",
+    "전기버스",
+    "충전소"
+  ]
+},
+  {
     id: "swea-1954",
     title: "달팽이 숫자",
     platform: "SWEA",
