@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>가장 빠른 문자열 타이핑 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+for tc in range(1, T+1):
+    A, B = input().split()
+    i = 0
+    count = 0
+    while i &lt; len(A):
+        if A[i:i + len(B)] == B:
+            count += 1
+            i += len(B)
+        else:
+            count += 1
+            i += 1
+
+    print(f'#{tc} {count}')</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <p class="eyebrow">SWEA 3143 · D3</p>
+      <h1>가장 빠른 문자열 타이핑</h1>
+      <p class="subtitle">문자열 B와 일치하면 한 번에 입력하고, 아니면 한 글자씩 입력하며 최소 횟수를 셉니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음</button>
+        <button id="prevBtn" class="btn" type="button">← 이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음 →</button>
+        <button id="playBtn" class="btn" type="button">▶ 자동 실행</button>
+        <button id="replayBtn" class="btn" type="button">↻ 다시보기</button>
+        <button id="skipBtn" class="btn" type="button">⏭ 끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input id="speedRange" aria-label="재생 속도" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input id="timeline" class="timeline" type="range" min="0" max="0" value="0" aria-label="실행 단계" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>PYTHOlen(A)</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>BOARD</span><span id="boardLabel">문자열 A와 단축키 B</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="board" aria-label="문자열 타이핑 진행 상태"></div></div>
+      </article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>STATE</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>i</span><strong id="indexValue">0</strong></div><div><span>count</span><strong id="countValue">0</strong></div>
+          <div><span>len(B)</span><strong id="patternLengthValue">-</strong></div><div><span>len(A)</span><strong id="textLengthValue">-</strong></div>
+          <div><span>남은 글자</span><strong id="remainingValue">0</strong></div><div><span>진행 단계</span><strong id="statusValue">0</strong></div>
+        </div>
+        <div class="explain" id="explainText">첫 번째 문자부터 B와 일치하는지 확인합니다.</div>
+      </article>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>OUTPUT</span><span>실행 남은 글자</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+
+    <section class="input-panel panel">
+      <div class="panel-head"><span>INPUT</span><span>1 ≤ len(A) ≤ 10,000 · 1 ≤ len(B) ≤ 100</span></div>
+      <div class="input-grid">
+        <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
+        <div class="input-actions">
+          <p>첫 줄에 T, 다음 줄부터 A와 B를 공백으로 구분해 입력합니다. 긴 문자열은 현재 위치 주변을 표시합니다.</p>
+          <button type="button" id="applyBtn" class="btn primary">입력 적용</button>
+          <div class="sample-buttons" id="sampleButtons"></div>
+          <p class="input-error" id="inputError" role="alert"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header">
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <div><span>SWEA 3143</span><h1>가장 빠른 문자열 타이핑</h1></div>
+      <div id="mobileCoord" class="mobile-coord">i = 0</div>
+    </header>
+
+    <section class="panel mobile-code">
+      <div class="mobile-section-head"><span>PYTHOlen(A)</span><strong id="mobileCodeStatus">READY</strong></div>
+      <div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div>
+    </section>
+
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>BOARD</span><strong id="mobilePhase">READY</strong></div>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="board"></div></div>
+      <p id="mobileExplanation" class="mobile-explanation">오른쪽 화살표를 눌러 시작합니다.</p>
+    </section>
+
+    <section class="panel mobile-result">
+      <div class="result-head"><span>STATE</span><span id="mobileStateMeta">문자열 비교</span></div>
+      <div class="mobile-state-grid">
+        <div><span>i</span><strong id="mobileIndex">—</strong></div><div><span>count</span><strong id="mobileCount">—</strong></div>
+        <div><span>len(B)</span><strong id="mobilePatternLength">—</strong></div><div><span>남은 글자</span><strong id="mobileRemaining">—</strong></div>
+      </div>
+      <div class="mobile-result-text"><span>진행 단계</span><strong id="mobileStatus">0</strong></div>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>OUTPUT</span><span>실행 남은 글자</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePrevBtn" type="button" aria-label="이전 단계">←</button>
+      <div class="mobile-scrubber"><input id="mobileTimeline" type="range" min="0" max="0" value="0" aria-label="실행 재생바" /><span id="mobileTimelineStatus">0 / 0</span></div>
+      <button id="mobileNextBtn" type="button" aria-label="다음 단계">→</button>
+    </nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
+
