@@ -4,6 +4,7 @@
  * 화면에 보여주지 않을 검색 키워드는 searchTerms에 넣습니다.
  */
 window.VISUALIZATIONS = [
+  {"id": "swea-1222", "title": "계산기1", "platform": "SWEA", "problemNo": "1222", "level": "D4", "href": "problems/1222/", "status": "ready", "searchTerms": ["스택", "계산기", "후위 표기식", "중위 표기식", "push", "pop"]},
   {
   "id": "swea-4831",
   "title": "전기버스",
@@ -61,3 +62,4 @@ window.VISUALIZATIONS = [
     searchTerms: ["완전탐색", "브루트포스", "2차원 배열", "영역 합", "중첩 반복문", "최댓값"],
   },
 ];
+
