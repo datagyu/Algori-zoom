@@ -4,6 +4,7 @@
  * 화면에 보여주지 않을 검색 키워드는 searchTerms에 넣습니다.
  */
 window.VISUALIZATIONS = [
+  {"id": "swea-1974", "title": "스도쿠 검증", "platform": "SWEA", "problemNo": "1974", "level": "D2", "href": "problems/1974/", "status": "ready", "searchTerms": ["스도쿠", "sudoku", "배열", "중복 검사", "3x3", "완전탐색"]},
   {"id": "swea-1210", "title": "Ladder1", "platform": "SWEA", "problemNo": "1210", "level": "D4", "href": "problems/1210/", "status": "ready", "searchTerms": ["사다리", "배열", "역추적", "방문 표시", "시뮬레이션"]},
   {"id": "swea-3143", "title": "가장 빠른 문자열 타이핑", "platform": "SWEA", "problemNo": "3143", "level": "D3", "href": "problems/3143/", "status": "ready", "searchTerms": ["문자열", "그리디", "단축키", "슬라이싱", "타이핑"]},
   {"id": "swea-1215", "title": "회문1", "platform": "SWEA", "problemNo": "1215", "level": "D3", "href": "problems/1215/", "status": "ready", "searchTerms": ["회문", "문자열", "2차원 배열", "완전탐색", "슬라이싱", "palindrome"]},
@@ -65,5 +66,6 @@ window.VISUALIZATIONS = [
     searchTerms: ["완전탐색", "브루트포스", "2차원 배열", "영역 합", "중첩 반복문", "최댓값"],
   },
 ];
+
 
 
