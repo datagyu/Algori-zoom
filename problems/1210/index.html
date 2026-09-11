@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>Ladder1 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">for _ in range(10):
+    T = int(input())
+    ladder = [list(map(int, input().split())) for _ in range(100)]
+    cr = None
+    cc = None
+    for i in range(100):
+        for j in range(100):
+            if ladder[i][j] == 2:
+                cr = i
+                cc = j
+    while cr &gt; 0:
+        ladder[cr][cc] = 2
+        if (cc-1 &gt;= 0) and (ladder[cr][cc-1] == 1):
+            cc -= 1
+        elif (cc+1 &lt;= 99) and (ladder[cr][cc+1] == 1):
+            cc += 1
+        else:
+            cr -= 1
+
+    print(f&#x27;#{T} {cc}&#x27;)</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <p class="eyebrow">SWEA 1210 · D4</p>
+      <h1>Ladder1</h1>
+      <p class="subtitle">도착점 2에서 왼쪽·오른쪽·위 순서로 확인하며 출발 열을 찾습니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음</button>
+        <button id="prevBtn" class="btn" type="button">← 이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음 →</button>
+        <button id="playBtn" class="btn" type="button">▶ 자동 실행</button>
+        <button id="replayBtn" class="btn" type="button">↻ 다시보기</button>
+        <button id="skipBtn" class="btn" type="button">⏭ 끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input id="speedRange" aria-label="재생 속도" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input id="timeline" class="timeline" type="range" min="0" max="0" value="0" aria-label="실행 단계" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>PYTHON</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>BOARD</span><span id="boardLabel">100 × 100</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><canvas id="board" class="board" width="800" height="800" role="img" aria-label="사다리 전체 지도"></canvas></div><p class="ladder-legend">흰색: 사다리 · 초록: 방문 경로 · 파랑: 현재 위치 · 노랑: 도착점</p>
+      </article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>STATE</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>cr</span><strong id="crValue">0</strong></div><div><span>cc</span><strong id="ccValue">0</strong></div>
+          <div><span>왼쪽 값</span><strong id="nrValue">-</strong></div><div><span>오른쪽 값</span><strong id="ncValue">-</strong></div>
+          <div><span>이동 횟수</span><strong id="numValue">0</strong></div><div><span>이동 방향</span><strong id="directionValue">0</strong></div>
+        </div>
+        <div class="explain" id="explainText">도착점 2를 찾고 사다리를 거슬러 올라갑니다.</div>
+      </article>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>OUTPUT</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+
+    <section class="input-panel panel">
+      <div class="panel-head"><span>INPUT</span><span>100 × 100 · 최대 10개</span></div>
+      <div class="input-grid">
+        <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
+        <div class="input-actions">
+          <p>테스트 번호와 100줄의 배열을 입력합니다. 전체 예제 10개도 지원합니다.</p>
+          <button type="button" id="applyBtn" class="btn primary">입력 적용</button>
+          <div class="sample-buttons" id="sampleButtons"></div>
+          <p class="input-error" id="inputError" role="alert"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header">
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <div><span>SWEA 1210</span><h1>Ladder1</h1></div>
+      <div id="mobileCoord" class="mobile-coord">cr = — · cc = —</div>
+    </header>
+
+    <section class="panel mobile-code">
+      <div class="mobile-section-head"><span>PYTHON</span><strong id="mobileCodeStatus">READY</strong></div>
+      <div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div>
+    </section>
+
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>BOARD</span><strong id="mobilePhase">READY</strong></div>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><canvas id="mobileBoard" class="board" width="800" height="800" role="img" aria-label="사다리 전체 지도"></canvas></div><p class="ladder-legend">흰색: 사다리 · 초록: 방문 경로 · 파랑: 현재 위치 · 노랑: 도착점</p>
+      <p id="mobileExplanation" class="mobile-explanation">오른쪽 화살표를 눌러 시작합니다.</p>
+    </section>
+
+    <section class="panel mobile-result">
+      <div class="result-head"><span>STATE</span><span id="mobileStateMeta">이동 0</span></div>
+      <div class="mobile-state-grid">
+        <div><span>cr</span><strong id="mobileCr">—</strong></div><div><span>cc</span><strong id="mobileCc">—</strong></div>
+        <div><span>왼쪽 값</span><strong id="mobileNr">—</strong></div><div><span>오른쪽 값</span><strong id="mobileNc">—</strong></div>
+      </div>
+      <div class="mobile-result-text"><span>이동 방향</span><strong id="mobileDirection">0</strong></div>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>OUTPUT</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePrevBtn" type="button" aria-label="이전 단계">←</button>
+      <div class="mobile-scrubber"><input id="mobileTimeline" type="range" min="0" max="0" value="0" aria-label="실행 재생바" /><span id="mobileTimelineStatus">0 / 0</span></div>
+      <button id="mobileNextBtn" type="button" aria-label="다음 단계">→</button>
+    </nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
+
