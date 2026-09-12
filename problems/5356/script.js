@@ -611,7 +611,7 @@
     state.playing = false;
     clearTimeout(state.timer);
     state.timer = null;
-    els.playBtn.textContent = "▶ 자동 실행";
+    Core.updatePlaybackControls(els.playBtn, false);
   }
 
   function startPlayback({ restart = false } = {}) {
@@ -619,7 +619,7 @@
     if (restart || state.stepIndex >= state.steps.length - 1)
       state.stepIndex = -1;
     state.playing = true;
-    els.playBtn.textContent = "⏸ 일시정지";
+    Core.updatePlaybackControls(els.playBtn, true);
     scheduleNext();
   }
 
@@ -708,6 +708,7 @@
   els.resetBtn.addEventListener("click", reset);
   els.prevBtn.addEventListener("click", () => move(-1));
   els.nextBtn.addEventListener("click", () => move(1));
+  document.getElementById("mobilePlayBtn").addEventListener("click", () => els.playBtn.click());
   els.mobilePrevBtn.addEventListener("click", () => move(-1));
   els.mobileNextBtn.addEventListener("click", () => move(1));
 

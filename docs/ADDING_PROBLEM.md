@@ -128,7 +128,7 @@ board 행·열 제한, 문자 종류, 파리 수 등은 문제 설정에 둡니�
 
 코드·board·stack은 내부 viewport에서 스크롤되도록 합니다. 현재 위치 추적은 `Core.centerInsideViewport(viewport, target, options)`를 사용합니다. `clamp`, `escapeHtml`, `formatDecimal`, `getByIds`, `createLineMap`, `createStepLineMap`을 문제 파일에 다시 구현하지 않습니다.
 
-공통 모바일 기준은 `760px`입니다. 코드창 높이와 하단 플레이어는 `visualizer.css`가 관리합니다. `--mobile-player-bottom`, `--mobile-player-clearance`는 공통 변수입니다. 기본 하단 구조는 이전 버튼 / timeline / 다음 버튼입니다. 전체 페이지 가로 스크롤을 만들지 않고, 마지막 콘텐츠가 플레이어 위까지 스크롤될 여백을 확보합니다.
+공통 모바일 기준은 `760px`입니다. 코드창 높이와 하단 플레이어는 `visualizer.css`가 관리합니다. `--mobile-player-bottom`, `--mobile-player-clearance`는 공통 변수입니다. 기본 하단 구조는 자동 실행·일시정지 버튼(`mobilePlayBtn`) / 이전 버튼 / timeline / 다음 버튼입니다. 모바일 재생 버튼은 기존 `playBtn`의 클릭 동작에 연결해 동일한 타이머를 사용합니다. 재생 시작·정지 시 `Core.updatePlaybackControls(els.playBtn, playing)`으로 PC와 모바일 버튼 상태를 함께 갱신합니다. 전체 페이지 가로 스크롤을 만들지 않고, 마지막 콘텐츠가 플레이어 위까지 스크롤될 여백을 확보합니다.
 
 ## 홈 등록과 배포
 

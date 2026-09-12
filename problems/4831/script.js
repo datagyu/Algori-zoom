@@ -135,7 +135,7 @@ samples: [{"id": "one", "label": "샘플 1 · 도착 가능", "value": "1\n3 10 
   function stopPlayback() {
     if (state.timer) clearTimeout(state.timer);
     state.timer = null;
-    els.playBtn.textContent = "▶ 자동 실행";
+    Core.updatePlaybackControls(els.playBtn, false);
   }
 
   function goTo(index, options = {}) {
@@ -160,7 +160,7 @@ samples: [{"id": "one", "label": "샘플 1 · 도착 가능", "value": "1\n3 10 
   function startPlayback() {
     stopPlayback();
     if (state.stepIndex >= state.steps.length - 1) goTo(0);
-    els.playBtn.textContent = "⏸ 일시정지";
+    Core.updatePlaybackControls(els.playBtn, true);
     scheduleNext();
   }
 
@@ -223,6 +223,7 @@ samples: [{"id": "one", "label": "샘플 1 · 도착 가능", "value": "1\n3 10 
 
   els.prevBtn.addEventListener("click", () => move(-1));
   els.nextBtn.addEventListener("click", () => move(1));
+  document.getElementById("mobilePlayBtn").addEventListener("click", () => els.playBtn.click());
   els.mobilePrevBtn.addEventListener("click", () => move(-1));
   els.mobileNextBtn.addEventListener("click", () => move(1));
   els.resetBtn.addEventListener("click", reset);
