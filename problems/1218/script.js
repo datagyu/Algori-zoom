@@ -32,7 +32,7 @@
       { text: "if top == -1:", occurrence: 1, types: "empty-check" },
       { text: "result = 0; break", occurrence: 1, types: "fail-empty" },
       {
-        text: "if stack[top] != pairs[arr[i]]:",
+        text: "if stack[top] + arr[i] not in ('()', '{}', '[]', '<>'):",
         occurrence: 1,
         types: "match-check",
       },

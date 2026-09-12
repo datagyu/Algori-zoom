@@ -23,7 +23,6 @@
     stack = []
     top = -1
     result = 1
-    pairs = {')': '(', '}': '{', ']': '[', '&gt;': '&lt;'}
     for i in range(N):
         if arr[i] in '({[&lt;':
             stack.append(arr[i])
@@ -31,7 +30,7 @@
         else:
             if top == -1:
                 result = 0; break
-            if stack[top] != pairs[arr[i]]:
+            if stack[top] + arr[i] not in ('()', '{}', '[]', '&lt;&gt;'):
                 result = 0; break
             stack.pop()
             top -= 1
