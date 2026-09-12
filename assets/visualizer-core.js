@@ -148,9 +148,9 @@
           : "";
         return `<span class="code-line" data-source-line="${index + 1}"${types}><span class="ln">${index + 1}</span><span>${highlightPython(line, { editor })}</span></span>`;
       })
-      .join(wrap ? "\n" : "");
+      .join("");
     return wrap
-      ? `<pre class="code-block"><code>\n${markup}\n    </code></pre>`
+      ? `<pre class="code-block"><code>${markup}</code></pre>`
       : markup;
   }
 

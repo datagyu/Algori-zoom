@@ -1,7 +1,7 @@
 (() => {
   const Core = window.AlgoriZoomCore;
   const OPEN = new Set(["(", "{", "[", "<"]);
-  const PAIR = { ")": "(", "}": "{", "]": "[", ">": "<" };
+  const BRACKET_CHECKS = [[")", "("], ["}", "{"], ["]", "["], [">", "<"]];
   const PROBLEM = Object.freeze({
     platform: "SWEA",
     number: "1218",
@@ -30,17 +30,17 @@
       { text: "top += 1", occurrence: 1, types: "top-up" },
       { text: "else:", occurrence: 1, types: "close-branch" },
       { text: "if top == -1:", occurrence: 1, types: "empty-check" },
-      { text: "result = 0; break", occurrence: 1, types: "fail-empty" },
-      {
-        text: "if 닫는괄호와 stack[top]의 짝이 다르면:",
-        occurrence: 1,
-        types: "match-check",
-      },
-      { text: "result = 0; break", occurrence: 2, types: "fail-mismatch" },
+      { text: "result = 0", occurrence: 1, types: "fail-empty" },
+      { text: "break", occurrence: 1, types: "break-empty" },
+      ...BRACKET_CHECKS.flatMap(([close, open], index) => [
+        { text: `if (arr[i] == '${close}') and (stack[top] != '${open}'):`, types: `match-check-${index}` },
+        { text: "result = 0", occurrence: index + 2, types: `fail-mismatch-${index}` },
+        { text: "break", occurrence: index + 2, types: `break-${index}` },
+      ]),
       { text: "stack.pop()", occurrence: 1, types: "pop" },
       { text: "top -= 1", occurrence: 1, types: "top-down" },
       { text: "if top != -1:", occurrence: 1, types: "final-check" },
-      { text: "result = 0", occurrence: 1, types: "final-fail" },
+      { text: "result = 0", occurrence: 6, types: "final-fail" },
       { text: "print(f'#{tc} {result}')", occurrence: 1, types: "done" },
     ],
   });
@@ -136,6 +136,7 @@
     const stack = [];
     let top = -1;
     let result = 1;
+    let lastIndex = -1;
 
     const push = (type, i, extra = {}) => {
       steps.push({
@@ -146,11 +147,12 @@
         top,
         result,
         ...extra,
-        line: stepLineMap.get(type),
+        line: stepLineMap.get(extra.sourceType ?? type),
       });
     };
 
     for (let i = 0; i < input.length; i += 1) {
+      lastIndex = i;
       const ch = input[i];
       push("loop", i, { text: `i = ${i}. 현재 문자는 '${ch}'입니다.` });
       push("open-check", i, {
@@ -177,34 +179,45 @@
       if (top === -1) {
         result = 0;
         push("fail-empty", i, {
-          text: "짝이 없으므로 result = 0이고 반복을 종료합니다.",
+          text: "짝이 없으므로 result = 0으로 설정합니다.",
           error: true,
         });
+        push("break", i, { sourceType: "break-empty", text: "break로 반복을 종료합니다.", error: true });
         break;
       }
 
-      const expected = PAIR[ch];
-      const actual = stack[top];
-      const matched = actual === expected;
-      push("match-check", i, {
-        expected,
-        actual,
-        matched,
-        text: matched
-          ? `'${actual}'와 '${ch}'의 짝이 맞습니다.`
-          : `'${actual}'와 '${ch}'의 짝이 맞지 않습니다.`,
-      });
-      if (!matched) {
-        result = 0;
-        push("fail-mismatch", i, {
-          expected,
-          actual,
-          matched,
-          text: "짝이 다르므로 result = 0이고 반복을 종료합니다.",
-          error: true,
+      let mismatch = false;
+      for (const [index, [close, open]] of BRACKET_CHECKS.entries()) {
+        const applies = ch === close;
+        const failed = applies && stack[top] !== open;
+        const extra = {
+          expected: open,
+          actual: stack[top],
+          matched: applies ? !failed : undefined,
+          condition: `(arr[i] == '${close}') and (stack[top] != '${open}')`,
+          failed,
+        };
+        push("match-check", i, {
+          ...extra,
+          sourceType: `match-check-${index}`,
+          text: !applies
+            ? `'${ch}'는 '${close}'가 아니므로 이 조건은 거짓입니다. 다음 검사를 진행합니다.`
+            : failed
+              ? `'${stack[top]}'와 '${ch}'의 짝이 다르므로 이 조건은 참입니다.`
+              : `'${stack[top]}'와 '${ch}'의 짝이 맞으므로 이 조건은 거짓입니다.`,
         });
-        break;
+        if (failed) {
+          result = 0;
+          push("fail-mismatch", i, {
+            ...extra, sourceType: `fail-mismatch-${index}`,
+            text: "짝이 다르므로 result = 0으로 설정합니다.", error: true,
+          });
+          push("break", i, { sourceType: `break-${index}`, text: "break로 반복을 종료합니다.", error: true });
+          mismatch = true;
+          break;
+        }
       }
+      if (mismatch) break;
 
       stack.pop();
       push("pop", i, { text: "짝이 맞으므로 stack의 맨 위를 pop합니다." });
@@ -212,7 +225,7 @@
       push("top-down", i, { text: `top을 ${top}으로 내립니다.` });
     }
 
-    push("final-check", input.length ? input.length - 1 : -1, {
+    push("final-check", lastIndex, {
       text:
         top !== -1
           ? `반복이 끝났지만 stack에 ${top + 1}개가 남았습니다.`
@@ -220,12 +233,12 @@
     });
     if (top !== -1) {
       result = 0;
-      push("final-fail", input.length ? input.length - 1 : -1, {
+      push("final-fail", lastIndex, {
         text: "남은 여는 괄호가 있으므로 result = 0입니다.",
         error: true,
       });
     }
-    push("done", input.length ? input.length - 1 : -1, {
+    push("done", lastIndex, {
       text: `최종 결과는 ${result}입니다.`,
       done: true,
     });
@@ -322,6 +335,7 @@
         "final-check": "FINAL",
         "final-fail": "FAIL",
         done: "DONE",
+        break: "BREAK",
       }[type] ?? type.toUpperCase()
     );
   }
@@ -341,8 +355,8 @@
       ];
     if (step.type === "match-check" || step.type === "fail-mismatch")
       return [
-        `stack[top] == '${step.expected}' ?`,
-        `${step.actual ?? "—"} ${step.matched ? "==" : "!="} ${step.expected}`,
+        step.condition,
+        step.failed ? "True · 괄호의 짝이 다름" : "False · 다음 검사로 진행",
       ];
     if (step.type === "final-check" || step.type === "final-fail")
       return ["top != -1 ?", `${step.top} ${step.top !== -1 ? "!=" : "=="} -1`];
