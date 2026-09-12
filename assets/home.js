@@ -33,7 +33,7 @@
           <span class="status-dot"><i></i> ${escapeHtml(status)}</span>
         </div>
         <div class="card-main">
-          <div class="meta">${escapeHtml(item.platform)} ${escapeHtml(item.problemNo)} · ${escapeHtml(item.level)}</div>
+          <div class="meta">${escapeHtml(item.platform)} ${escapeHtml(item.problemNo)}${item.level ? " · " + escapeHtml(item.level) : ""}</div>
           <h3>${escapeHtml(item.title)}</h3>
         </div>
         <div class="card-enter"><span>시각화 열기</span></div>

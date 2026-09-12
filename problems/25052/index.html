@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>등산로 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+for tc in range(1, T+1):
+    N = int(input())
+    mt = [list(map(int, input().split())) for _ in range(N)]
+    max_count = 0
+    dr = [0, -1, 0, 1]
+    dc = [-1, 0, 1, 0]
+
+    for r in range(N):
+        for c in range(N): #행과 열 순회하면서 위치 설정
+            cr = r
+            cc = c
+            count = 1
+            while True:
+                next_r, next_c = cr, cc
+                for i in range(4):
+                    nr = cr + dr[i]
+                    nc = cc + dc[i]
+                    if (0 &lt;= nr &lt; N) and (0 &lt;= nc &lt; N):
+                        if mt[nr][nc] &lt; mt[next_r][next_c]:
+                            next_r, next_c = nr, nc
+                if (next_r == cr) and (next_c == cc):
+                    break
+                cr, cc = next_r, next_c
+                count += 1
+            if max_count &lt; count:
+                max_count = count
+                
+    print('#{} {}'.format(tc, max_count))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 25052</p>
+      <h1>등산로</h1>
+      <p class="subtitle">모든 출발점에서 가장 낮은 이웃으로 이동하며 최장 등산로를 찾습니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button>
+        <button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button>
+        <button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button>
+        <button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>시각화</span><span id="boardLabel">N=3</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="board" aria-label="등산로 배열"></div></div>
+<p class="hike-legend">파랑: 현재 위치 · 노랑 테두리: 이동 후보 · 점선: 검사 중 · 파랑 배경: 현재 경로 · 초록 테두리: 최장 경로</p>
+<p class="hike-route-label">현재까지의 최장 경로</p><p id="bestPath" class="hike-path"></p>
+</article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>cr</span><strong id="crValue">0</strong></div><div><span>cc</span><strong id="ccValue">0</strong></div>
+          <div><span>nr</span><strong id="nrValue">-</strong></div><div><span>nc</span><strong id="ncValue">-</strong></div>
+          <div><span>count</span><strong id="numValue">0</strong></div><div><span>max_count</span><strong id="directionValue">0</strong></div>
+        </div>
+        <div class="state-grid">
+<div><span>r</span><strong id="rowValue">—</strong></div><div><span>c</span><strong id="colValue">—</strong></div>
+<div><span>next_r</span><strong id="nextRowValue">—</strong></div><div><span>next_c</span><strong id="nextColValue">—</strong></div>
+<div><span>i · 방향 번호</span><strong id="dirValue">—</strong></div>
+</div><div class="explain" id="explainText">모든 칸에서 등산로를 탐색합니다.</div>
+      </article>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>3 ≤ N ≤ 10 · 서로 다른 높이</span></div>
+      <div class="input-grid">
+        <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
+        <div class="input-actions">
+          <p>첫 줄에 T, 각 지도마다 N과 N줄의 높이를 입력합니다. 높이는 1~N²이고 모두 달라야 합니다. 시각화는 지도 10개까지 지원합니다.</p>
+          <button type="button" id="applyBtn" class="btn primary">입력 적용</button>
+          <div class="sample-buttons" id="sampleButtons"></div>
+          <p class="input-error" id="inputError" role="alert"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header">
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <div><span>SWEA 25052</span><h1>등산로</h1></div>
+      <div id="mobileCoord" class="mobile-coord">cr = — · cc = —</div>
+    </header>
+
+    <section class="panel mobile-code">
+      <div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div>
+      <div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div>
+    </section>
+
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>시각화</span><strong id="mobilePhase">READY</strong></div>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="board"></div></div>
+      <p class="hike-legend">파랑: 현재 · 노랑: 후보 · 점선: 검사 · 초록: 최장 경로</p>
+<p class="hike-route-label">현재까지의 최장 경로</p><p id="mobileBestPath" class="hike-path"></p>
+<p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p>
+    </section>
+
+    <section class="panel mobile-result">
+      <div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">현재 길이 —</span></div>
+      <div class="mobile-state-grid">
+        <div><span>cr</span><strong id="mobileCr">—</strong></div><div><span>cc</span><strong id="mobileCc">—</strong></div>
+        <div><span>nr</span><strong id="mobileNr">—</strong></div><div><span>nc</span><strong id="mobileNc">—</strong></div>
+      </div>
+      <div class="mobile-result-text"><span>max_count</span><strong id="mobileDirection">0</strong></div>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button>
+      <div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div>
+      <button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button>
+    </nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="./script.js"></script>
+  <script src="../../assets/ui.js"></script>
+</body>
+</html>

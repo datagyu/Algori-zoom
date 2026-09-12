@@ -1,0 +1,21 @@
+/* Terrain and route visualization; shared UI lives in assets/ui.css. */
+.board-panel { min-width: 0; padding: 16px; }
+.board-viewport, .mobile-board-viewport { overflow: auto; padding: 14px; overscroll-behavior: contain; }
+.board { display: grid; gap: 5px; width: max-content; min-width: 100%; justify-content: center; }
+.hike-cell { width: 42px; height: 42px; display: grid; place-items: center; border: 2px solid var(--line-strong); border-radius: 8px; background: var(--panel-strong); color: var(--text); font: 600 14px var(--mono); }
+.hike-cell.on-route { background: var(--blue-soft); }
+.hike-cell.best-route { border-color: var(--green); }
+.hike-cell.current { background: #2563b8; color: white; }
+.hike-cell.candidate { outline: 2px solid #f2cc60; outline-offset: -5px; }
+.hike-cell.inspecting { outline: 2px dashed #f2cc60; outline-offset: -5px; }
+.hike-legend, .hike-path, .hike-route-label { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.hike-route-label { margin: 12px 0 4px; color: var(--green); }
+.hike-path { margin: 0; overflow-wrap: anywhere; max-height: 110px; overflow: auto; font-family: var(--mono); }
+.state-grid, .mobile-state-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; margin-top: 12px; }
+.state-grid > div, .mobile-state-grid > div { padding: 12px; min-width: 0; }
+.state-grid span, .mobile-state-grid span { display: block; margin-bottom: 6px; color: var(--muted); font: 12px var(--mono); }
+.state-grid strong, .mobile-state-grid strong { font: 600 18px var(--mono); }
+.mobile-result-text { display: flex; justify-content: space-between; padding-top: 12px; }
+.output-panel { min-width: 0; padding: 16px; margin: 12px 0; }
+.output-panel pre { overflow: auto; max-height: 240px; color: var(--text); font: 14px/1.7 var(--mono); }
+@media(max-width:760px) { .mobile-board-viewport { height: 290px; } }
