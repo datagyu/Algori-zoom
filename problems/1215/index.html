@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../../assets/theme.css" />
   <link rel="stylesheet" href="../../assets/visualizer.css" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
 </head>
 <body class="visualizer visualizer--editor">
   <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
@@ -38,7 +39,7 @@
 
   <main class="desktop-view app-shell">
     <header class="hero">
-      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
       <p class="eyebrow">SWEA 1215 · D3</p>
       <h1>회문1</h1>
       <p class="subtitle">가로부터 세로까지 글자를 모으고, 뒤집은 문자열과 비교하며 회문을 셉니다.</p>
@@ -46,34 +47,34 @@
 
     <section class="panel control-strip" aria-label="실행 컨트롤">
       <div class="controls-main">
-        <button id="resetBtn" class="btn" type="button">처음</button>
-        <button id="prevBtn" class="btn" type="button">← 이전</button>
-        <button id="nextBtn" class="btn primary" type="button">다음 →</button>
-        <button id="playBtn" class="btn" type="button">▶ 자동 실행</button>
-        <button id="replayBtn" class="btn" type="button">↻ 다시보기</button>
-        <button id="skipBtn" class="btn" type="button">⏭ 끝으로</button>
+        <button id="resetBtn" class="btn" type="button">처음으로</button>
+        <button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button>
+        <button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button>
+        <button id="skipBtn" class="btn" type="button">끝으로</button>
       </div>
-      <label class="speed-control">속도 <input id="speedRange" aria-label="재생 속도" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
     </section>
 
     <section class="panel timeline-panel" aria-label="재생바">
       <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
-      <input id="timeline" class="timeline" type="range" min="0" max="0" value="0" aria-label="실행 단계" />
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
     </section>
 
     <section class="workspace">
       <article class="panel code-panel">
-        <div class="panel-head"><span>PYTHON</span><span id="codeLineLabel">READY</span></div>
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
         <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
       </article>
 
       <article class="panel board-panel">
-        <div class="panel-head"><span>BOARD</span><span id="boardLabel">8 × 8 글자판</span></div>
+        <div class="panel-head"><span>시각화</span><span id="boardLabel">8 × 8 글자판</span></div>
         <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="board" aria-label="8 × 8 회문 탐색 글자판"></div></div>
       </article>
 
       <article class="panel state-panel">
-        <div class="panel-head"><span>STATE</span><span id="phaseLabel">READY</span></div>
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
         <div class="state-grid">
           <div><span>i</span><strong id="rowValue">0</strong></div><div><span>j</span><strong id="colValue">0</strong></div>
           <div><span>k</span><strong id="kValue">-</strong></div><div><span>N</span><strong id="lengthValue">-</strong></div>
@@ -83,10 +84,10 @@
       </article>
     </section>
 
-    <section class="panel output-panel"><div class="panel-head"><span>OUTPUT</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
 
     <section class="input-panel panel">
-      <div class="panel-head"><span>INPUT</span><span>1 ≤ N ≤ 8 · A, B, C</span></div>
+      <div class="panel-head"><span>입력</span><span>1 ≤ N ≤ 8 · A, B, C</span></div>
       <div class="input-grid">
         <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
         <div class="input-actions">
@@ -101,24 +102,24 @@
 
   <main class="mobile-view" aria-label="모바일 코드 시각화">
     <header class="mobile-header">
-      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />← 알고리줌</a>
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
       <div><span>SWEA 1215</span><h1>회문1</h1></div>
       <div id="mobileCoord" class="mobile-coord">i = 0</div>
     </header>
 
     <section class="panel mobile-code">
-      <div class="mobile-section-head"><span>PYTHON</span><strong id="mobileCodeStatus">READY</strong></div>
+      <div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div>
       <div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div>
     </section>
 
     <section class="panel mobile-focus">
-      <div class="mobile-focus-head"><span>BOARD</span><strong id="mobilePhase">READY</strong></div>
+      <div class="mobile-focus-head"><span>시각화</span><strong id="mobilePhase">READY</strong></div>
       <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="board"></div></div>
-      <p id="mobileExplanation" class="mobile-explanation">오른쪽 화살표를 눌러 시작합니다.</p>
+      <p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p>
     </section>
 
     <section class="panel mobile-result">
-      <div class="result-head"><span>STATE</span><span id="mobileStateMeta">회문 탐색</span></div>
+      <div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">회문 탐색</span></div>
       <div class="mobile-state-grid">
         <div><span>i</span><strong id="mobileRow">—</strong></div><div><span>j</span><strong id="mobileCol">—</strong></div>
         <div><span>k</span><strong id="mobileK">—</strong></div><div><span>결과</span><strong id="mobileResult">—</strong></div>
@@ -126,17 +127,18 @@
       <div class="mobile-result-text"><span>진행 단계</span><strong id="mobileStatus">0</strong></div>
     </section>
 
-    <section class="panel output-panel"><div class="panel-head"><span>OUTPUT</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
 
     <nav class="panel mobile-player" aria-label="실행 단계 이동">
-      <button id="mobilePlayBtn" aria-label="자동 실행" aria-pressed="false" title="자동 실행" type="button">▶</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">←</button>
-      <div class="mobile-scrubber"><input id="mobileTimeline" type="range" min="0" max="0" value="0" aria-label="실행 재생바" /><span id="mobileTimelineStatus">0 / 0</span></div>
-      <button id="mobileNextBtn" type="button" aria-label="다음 단계">→</button>
+      <button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button>
+      <div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div>
+      <button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button>
     </nav>
   </main>
 
   <script src="../../assets/visualizer-core.js"></script>
   <script src="./script.js"></script>
+  <script src="../../assets/ui.js"></script>
 </body>
 </html>
 
