@@ -1063,7 +1063,7 @@
     bottom: var(--mobile-player-bottom);
     z-index: 100;
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    grid-template-columns: 48px 48px minmax(0, 1fr) 48px;
     align-items: center;
     gap: 10px;
     width: auto;

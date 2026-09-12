@@ -33,6 +33,18 @@
     );
   }
 
+  // Both layouts control the same problem timer and always show the same state.
+  function updatePlaybackControls(playButton, playing) {
+    playButton.textContent = playing ? "⏸ 일시정지" : "▶ 자동 실행";
+    playButton.setAttribute("aria-pressed", String(playing));
+    const mobileButton = document.getElementById("mobilePlayBtn");
+    if (!mobileButton) return;
+    mobileButton.textContent = playing ? "⏸" : "▶";
+    mobileButton.setAttribute("aria-label", playing ? "일시정지" : "자동 실행");
+    mobileButton.setAttribute("aria-pressed", String(playing));
+    mobileButton.title = playing ? "일시정지" : "자동 실행";
+  }
+
   function createLineMap(root) {
     return new Map(
       [...root.querySelectorAll(".code-line")].map((line) => [
@@ -180,6 +192,7 @@
     escapeHtml,
     formatDecimal,
     getByIds,
+    updatePlaybackControls,
     createLineMap,
     createStepLineMap,
     createCodeMarkup,
