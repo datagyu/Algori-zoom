@@ -25,18 +25,18 @@
   }
 
   function renderCard(item, index) {
-    const status = String(item.status || "ready").toUpperCase();
+    const status = item.status === "ready" ? "학습 가능" : "준비 중";
     return `
       <a class="visual-card" href="${escapeHtml(item.href)}">
         <div class="card-top">
-          <span class="card-index">${String(index + 1).padStart(2, "0")}</span>
+          <span class="card-index">${String(items.indexOf(item) + 1).padStart(2, "0")}</span>
           <span class="status-dot"><i></i> ${escapeHtml(status)}</span>
         </div>
         <div class="card-main">
           <div class="meta">${escapeHtml(item.platform)} ${escapeHtml(item.problemNo)} · ${escapeHtml(item.level)}</div>
           <h3>${escapeHtml(item.title)}</h3>
         </div>
-        <div class="card-enter"><span>시각화 열기</span><b>↗</b></div>
+        <div class="card-enter"><span>시각화 열기</span></div>
       </a>
     `;
   }
@@ -47,8 +47,13 @@
 
     els.grid.innerHTML = filtered.map(renderCard).join("");
     els.emptyState.hidden = filtered.length > 0;
+    document.getElementById("resultCount").textContent = `전체 ${items.length}개 중 ${filtered.length}개`;
+    document.getElementById("clearSearch").hidden = !els.search.value;
   }
 
   els.search.addEventListener("input", renderCatalog);
+  document.getElementById("clearSearch").addEventListener("click", () => {
+    els.search.value = ""; renderCatalog(); els.search.focus();
+  });
   renderCatalog();
 })();

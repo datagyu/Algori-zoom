@@ -12,6 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="assets/theme.css" />
   <link rel="stylesheet" href="assets/home.css" />
+  <link rel="stylesheet" href="assets/ui.css" />
 </head>
 <body>
   <main class="lab-shell">
@@ -30,8 +31,9 @@
 
     <section class="toolbar" aria-label="시각화 검색">
       <div class="search-box">
-        <span aria-hidden="true">⌕</span>
+        <label for="searchInput">검색</label>
         <input id="searchInput" aria-label="문제 검색" type="search" placeholder="문제명, 개념, SWEA 번호 검색" autocomplete="off" />
+        <button id="clearSearch" type="button" hidden>지우기</button>
       </div>
     </section>
 
@@ -41,9 +43,10 @@
           <span>LIBRARY</span>
           <h2>시각화 선택</h2>
         </div>
+        <span id="resultCount" role="status"></span>
       </div>
       <div id="visualGrid" class="visual-grid"></div>
-      <div id="emptyState" class="empty-state" hidden>조건에 맞는 시각화가 없습니다.</div>
+      <div id="emptyState" class="empty-state" hidden>검색 결과가 없습니다. 문제 번호나 다른 검색어를 입력해보세요.</div>
     </section>
   </main>
 

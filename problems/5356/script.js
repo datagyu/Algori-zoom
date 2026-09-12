@@ -401,7 +401,7 @@
       : "READY";
     els.mobileExplanation.textContent = step
       ? explain(step)
-      : "오른쪽 화살표를 눌러 시작합니다.";
+      : "다음 버튼을 눌러 시작합니다.";
     els.mobileCondition.textContent = mobileConditionText(step);
     els.mobileResult.textContent = result || "—";
     els.mobileResultCount.textContent = `${result.length} chars`;
@@ -442,7 +442,7 @@
     const length = state.board[step.r].length;
     const passed = length > step.c;
     els.conditionBox.className = `condition-box ${passed ? "good" : "bad"}`;
-    els.conditionDetail.textContent = `${length} > ${step.c} → ${passed ? "True ✓" : "False ✕"}`;
+    els.conditionDetail.textContent = `${length} > ${step.c} → ${passed ? "True" : "False"}`;
   }
 
   function renderResult(step) {
@@ -551,7 +551,7 @@
       return `c = ${step.c} 열 탐색`;
 
     const length = state.board[step.r].length;
-    return `${length} > ${step.c} → ${length > step.c ? "True ✓" : "False ✕"}`;
+    return `${length} > ${step.c} → ${length > step.c ? "True" : "False"}`;
   }
 
   // -----------------------------------------------------------------------------
@@ -653,10 +653,11 @@
     const cleaned = lines.map((line) => line.trim());
     const error = validateBoard(cleaned);
     if (error) {
-      alert(error);
+      document.getElementById("inputError").textContent = error;
       return false;
     }
 
+    document.getElementById("inputError").textContent = "";
     state.board = cleaned;
     state.lastResultKey = "";
     buildSteps();
