@@ -32,7 +32,7 @@
       { text: "if top == -1:", occurrence: 1, types: "empty-check" },
       { text: "result = 0; break", occurrence: 1, types: "fail-empty" },
       {
-        text: "if 닫는괄호와 stack[top]의 짝이 다르면:",
+        text: "if stack[top] != pairs[arr[i]]:",
         occurrence: 1,
         types: "match-check",
       },

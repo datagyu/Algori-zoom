@@ -23,6 +23,7 @@
     stack = []
     top = -1
     result = 1
+    pairs = {')': '(', '}': '{', ']': '[', '&gt;': '&lt;'}
     for i in range(N):
         if arr[i] in '({[&lt;':
             stack.append(arr[i])
@@ -30,7 +31,7 @@
         else:
             if top == -1:
                 result = 0; break
-            if 닫는괄호와 stack[top]의 짝이 다르면:
+            if stack[top] != pairs[arr[i]]:
                 result = 0; break
             stack.pop()
             top -= 1
