@@ -4,6 +4,7 @@
  * 화면에 보여주지 않을 검색 키워드는 searchTerms에 넣습니다.
  */
 window.VISUALIZATIONS = [
+  {"id":"swea-9490","title":"풍선팡","platform":"SWEA","problemNo":"9490","href":"problems/9490/","status":"ready","searchTerms":["풍선","델타","배열","완전탐색","시뮬레이션","최댓값","꽃가루"]},
   {id:"swea-25052",title:"등산로",platform:"SWEA",problemNo:"25052",href:"problems/25052/",status:"ready",searchTerms:["등산로","델타","배열","최솟값","시뮬레이션","그리디","25052"]},
   {"id": "swea-1974", "title": "스도쿠 검증", "platform": "SWEA", "problemNo": "1974", "level": "D2", "href": "problems/1974/", "status": "ready", "searchTerms": ["스도쿠", "sudoku", "배열", "중복 검사", "3x3", "완전탐색"]},
   {"id": "swea-1210", "title": "Ladder1", "platform": "SWEA", "problemNo": "1210", "level": "D4", "href": "problems/1210/", "status": "ready", "searchTerms": ["사다리", "배열", "역추적", "방문 표시", "시뮬레이션"]},

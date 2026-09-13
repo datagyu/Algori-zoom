@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>풍선팡 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+for tc in range(1, T+1):
+    N, M = map(int, input().split())
+    balloons = [list(map(int, input().split())) for _ in range(N)]
+    max_pang = 0
+    dr = [0, 1, 0, -1]
+    dc = [1, 0, -1, 0]
+
+    for r in range(N):
+        for c in range(M):
+            c_pang = balloons[r][c]
+            for i in range(4):
+                for j in range(1, balloons[r][c]+1):
+                    nr = r + dr[i]*j
+                    nc = c + dc[i]*j
+                    if (0 &lt;= nr &lt; N) and (0 &lt;= nc &lt; M):
+                        c_pang += balloons[nr][nc]
+            if max_pang &lt; c_pang:
+                max_pang = c_pang
+    print('#{} {}'.format(tc, max_pang))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 9490</p>
+      <h1>풍선팡</h1>
+      <p class="subtitle">선택한 풍선의 꽃가루 수만큼 네 방향을 검사하고, 꽃가루 합의 최댓값을 찾습니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button>
+        <button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button>
+        <button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button>
+        <button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>시각화</span><span id="boardLabel">N=3</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="board" aria-label="풍선팡 배열"></div></div>
+<p class="pang-legend">파랑: 중심 · 점선: 검사 중 · 연파랑: 합산 완료 · 초록 테두리: 최적 범위</p>
+<p class="pang-route-label">현재까지의 최적 중심</p><p id="bestPath" class="pang-path"></p>
+</article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>r</span><strong id="crValue">0</strong></div><div><span>c</span><strong id="ccValue">0</strong></div>
+          <div><span>nr</span><strong id="nrValue">-</strong></div><div><span>nc</span><strong id="ncValue">-</strong></div>
+          <div><span>c_pang</span><strong id="numValue">0</strong></div><div><span>max_pang</span><strong id="directionValue">0</strong></div>
+        </div>
+        <div class="state-grid">
+<div><span>N</span><strong id="rowValue">—</strong></div><div><span>M</span><strong id="colValue">—</strong></div>
+<div><span>j · 거리</span><strong id="nextRowValue">—</strong></div><div><span>balloons[r][c]</span><strong id="nextColValue">—</strong></div>
+<div><span>i · 방향 번호</span><strong id="dirValue">—</strong></div>
+</div><div class="explain" id="explainText">모든 풍선을 중심으로 꽃가루 합을 검사합니다.</div>
+      </article>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>3 ≤ N, M ≤ 100</span></div>
+      <div class="input-grid">
+        <textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea>
+        <div class="input-actions">
+          <p>첫 줄에 T, 각 예제마다 N M과 N줄의 꽃가루 수를 입력합니다. 시각화는 예제 10개, 꽃가루 수 1~100, 총 250,000단계까지 지원합니다. 추가로 터진 풍선은 연쇄 폭발하지 않습니다.</p>
+          <button type="button" id="applyBtn" class="btn primary">입력 적용</button>
+          <div class="sample-buttons" id="sampleButtons"></div>
+          <p class="input-error" id="inputError" role="alert"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header">
+      <a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <div><span>SWEA 9490</span><h1>풍선팡</h1></div>
+      <div id="mobileCoord" class="mobile-coord">r = — · c = —</div>
+    </header>
+
+    <section class="panel mobile-code">
+      <div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div>
+      <div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div>
+    </section>
+
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>시각화</span><strong id="mobilePhase">READY</strong></div>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="board"></div></div>
+      <p class="pang-legend">파랑: 중심 · 점선: 검사 · 연파랑: 합산 · 초록: 최적 범위</p>
+<p class="pang-route-label">현재까지의 최적 중심</p><p id="mobileBestPath" class="pang-path"></p>
+<p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p>
+    </section>
+
+    <section class="panel mobile-result">
+      <div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">꽃가루 합 —</span></div>
+      <div class="mobile-state-grid">
+        <div><span>r</span><strong id="mobileCr">—</strong></div><div><span>c</span><strong id="mobileCc">—</strong></div>
+        <div><span>nr</span><strong id="mobileNr">—</strong></div><div><span>nc</span><strong id="mobileNc">—</strong></div>
+      </div>
+      <div class="mobile-result-text"><span>max_pang</span><strong id="mobileDirection">0</strong></div>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button>
+      <div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div>
+      <button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button>
+    </nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="./script.js"></script>
+  <script src="../../assets/ui.js"></script>
+</body>
+</html>
