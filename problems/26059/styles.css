@@ -1,0 +1,23 @@
+.board-panel { min-width: 0; padding: 16px; }
+.board-viewport, .mobile-board-viewport { overflow: auto; padding: 18px 12px; overscroll-behavior: contain; }
+.board { display: flex; gap: 8px; width: max-content; min-width: 100%; }
+.fruit-cell { flex: 0 0 54px; display: grid; gap: 8px; justify-items: center; padding: 10px 4px; border: 2px solid var(--line-strong); border-radius: 8px; background: var(--panel-strong); font-family: var(--mono); }
+.fruit-cell small { color: var(--muted); font-size: 11px; }
+.fruit-cell strong { font-size: 14px; }
+.fruit-cell span { font-size: 12px; }
+.fruit-cell.economy { background: var(--blue-soft); border-color: var(--blue); }
+.fruit-cell.standard { border-color: var(--purple); color: var(--purple); }
+.fruit-cell.premium { background: var(--green-soft); border-color: var(--green); }
+.fruit-cell.comparing { outline: 2px solid var(--yellow); outline-offset: 2px; }
+.fruit-cell.boundary { position: relative; margin-left: 10px; }
+.fruit-cell.boundary::before { content: ""; position: absolute; left: -12px; top: -8px; bottom: -8px; width: 2px; background: var(--text); }
+.fruit-legend, .fruit-best, .fruit-best-label { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.fruit-best-label { margin: 12px 0 4px; color: var(--green); }
+.fruit-best { margin: 0; overflow-wrap: anywhere; font-family: var(--mono); }
+.fruit-invalid { color: var(--red); }
+.state-grid, .mobile-state-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; margin-top: 12px; }
+.state-grid > div, .mobile-state-grid > div { padding: 12px; min-width: 0; }
+.state-grid span, .mobile-state-grid span { display: block; margin-bottom: 6px; color: var(--muted); font: 12px var(--mono); }
+.state-grid strong, .mobile-state-grid strong { font: 600 18px var(--mono); }
+.output-panel { min-width: 0; padding: 16px; margin: 12px 0; }
+.output-panel pre { overflow: auto; max-height: 240px; color: var(--text); font: 14px/1.7 var(--mono); }
