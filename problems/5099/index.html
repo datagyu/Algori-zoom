@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>피자 굽기 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+for tc in range(1, T+1):
+    N, M = map(int, input().split())
+    pizza = list(map(int, input().split()))
+    pan = [[0, 0] for _ in range(N)]
+    for i in range(N):
+        pan[i][0] = i+1
+        pan[i][1] = pizza[i]
+    next_pizza = N+1
+    while len(pan) &gt; 1:
+        current = pan.pop(0)
+        current[1] = current[1]//2
+        if current[1] == 0:
+            if next_pizza &lt;= M:
+                pan.append([next_pizza, pizza[next_pizza - 1]])
+                next_pizza += 1
+        else:
+            pan.append(current)
+    print('#{} {}'.format(tc, pan[0][0]))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 5099 · D3</p>
+      <h1>피자 굽기</h1>
+      <p class="subtitle">화덕을 큐로 표현해 피자를 꺼내고, 치즈를 확인한 뒤 다시 넣는 순환을 살펴봅니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+      <article class="panel board-panel">
+        <div class="panel-head"><span>OVEN QUEUE</span><span id="boardLabel">N=3 · M=5</span></div>
+        <div class="queue-legend"><span><i class="legend-front"></i>큐의 맨 앞</span><span><i class="legend-current"></i>확인 중</span><span><i class="legend-new"></i>새로 투입</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="queue-board"></div></div>
+      </article>
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>current</span><strong id="currentValue">—</strong></div><div><span>치즈 변화</span><strong id="cheeseValue">—</strong></div>
+          <div><span>next_pizza</span><strong id="nextPizzaValue">—</strong></div><div><span>len(pan)</span><strong id="panLengthValue">—</strong></div>
+          <div><span>큐 연산</span><strong id="operationValue">—</strong></div><div><span>마지막 피자</span><strong id="winnerValue">—</strong></div>
+        </div>
+        <div class="explain" id="explainText">화덕에 피자를 순서대로 채웁니다.</div>
+      </article>
+    </section>
+
+    <section class="panel waiting-panel"><div class="panel-head"><span>WAITING QUEUE</span><span id="waitingLabel">다음 투입 대기</span></div><div id="waitingQueue" class="waiting-queue"></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>3 ≤ N ≤ 20 · N ≤ M ≤ 100</span></div>
+      <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+        <p>첫 줄에 T, 각 케이스에 화덕 크기 N과 피자 수 M, 다음 줄에 피자별 치즈 양을 입력합니다.</p>
+        <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p>
+      </div></div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 5099</span><h1>피자 굽기</h1></div><div id="mobileCoord" class="mobile-coord">QUEUE</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>OVEN QUEUE</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="queue-board"></div></div><div id="mobileWaitingQueue" class="waiting-queue mobile-waiting"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">N · M</span></div><div class="mobile-state-grid">
+      <div><span>current</span><strong id="mobileCurrent">—</strong></div><div><span>치즈</span><strong id="mobileCheese">—</strong></div><div><span>next</span><strong id="mobileNextPizza">—</strong></div><div><span>len</span><strong id="mobilePanLength">—</strong></div>
+    </div><div class="mobile-result-text"><span>마지막 피자</span><strong id="mobileWinner">—</strong></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>
