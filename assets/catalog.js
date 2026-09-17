@@ -4,6 +4,7 @@
  * 화면에 보여주지 않을 검색 키워드는 searchTerms에 넣습니다.
  */
 window.VISUALIZATIONS = [
+  {id:"swea-5105",title:"미로의 거리",platform:"SWEA",problemNo:"5105",level:"D3",href:"problems/5105/",status:"ready",searchTerms:["미로","거리","큐","queue","BFS","너비 우선 탐색","델타","최단거리","상하좌우"]},
   {id:"swea-5099",title:"피자 굽기",platform:"SWEA",problemNo:"5099",level:"D3",href:"problems/5099/",status:"ready",searchTerms:["피자","화덕","큐","queue","선입선출","pop","append","시뮬레이션"]},
   {id:"swea-26059",title:"과일 등급 분류",platform:"SWEA",problemNo:"26059",href:"problems/26059/",status:"ready",searchTerms:["과일","등급","분류","버블 정렬","완전탐색","경계","최솟값"]},
   {"id":"swea-12712","title":"파리퇴치3","platform":"SWEA","problemNo":"12712","href":"problems/12712/","status":"ready","searchTerms":["파리 퇴치 3","델타","배열","완전탐색","십자","대각선","최댓값"]},
