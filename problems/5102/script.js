@@ -34,7 +34,7 @@ const findLine=(lines,text)=>{
 };
 const PROBLEM={autoplayMs:560,sourceSteps:[
 {text:"graph = [[] for _ in range(V + 1)]",types:"graph"},{text:"graph[n1].append(n2)",types:"edge"},{text:"visited = [False] * (V + 1)",types:"init"},{text:"queue = [S]",types:"start"},{text:"while queue:",types:"while"},{text:"current = queue.pop(0)",types:"pop"},{text:"for next_node in graph[current]:",types:"neighbor"},{text:"if not visited[next_node]:",types:"check"},{text:"queue.append(next_node)",types:"enqueue"},{text:"visited[next_node] = True",types:"visit"},{text:"distance[next_node] = distance[current] + 1",types:"distance"},{text:"print('#{} {}'.format(tc, distance[G]))",types:"output"}],
-samples:[{id:"one",label:"샘플 1 · BFS 흐름",value:`3
+samples:[{id:"one",label:"샘플 1 · BFS 흐름",value:`1
 6 5
 1 4
 1 3
