@@ -1,76 +1,20 @@
-/*
- * 홈 카드 데이터입니다.
- * 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다.
- * 화면에 보여주지 않을 검색 키워드는 searchTerms에 넣습니다.
- */
+/* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-5102",title:"노드의 거리",platform:"SWEA",problemNo:"5102",level:"D3",href:"problems/5102/",status:"ready",searchTerms:["노드","거리","그래프","인접 리스트","큐","queue","BFS","너비 우선 탐색","최단거리","visited","distance"]},
   {id:"swea-5105",title:"미로의 거리",platform:"SWEA",problemNo:"5105",level:"D3",href:"problems/5105/",status:"ready",searchTerms:["미로","거리","큐","queue","BFS","너비 우선 탐색","델타","최단거리","상하좌우"]},
   {id:"swea-5099",title:"피자 굽기",platform:"SWEA",problemNo:"5099",level:"D3",href:"problems/5099/",status:"ready",searchTerms:["피자","화덕","큐","queue","선입선출","pop","append","시뮬레이션"]},
   {id:"swea-26059",title:"과일 등급 분류",platform:"SWEA",problemNo:"26059",href:"problems/26059/",status:"ready",searchTerms:["과일","등급","분류","버블 정렬","완전탐색","경계","최솟값"]},
-  {"id":"swea-12712","title":"파리퇴치3","platform":"SWEA","problemNo":"12712","href":"problems/12712/","status":"ready","searchTerms":["파리 퇴치 3","델타","배열","완전탐색","십자","대각선","최댓값"]},
-  {"id":"swea-9490","title":"풍선팡","platform":"SWEA","problemNo":"9490","href":"problems/9490/","status":"ready","searchTerms":["풍선","델타","배열","완전탐색","시뮬레이션","최댓값","꽃가루"]},
+  {id:"swea-12712",title:"파리퇴치3",platform:"SWEA",problemNo:"12712",href:"problems/12712/",status:"ready",searchTerms:["파리 퇴치 3","델타","배열","완전탐색","십자","대각선","최댓값"]},
+  {id:"swea-9490",title:"풍선팡",platform:"SWEA",problemNo:"9490",href:"problems/9490/",status:"ready",searchTerms:["풍선","델타","배열","완전탐색","시뮬레이션","최댓값","꽃가루"]},
   {id:"swea-25052",title:"등산로",platform:"SWEA",problemNo:"25052",href:"problems/25052/",status:"ready",searchTerms:["등산로","델타","배열","최솟값","시뮬레이션","그리디","25052"]},
-  {"id": "swea-1974", "title": "스도쿠 검증", "platform": "SWEA", "problemNo": "1974", "level": "D2", "href": "problems/1974/", "status": "ready", "searchTerms": ["스도쿠", "sudoku", "배열", "중복 검사", "3x3", "완전탐색"]},
-  {"id": "swea-1210", "title": "Ladder1", "platform": "SWEA", "problemNo": "1210", "level": "D4", "href": "problems/1210/", "status": "ready", "searchTerms": ["사다리", "배열", "역추적", "방문 표시", "시뮬레이션"]},
-  {"id": "swea-3143", "title": "가장 빠른 문자열 타이핑", "platform": "SWEA", "problemNo": "3143", "level": "D3", "href": "problems/3143/", "status": "ready", "searchTerms": ["문자열", "그리디", "단축키", "슬라이싱", "타이핑"]},
-  {"id": "swea-1215", "title": "회문1", "platform": "SWEA", "problemNo": "1215", "level": "D3", "href": "problems/1215/", "status": "ready", "searchTerms": ["회문", "문자열", "2차원 배열", "완전탐색", "슬라이싱", "palindrome"]},
-  {"id": "swea-1222", "title": "계산기1", "platform": "SWEA", "problemNo": "1222", "level": "D4", "href": "problems/1222/", "status": "ready", "searchTerms": ["스택", "계산기", "후위 표기식", "중위 표기식", "push", "pop"]},
-  {
-  "id": "swea-4831",
-  "title": "전기버스",
-  "platform": "SWEA",
-  "problemNo": "4831",
-  "level": "D3",
-  "href": "problems/4831/",
-  "status": "ready",
-  "searchTerms": [
-    "그리디",
-    "탐욕",
-    "while",
-    "전기버스",
-    "충전소"
-  ]
-},
-  {
-    id: "swea-1954",
-    title: "달팽이 숫자",
-    platform: "SWEA",
-    problemNo: "1954",
-    level: "D2",
-    href: "problems/1954/",
-    status: "ready",
-    searchTerms: ["배열", "델타", "방향 전환", "시뮬레이션", "달팽이"],
-  },
-  {
-    id: "swea-5356",
-    title: "의석이의 세로로 말해요",
-    platform: "SWEA",
-    problemNo: "5356",
-    level: "D3",
-    href: "problems/5356/",
-    status: "ready",
-    searchTerms: ["문자열", "중첩 반복문", "2차원 배열", "조건문"],
-  },
-  {
-    id: "swea-1218",
-    title: "괄호 짝짓기",
-    platform: "SWEA",
-    problemNo: "1218",
-    level: "D4",
-    href: "problems/1218/",
-    status: "ready",
-    searchTerms: ["스택", "stack", "괄호", "push", "pop", "top", "자료구조"],
-  },
-  {
-    id: "swea-2001",
-    title: "파리 퇴치",
-    platform: "SWEA",
-    problemNo: "2001",
-    level: "D2",
-    href: "problems/2001/",
-    status: "ready",
-    searchTerms: ["완전탐색", "브루트포스", "2차원 배열", "영역 합", "중첩 반복문", "최댓값"],
-  },
+  {id:"swea-1974",title:"스도쿠 검증",platform:"SWEA",problemNo:"1974",level:"D2",href:"problems/1974/",status:"ready",searchTerms:["스도쿠","sudoku","배열","중복 검사","3x3","완전탐색"]},
+  {id:"swea-1210",title:"Ladder1",platform:"SWEA",problemNo:"1210",level:"D4",href:"problems/1210/",status:"ready",searchTerms:["사다리","배열","역추적","방문 표시","시뮬레이션"]},
+  {id:"swea-3143",title:"가장 빠른 문자열 타이핑",platform:"SWEA",problemNo:"3143",level:"D3",href:"problems/3143/",status:"ready",searchTerms:["문자열","그리디","단축키","슬라이싱","타이핑"]},
+  {id:"swea-1215",title:"회문1",platform:"SWEA",problemNo:"1215",level:"D3",href:"problems/1215/",status:"ready",searchTerms:["회문","문자열","2차원 배열","완전탐색","슬라이싱","palindrome"]},
+  {id:"swea-1222",title:"계산기1",platform:"SWEA",problemNo:"1222",level:"D4",href:"problems/1222/",status:"ready",searchTerms:["스택","계산기","후위 표기식","중위 표기식","push","pop"]},
+  {id:"swea-4831",title:"전기버스",platform:"SWEA",problemNo:"4831",level:"D3",href:"problems/4831/",status:"ready",searchTerms:["그리디","탐욕","while","전기버스","충전소"]},
+  {id:"swea-1954",title:"달팽이 숫자",platform:"SWEA",problemNo:"1954",level:"D2",href:"problems/1954/",status:"ready",searchTerms:["배열","델타","방향 전환","시뮬레이션","달팽이"]},
+  {id:"swea-5356",title:"의석이의 세로로 말해요",platform:"SWEA",problemNo:"5356",level:"D3",href:"problems/5356/",status:"ready",searchTerms:["문자열","중첩 반복문","2차원 배열","조건문"]},
+  {id:"swea-1218",title:"괄호 짝짓기",platform:"SWEA",problemNo:"1218",level:"D4",href:"problems/1218/",status:"ready",searchTerms:["스택","stack","괄호","push","pop","top","자료구조"]},
+  {id:"swea-2001",title:"파리 퇴치",platform:"SWEA",problemNo:"2001",level:"D2",href:"problems/2001/",status:"ready",searchTerms:["완전탐색","브루트포스","2차원 배열","영역 합","중첩 반복문","최댓값"]}
 ];
-
-
