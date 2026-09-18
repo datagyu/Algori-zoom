@@ -39,11 +39,11 @@
   function buildSteps(){
     const steps=[];let output="";
     state.cases.forEach((data,index)=>{
-      const {N}=data,original=data.maze.map(row=>[...row]),maze=data.maze.map(row=>[...row]);let start=null,destination=null;
-      for(let i=0;i<N;i++)for(let j=0;j<N;j++){if(maze[i][j]===2)start=[i,j];else if(maze[i][j]===3)destination=[i,j];}
+      const {N}=data,original=data.maze.map(row=>[...row]),maze=data.maze.map(row=>[...row]);let start=null;
+      for(let i=0;i<N;i++)for(let j=0;j<N;j++){if(maze[i][j]===2)start=[i,j];}
       let queue=[],current=null,next=null,distance=null,ans=0,check="준비",visited=new Map(),found=false;
       const key=(r,c)=>`${r},${c}`;visited.set(key(start[0],start[1]),0);
-      const push=(phase,message,extra={})=>steps.push({N,tc:index+1,original:original.map(row=>[...row]),maze:maze.map(row=>[...row]),queue:queue.map(q=>[...q]),current:current&&[...current],next:next&&[...next],distance,ans,check,visited:new Map(visited),destination:[...destination],phase,line:stepLineMap.get(phase),message,output,...extra});
+      const push=(phase,message,extra={})=>steps.push({N,tc:index+1,original:original.map(row=>[...row]),maze:maze.map(row=>[...row]),queue:queue.map(q=>[...q]),current:current&&[...current],next:next&&[...next],distance,ans,check,visited:new Map(visited),phase,line:stepLineMap.get(phase),message,output,...extra});
       push("maze","미로를 읽습니다. 0은 통로, 1은 벽, 2는 출발점, 3은 도착점입니다.");
       push("findStart",`출발점 2의 위치 (${start[0]}, ${start[1]})를 찾았습니다.`,{focus:start});
       queue.push([start[0],start[1],0]);check="출발점 enqueue";push("enqueueStart","출발점을 거리 0과 함께 큐에 넣습니다. 이제 가까운 칸부터 탐색합니다.",{queued:start});

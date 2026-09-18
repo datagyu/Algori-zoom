@@ -22,14 +22,11 @@ for tc in range(1, T + 1):
     maze = [list(map(int, input())) for _ in range(N)]
     queue = []
     start = None
-    destination = None
 
     for i in range(N):
         for j in range(N):
             if maze[i][j] == 2:
                 start = [i, j]
-            elif maze[i][j] == 3:
-                destination = [i, j]
 
     queue.append([start[0], start[1], 0])
     direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
