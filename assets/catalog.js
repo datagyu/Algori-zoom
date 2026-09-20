@@ -1,5 +1,7 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-1226",title:"미로1",platform:"SWEA",problemNo:"1226",level:"D4",href:"problems/1226/",status:"ready",searchTerms:["미로","BFS","큐","queue","델타","상하좌우","방문 처리","도달 가능","탐색"]},
+  {id:"swea-5097",title:"회전",platform:"SWEA",problemNo:"5097",level:"D3",href:"problems/5097/",status:"ready",searchTerms:["회전","큐","queue","pop","append","리스트","순환","시뮬레이션"]},
   {id:"swea-5102",title:"노드의 거리",platform:"SWEA",problemNo:"5102",level:"D3",href:"problems/5102/",status:"ready",searchTerms:["노드","거리","그래프","인접 리스트","큐","queue","BFS","너비 우선 탐색","최단거리","visited","distance"]},
   {id:"swea-5105",title:"미로의 거리",platform:"SWEA",problemNo:"5105",level:"D3",href:"problems/5105/",status:"ready",searchTerms:["미로","거리","큐","queue","BFS","너비 우선 탐색","델타","최단거리","상하좌우"]},
   {id:"swea-5099",title:"피자 굽기",platform:"SWEA",problemNo:"5099",level:"D3",href:"problems/5099/",status:"ready",searchTerms:["피자","화덕","큐","queue","선입선출","pop","append","시뮬레이션"]},

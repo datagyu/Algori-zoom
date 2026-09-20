@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>미로1 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">for _ in range(10):
+    tc = int(input())
+    maze = [list(map(int, input())) for _ in range(16)]
+    queue = []
+    start = None
+
+    for i in range(16):
+        for j in range(16):
+            if maze[i][j] == 2:
+                start = [i, j]
+
+    queue.append([start[0], start[1]])
+    direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    ans = 0
+
+    while queue and ans == 0:
+        current = queue.pop(0)
+        r, c = current
+
+        for dr, dc in direction:
+            nr = r + dr
+            nc = c + dc
+
+            if (0 &lt;= nr &lt; 16) and (0 &lt;= nc &lt; 16):
+                if maze[nr][nc] == 0:
+                    queue.append([nr, nc])
+                    maze[nr][nc] = 1
+                elif maze[nr][nc] == 3:
+                    ans = 1
+                    break
+
+    print('#{} {}'.format(tc, ans))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 1226 · D4</p>
+      <h1>미로1</h1>
+      <p class="subtitle">16×16 미로에서 델타 이동과 큐(BFS)를 사용해 시작점 2에서 도착점 3까지 갈 수 있는지 탐색하는 과정을 살펴봅니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+      <article class="panel board-panel">
+        <div class="panel-head"><span>MAZE · BFS</span><span id="boardLabel">16 × 16</span></div>
+        <div class="maze-legend"><span><i class="legend-start"></i>출발 2</span><span><i class="legend-goal"></i>도착 3</span><span><i class="legend-current"></i>현재 위치</span><span><i class="legend-queued"></i>큐에 대기</span><span><i class="legend-visited"></i>방문 완료</span><span><i class="legend-wall"></i>벽</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="maze-board"></div></div>
+      </article>
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>current</span><strong id="currentValue">—</strong></div><div><span>next (nr,nc)</span><strong id="nextValue">—</strong></div>
+          <div><span>queue 길이</span><strong id="queueLengthValue">0</strong></div><div><span>현재 칸 판정</span><strong id="checkValue">—</strong></div>
+          <div><span>방문 칸</span><strong id="visitedValue">0</strong></div><div><span>ans</span><strong id="answerValue">0</strong></div>
+        </div>
+        <div class="explain" id="explainText">출발점 2를 찾고 BFS를 준비합니다.</div>
+      </article>
+    </section>
+
+    <section class="panel queue-panel"><div class="panel-head"><span>BFS QUEUE</span><span id="queueLabel">먼저 들어온 좌표부터 탐색</span></div><div id="queueView" class="bfs-queue"></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>16×16 · 0 길 · 1 벽 · 2 출발 · 3 도착</span></div>
+      <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+        <p>각 테스트케이스는 번호 1줄과 16줄의 미로로 구성됩니다. 시각화에서는 한 케이스만 넣어도 되고, 첨부 예제 10개 전체도 실행할 수 있습니다.</p>
+        <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p>
+      </div></div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 1226</span><h1>미로1</h1></div><div id="mobileCoord" class="mobile-coord">BFS</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>MAZE · BFS</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="maze-board"></div></div><div id="mobileQueueView" class="bfs-queue mobile-queue"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">QUEUE</span></div><div class="mobile-state-grid">
+      <div><span>current</span><strong id="mobileCurrent">—</strong></div><div><span>next</span><strong id="mobileNext">—</strong></div><div><span>queue</span><strong id="mobileQueueLength">0</strong></div><div><span>visited</span><strong id="mobileVisited">0</strong></div>
+    </div><div class="mobile-result-text"><span>ans</span><strong id="mobileAnswer">0</strong></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>
