@@ -1,5 +1,16 @@
 # UI consistency validation
 
+## 2026-09-22 review (21 problems)
+
+- Reviewed all 21 problem pages at 1440px and 390px: no document horizontal overflow; end navigation disables next. Mobile pages expose one input editor and full state details.
+- Migrated 9367 to the shared desktop/mobile UI, code renderer, playback controls, sample selection and inline input errors. Moved its catalog entry to first position.
+- Fixed 5102 code tracking using the shared viewport scroll helper on every step change, plus sample selection, playback labels, speed rescheduling, input validation and testcase labels.
+- Verified 5102 active line 22 is inside the code viewport on desktop (scrollTop approximately 262px) and mobile (approximately 430px). Full sample outputs: 2, 4, 3; final testcase label is #3. Invalid node IDs show a Korean inline error.
+- Verified all three 9367 samples: full sample outputs 5, 3, 1, 3; increasing sample 5; reset sample 3. Checked empty input, zero testcase count, missing values, extra values and Infinity errors; replay and pause; desktop/mobile output synchronization.
+- Inspected desktop 5102 and 320px mobile 9367 screenshots. Additional 9367 layout checks at 360, 760, 761 and 1024px found no document overflow and one visible input editor.
+- All 25 JavaScript files passed syntax parsing. All 21 HTML pages passed unique-ID and local stylesheet/script resource checks. No JavaScript console errors in the modified-page checks.
+- Browser validation used desktop Chrome viewport overrides; physical mobile devices were not tested. The all-page pass checks shared layout and end navigation, not every algorithm input combination.
+
 Base: `9225024b893e66ee3bdf0c2a357d73db606a61a4`
 
 ## Shared UI contract

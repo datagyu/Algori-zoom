@@ -1,67 +1,33 @@
 (() => {
-  'use strict';
-
-  const PROBLEM = Object.freeze({
-    platform: 'SWEA', number: '9367', level: 'D2', title: '점점 커지는 당근의 개수', autoplayMs: 600,
-    source: [
-      'T = int(input())',
-      'for tc in range(1, T+1):',
-      '    N = int(input())',
-      '    carrots = list(map(int, input().split()))',
-      '    max_count = 1',
-      '    current_count = 1',
-      '    for i in range(N-1):',
-      '        if carrots[i] < carrots[i+1]:',
-      '            current_count += 1',
-      '            if max_count < current_count:',
-      '                max_count = current_count',
-      '        else:',
-      '            current_count = 1',
-      "    print('#{} {}'.format(tc, max_count))"
-    ]
-  });
-
+  "use strict";
+  const Core = window.AlgoriZoomCore;
+  const PROBLEM = Object.freeze({autoplayMs: 600});
   const samples = [
     { id:'all', label:'전체 샘플', value:`4\n5\n1 2 3 4 5\n5\n4 5 1 2 3\n5\n5 4 3 2 1\n8\n1 2 1 2 3 1 2 1` },
-    { id:'inc', label:'계속 증가', value:`1\n5\n1 2 3 4 5` },
-    { id:'reset', label:'초기화 확인', value:`1\n8\n1 2 1 2 3 1 2 1` }
+    { id:'inc', label:'샘플 1', value:`1\n5\n1 2 3 4 5` },
+    { id:'reset', label:'샘플 2', value:`1\n8\n1 2 1 2 3 1 2 1` }
   ];
 
-  const $ = id => document.getElementById(id);
-  const els = {
-    source:$('sourceCode'), track:$('carrotTrack'), comparison:$('comparison'), explanation:$('explanation'),
-    i:$('iValue'), current:$('currentValue'), max:$('maxValue'), step:$('stepLabel'), caseLabel:$('caseLabel'),
-    first:$('firstBtn'), prev:$('prevBtn'), play:$('playBtn'), next:$('nextBtn'), last:$('lastBtn'), speed:$('speedSelect'),
-    timeline:$('timeline'), progress:$('progressText'), input:$('inputText'), apply:$('applyInputBtn'), output:$('outputText'), samples:$('sampleButtons')
-  };
-
-  let cases = [], steps = [], cursor = 0, timer = null;
-
-  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-  function renderSource() {
-    els.source.innerHTML = PROBLEM.source.map((line, idx) => `<span class="code-line" data-line="${idx+1}">${escapeHtml(line)}</span>`).join('');
-  }
+  const els = Core.getByIds([...document.querySelectorAll('[id]')].map(el => el.id));
+  let steps = [], cursor = 0, timer = null, selectedSample = null;
 
   function parseInput(raw) {
+    if (!raw.trim()) throw new Error('입력을 작성해 주세요.');
     const tokens = raw.trim().split(/\s+/).map(Number);
-    if (!tokens.length || tokens.some(Number.isNaN)) throw new Error('입력값을 확인해 주세요.');
-    let p = 0; const T = tokens[p++]; const result = [];
-    for (let tc=1; tc<=T; tc++) {
+    if (tokens.some(n => !Number.isSafeInteger(n) || n < 1)) throw new Error('테스트케이스 수, N, 당근 크기는 양의 정수여야 합니다.');
+    const T = tokens[0], result = [];
+    let p = 1, total = 0;
+    if (T > 2000) throw new Error('시각화는 테스트케이스 2,000개까지 지원합니다.');
+    for (let tc = 1; tc <= T; tc++) {
       const N = tokens[p++];
-      if (!Number.isInteger(N) || N < 1 || p + N > tokens.length) throw new Error(`${tc}번 테스트케이스의 N 또는 당근 개수를 확인해 주세요.`);
-      result.push({ tc, N, carrots: tokens.slice(p, p+N) }); p += N;
+      if (!N || p + N > tokens.length) throw new Error(`${tc}번 테스트케이스의 N과 당근 개수를 확인해 주세요.`);
+      total += N;
+      if (total > 2000) throw new Error('시각화는 전체 당근 2,000개까지 지원합니다.');
+      result.push({tc, N, carrots: tokens.slice(p, p + N)});
+      p += N;
     }
+    if (p !== tokens.length) throw new Error('테스트케이스 뒤에 남는 입력값이 있습니다.');
     return result;
-  }
-
-  function solve(test) {
-    let maxCount=1, currentCount=1;
-    for (let i=0; i<test.N-1; i++) {
-      if (test.carrots[i] < test.carrots[i+1]) { currentCount++; if (maxCount < currentCount) maxCount=currentCount; }
-      else currentCount=1;
-    }
-    return maxCount;
   }
 
   function buildSteps(allCases) {
@@ -90,69 +56,84 @@
     return out;
   }
 
-  function renderCarrots(step) {
-    const {test,i,streakStart,bestStart,bestEnd}=step;
-    els.track.innerHTML=test.carrots.map((value,idx)=>{
-      const classes=['carrot'];
-      if (i !== null && (idx===i || idx===i+1)) classes.push('compare');
-      if (i !== null && idx>=streakStart && idx<=i+1) classes.push('current');
-      if (idx>=bestStart && idx<=bestEnd) classes.push('best');
-      return `<div class="${classes.join(' ')}"><div class="carrot-bar" style="--size:${Math.max(1,Math.min(10,value))}"></div><span class="carrot-value">${value}</span><span class="carrot-index">[${idx}]</span></div>`;
+  function renderCarrots(step, target) {
+    const {test, i, streakStart, bestStart, bestEnd} = step;
+    target.innerHTML = test.carrots.map((value, idx) => {
+      const classes = ['carrot'];
+      if (i !== null && (idx === i || idx === i + 1)) classes.push('compare');
+      if (i !== null && idx >= streakStart && idx <= i + 1) classes.push('current');
+      if (idx >= bestStart && idx <= bestEnd) classes.push('best');
+      return `<div class="${classes.join(' ')}"><div class="carrot-bar" style="--size:${Math.min(10, value)}"></div><span class="carrot-value">${value}</span><span class="carrot-index">[${idx}]</span></div>`;
     }).join('');
   }
 
-  function render() {
-    if (!steps.length) return;
-    const s=steps[cursor];
-    document.querySelectorAll('.code-line').forEach(x=>x.classList.toggle('active', Number(x.dataset.line)===s.line));
-    renderCarrots(s);
-    els.i.textContent=s.i===null?'-':s.i;
-    els.current.textContent=s.currentCount;
-    els.max.textContent=s.maxCount;
-    els.step.textContent=s.done?'완료':`line ${s.line}`;
-    els.caseLabel.textContent=`#${s.test.tc} · N=${s.test.N}`;
-    els.comparison.textContent=s.comparison;
-    els.explanation.textContent=s.text;
-    els.timeline.max=Math.max(0,steps.length-1); els.timeline.value=cursor;
-    els.progress.textContent=`${cursor+1} / ${steps.length}`;
-    els.prev.disabled=cursor===0; els.first.disabled=cursor===0; els.next.disabled=cursor===steps.length-1; els.last.disabled=cursor===steps.length-1;
-    if (cursor===steps.length-1) stop();
+  function render(follow = false) {
+    const s = steps[cursor];
+    if (!s) return;
+    document.querySelectorAll('.code-line').forEach(line => line.classList.toggle('active', Number(line.dataset.sourceLine) === s.line));
+    renderCarrots(s, els.board);
+    renderCarrots(s, els.mobileBoard);
+    for (const [desktop, mobile, value] of [
+      ['iValue', 'mobileI', s.i ?? '—'], ['currentValue', 'mobileCurrent', s.currentCount], ['maxValue', 'mobileMax', s.maxCount],
+      ['comparison', 'mobileComparison', s.comparison], ['explainText', 'mobileExplanation', s.text],
+      ['codeLineLabel', 'mobileCodeStatus', s.done ? '완료' : `LINE ${s.line}`],
+      ['boardLabel', 'mobileCoord', `#${s.test.tc} · N=${s.test.N}`],
+      ['stepLabel', 'mobileTimelineStatus', `${cursor + 1} / ${steps.length}`],
+      ['phaseLabel', 'mobilePhase', s.done ? '완료' : '비교와 갱신'],
+    ]) { els[desktop].textContent = els[mobile].textContent = value; }
+    const output = steps.slice(0, cursor + 1).filter(step => step.done).map(step => `#${step.test.tc} ${step.maxCount}`).join('\n');
+    els.outputView.textContent = els.mobileOutputView.textContent = output || '아직 출력이 없습니다.';
+    for (const id of ['timeline', 'mobileTimeline']) { els[id].max = steps.length - 1; els[id].value = cursor; }
+    els.prevBtn.disabled = els.mobilePrevBtn.disabled = cursor === 0;
+    els.nextBtn.disabled = els.mobileNextBtn.disabled = cursor === steps.length - 1;
+    if (follow) {
+      for (const id of ['codeViewport', 'mobileCodeViewport']) Core.centerInsideViewport(els[id], els[id].querySelector('.active'), {horizontal: false});
+      for (const id of ['boardViewport', 'mobileBoardViewport']) Core.centerInsideViewport(els[id], els[id].querySelector('.compare'), {vertical: false});
+    }
+    if (cursor === steps.length - 1) stop();
   }
-
-  function setCursor(n){ cursor=Math.max(0,Math.min(steps.length-1,n)); render(); }
-  function stop(){ if(timer){clearInterval(timer);timer=null;} els.play.textContent='재생'; }
-  function play(){
-    if(timer){stop();return;}
-    if(cursor===steps.length-1) cursor=0;
-    els.play.textContent='정지';
-    timer=setInterval(()=>{ if(cursor>=steps.length-1){stop();return;} setCursor(cursor+1); }, Number(els.speed.value));
+  function stop() { clearTimeout(timer); timer = null; Core.updatePlaybackControls(els.playBtn, false); }
+  function goTo(index) { cursor = Core.clamp(index, 0, steps.length - 1); render(true); }
+  function schedule() {
+    timer = setTimeout(() => {
+      goTo(cursor + 1);
+      if (cursor < steps.length - 1) schedule();
+    }, PROBLEM.autoplayMs / Number(els.speedRange.value));
   }
-
-  function apply(raw) {
+  function start() { stop(); if (cursor === steps.length - 1) goTo(0); Core.updatePlaybackControls(els.playBtn, true); schedule(); }
+  function reset() { stop(); goTo(0); }
+  function renderSamples() {
+    els.sampleButtons.replaceChildren(...samples.map(sample => {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'btn'; button.textContent = sample.label;
+      button.classList.toggle('selected', selectedSample === sample.id);
+      button.addEventListener('click', () => { els.inputArea.value = sample.value; apply(sample.value, sample.id); });
+      return button;
+    }));
+  }
+  function apply(raw, sampleId = null) {
     stop();
     try {
-      cases=parseInput(raw); steps=buildSteps(cases); cursor=0;
-      els.output.textContent=cases.map(t=>`#${t.tc} ${solve(t)}`).join('\n');
-      render();
-    } catch(err) { els.output.textContent=`입력 오류: ${err.message}`; }
+      const nextSteps = buildSteps(parseInput(raw));
+      steps = nextSteps; cursor = 0; selectedSample = sampleId;
+      els.inputError.textContent = ''; renderSamples(); render(true);
+    } catch (error) { els.inputError.textContent = error.message; }
   }
-
-  function renderSamples(){
-    els.samples.innerHTML='';
-    samples.forEach(sample=>{
-      const b=document.createElement('button'); b.type='button'; b.textContent=sample.label;
-      b.addEventListener('click',()=>{els.input.value=sample.value;apply(sample.value);}); els.samples.appendChild(b);
-    });
-  }
-
-  els.first.addEventListener('click',()=>setCursor(0));
-  els.prev.addEventListener('click',()=>setCursor(cursor-1));
-  els.play.addEventListener('click',play);
-  els.next.addEventListener('click',()=>setCursor(cursor+1));
-  els.last.addEventListener('click',()=>setCursor(steps.length-1));
-  els.speed.addEventListener('change',()=>{ if(timer){stop();play();} });
-  els.timeline.addEventListener('input',e=>{stop();setCursor(Number(e.target.value));});
-  els.apply.addEventListener('click',()=>apply(els.input.value));
-
-  renderSource(); renderSamples(); els.input.value=samples[0].value; apply(samples[0].value);
+  for (const [id, delta] of [['prevBtn', -1], ['mobilePrevBtn', -1], ['nextBtn', 1], ['mobileNextBtn', 1]]) els[id].addEventListener('click', () => { stop(); goTo(cursor + delta); });
+  els.resetBtn.addEventListener('click', reset);
+  els.replayBtn.addEventListener('click', () => { reset(); start(); });
+  els.skipBtn.addEventListener('click', () => { stop(); goTo(steps.length - 1); });
+  els.playBtn.addEventListener('click', () => timer ? stop() : start());
+  els.mobilePlayBtn.addEventListener('click', () => els.playBtn.click());
+  els.speedRange.addEventListener('input', () => {
+    els.speedLabel.textContent = `${Core.formatDecimal(els.speedRange.value)}×`;
+    if (timer) { clearTimeout(timer); schedule(); }
+  });
+  for (const id of ['timeline', 'mobileTimeline']) els[id].addEventListener('input', event => { stop(); goTo(Number(event.target.value)); });
+  els.applyBtn.addEventListener('click', () => apply(els.inputArea.value));
+  els.inputArea.addEventListener('input', () => { selectedSample = null; renderSamples(); });
+  const markup = Core.createCodeMarkup(els.sourceCode, [], {wrap: false});
+  els.codeView.innerHTML = els.mobileCodeView.innerHTML = markup;
+  els.inputArea.value = samples[0].value;
+  apply(samples[0].value, samples[0].id);
 })();

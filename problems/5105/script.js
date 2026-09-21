@@ -20,8 +20,8 @@
       {text:"print('#{} {}'.format(tc,ans))",types:"output",occurrence:1}
     ],
     samples:[
-      {id:"one",label:"샘플 1 · BFS 흐름",value:"1\n5\n13101\n10101\n10101\n10101\n10021"},
-      {id:"all",label:"첨부 예제 전체",value:"3\n5\n13101\n10101\n10101\n10101\n10021\n5\n10031\n10111\n10101\n10101\n12001\n5\n00013\n01110\n21000\n01111\n00000"}
+      {id:"one",label:"샘플 1",value:"1\n5\n13101\n10101\n10101\n10101\n10021"},
+      {id:"all",label:"전체 샘플",value:"3\n5\n13101\n10101\n10101\n10101\n10021\n5\n10031\n10111\n10101\n10101\n12001\n5\n00013\n01110\n21000\n01111\n00000"}
     ]
   });
   const samples=PROBLEM.samples,defaultSample=samples[0];

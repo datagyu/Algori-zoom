@@ -69,17 +69,17 @@
     samples: [
       {
             "id": "one",
-            "label": "샘플 1 · N=3",
+            "label": "샘플 1",
             "value": "3"
       },
       {
             "id": "two",
-            "label": "샘플 2 · N=4",
+            "label": "샘플 2",
             "value": "4"
       },
       {
             "id": "all",
-            "label": "첨부 예제 · N=1~10",
+            "label": "전체 샘플",
             "value": "10\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
       }
 ],

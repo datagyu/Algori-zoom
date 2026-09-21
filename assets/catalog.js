@@ -1,5 +1,6 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-9367",title:"점점 커지는 당근의 개수",platform:"SWEA",problemNo:"9367",href:"problems/9367/",status:"ready",searchTerms:["당근","연속 증가","증가 구간","카운트","최댓값","배열","순회","current_count","max_count"]},
   {id:"swea-1225",title:"암호생성기",platform:"SWEA",problemNo:"1225",level:"D3",href:"problems/1225/",status:"ready",searchTerms:["암호","큐","queue","사이클","cycle","pop","append","감소","시뮬레이션"]},
   {id:"swea-1226",title:"미로1",platform:"SWEA",problemNo:"1226",level:"D4",href:"problems/1226/",status:"ready",searchTerms:["미로","BFS","큐","queue","델타","상하좌우","방문 처리","도달 가능","탐색"]},
   {id:"swea-5097",title:"회전",platform:"SWEA",problemNo:"5097",level:"D3",href:"problems/5097/",status:"ready",searchTerms:["회전","큐","queue","pop","append","리스트","순환","시뮬레이션"]},
@@ -19,6 +20,5 @@ window.VISUALIZATIONS = [
   {id:"swea-1954",title:"달팽이 숫자",platform:"SWEA",problemNo:"1954",level:"D2",href:"problems/1954/",status:"ready",searchTerms:["배열","델타","방향 전환","시뮬레이션","달팽이"]},
   {id:"swea-5356",title:"의석이의 세로로 말해요",platform:"SWEA",problemNo:"5356",level:"D3",href:"problems/5356/",status:"ready",searchTerms:["문자열","중첩 반복문","2차원 배열","조건문"]},
   {id:"swea-1218",title:"괄호 짝짓기",platform:"SWEA",problemNo:"1218",level:"D4",href:"problems/1218/",status:"ready",searchTerms:["스택","stack","괄호","push","pop","top","자료구조"]},
-  {id:"swea-2001",title:"파리 퇴치",platform:"SWEA",problemNo:"2001",level:"D2",href:"problems/2001/",status:"ready",searchTerms:["완전탐색","브루트포스","2차원 배열","영역 합","중첩 반복문","최댓값"]},
-  {id:"swea-9367",title:"점점 커지는 당근의 개수",platform:"SWEA",problemNo:"9367",href:"problems/9367/",status:"ready",searchTerms:["당근","연속 증가","증가 구간","카운트","최댓값","배열","순회","current_count","max_count"]}
+  {id:"swea-2001",title:"파리 퇴치",platform:"SWEA",problemNo:"2001",level:"D2",href:"problems/2001/",status:"ready",searchTerms:["완전탐색","브루트포스","2차원 배열","영역 합","중첩 반복문","최댓값"]}
 ];

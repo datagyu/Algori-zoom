@@ -3,69 +3,90 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="SWEA 9367 점점 커지는 당근의 개수 풀이를 단계별로 시각화합니다." />
-  <title>SWEA 9367 · 점점 커지는 당근의 개수 | Algori-zoom</title>
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>점점 커지는 당근의 개수 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
 </head>
-<body>
-  <header class="problem-header">
-    <a class="brand" href="../../" aria-label="Algori-zoom 홈">Algori-zoom</a>
-    <div class="problem-heading">
-      <span class="badge">SWEA 9367</span>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+for tc in range(1, T+1):
+    N = int(input())
+    carrots = list(map(int, input().split()))
+    max_count = 1
+    current_count = 1
+    for i in range(N-1):
+        if carrots[i] &lt; carrots[i+1]:
+            current_count += 1
+            if max_count &lt; current_count:
+                max_count = current_count
+        else:
+            current_count = 1
+    print('#{} {}'.format(tc, max_count))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 9367 · D2</p>
       <h1>점점 커지는 당근의 개수</h1>
-      <p>연속 증가 구간을 <strong>current_count</strong>로 추적하고 <strong>max_count</strong>를 갱신하는 과정을 확인해 보세요.</p>
-    </div>
-  </header>
+      <p class="subtitle">인접한 당근의 크기를 비교하며 연속 증가 길이 current_count와 최댓값 max_count의 변화를 살펴봅니다.</p>
+    </header>
 
-  <main class="page-shell">
-    <section class="panel source-panel" aria-labelledby="source-title">
-      <div class="panel-title-row"><h2 id="source-title">Python 풀이</h2><span id="stepLabel" class="step-label">준비</span></div>
-      <pre class="source-code" id="sourceCode" aria-label="Python 소스 코드"></pre>
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
     </section>
 
-    <section class="panel visual-panel" aria-labelledby="visual-title">
-      <div class="panel-title-row"><h2 id="visual-title">연속 증가 시각화</h2><span id="caseLabel" class="case-label"></span></div>
-
-      <div class="counter-grid" aria-label="현재 변수 값">
-        <div class="counter-card"><span>i</span><strong id="iValue">-</strong></div>
-        <div class="counter-card"><span>current_count</span><strong id="currentValue">1</strong></div>
-        <div class="counter-card"><span>max_count</span><strong id="maxValue">1</strong></div>
-      </div>
-
-      <div class="carrot-track" id="carrotTrack" aria-label="당근 크기 배열"></div>
-      <div class="comparison" id="comparison">재생을 시작하면 인접한 두 당근을 비교합니다.</div>
-      <div class="explanation" id="explanation" aria-live="polite">샘플을 선택하고 재생해 보세요.</div>
-
-      <div class="controls" aria-label="재생 컨트롤">
-        <button type="button" id="firstBtn">처음</button>
-        <button type="button" id="prevBtn">이전</button>
-        <button type="button" id="playBtn" class="primary">재생</button>
-        <button type="button" id="nextBtn">다음</button>
-        <button type="button" id="lastBtn">끝으로</button>
-        <label class="speed-control">속도
-          <select id="speedSelect" aria-label="재생 속도">
-            <option value="1000">0.5×</option>
-            <option value="600" selected>1×</option>
-            <option value="350">1.5×</option>
-            <option value="180">2×</option>
-          </select>
-        </label>
-      </div>
-      <input id="timeline" class="timeline" type="range" min="0" max="0" value="0" aria-label="단계 이동" />
-      <div class="progress-text"><span id="progressText">0 / 0</span></div>
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
     </section>
 
-    <section class="panel input-panel" aria-labelledby="input-title">
-      <div class="panel-title-row"><h2 id="input-title">입력</h2></div>
-      <div class="sample-buttons" id="sampleButtons"></div>
-      <textarea id="inputText" spellcheck="false" aria-label="문제 입력"></textarea>
-      <button type="button" id="applyInputBtn" class="primary apply-button">입력 적용</button>
-      <pre id="outputText" class="output-box" aria-label="실행 결과"></pre>
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+      <article class="panel board-panel">
+        <div class="panel-head"><span>연속 증가 구간</span><span id="boardLabel">당근 크기 배열</span></div>
+        <div class="carrot-legend"><span>파랑: 비교 중</span><span>채움: 현재 증가 구간</span><span>초록: 최장 구간</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="carrot-track"></div></div>
+      </article>
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid"><div><span>i</span><strong id="iValue">—</strong></div><div><span>current_count</span><strong id="currentValue">1</strong></div><div><span>max_count</span><strong id="maxValue">1</strong></div></div>
+        <div class="comparison" id="comparison"></div><div class="explain" id="explainText"></div>
+      </article>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>T → N → 당근 크기 N개</span></div>
+      <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+        <p>첫 줄에 테스트케이스 수 T를 입력하고, 각 케이스마다 N과 N개의 양의 정수 크기를 입력합니다. 시각화는 전체 당근 2,000개까지 지원합니다.</p>
+        <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p>
+      </div></div>
     </section>
   </main>
 
-  <script src="../../assets/visualizer-core.js"></script>
-  <script src="./script.js"></script>
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 9367</span><h1>점점 커지는 당근의 개수</h1></div><div id="mobileCoord" class="mobile-coord">당근 크기 배열</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>연속 증가 구간</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="carrot-track"></div></div><div id="mobileComparison" class="comparison"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">연속 증가</span></div><div class="mobile-state-grid"><div><span>i</span><strong id="mobileI">—</strong></div><div><span>current_count</span><strong id="mobileCurrent">1</strong></div><div><span>max_count</span><strong id="mobileMax">1</strong></div></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
 </body>
 </html>
