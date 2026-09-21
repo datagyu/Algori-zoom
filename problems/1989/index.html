@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="application-name" content="알고리줌" />
   <meta name="apple-mobile-web-app-title" content="알고리줌" />
-  <title>점점 커지는 당근의 개수 | 알고리줌</title>
+  <title>초심자의 회문 검사 | 알고리줌</title>
   <link rel="manifest" href="../../manifest.webmanifest" />
   <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../../assets/theme.css" />
@@ -17,25 +17,20 @@
   <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
   <template id="sourceCode">T = int(input())
 for tc in range(1, T+1):
-    N = int(input())
-    carrots = list(map(int, input().split()))
-    max_count = 1
-    current_count = 1
-    for i in range(N-1):
-        if carrots[i] &lt; carrots[i+1]:
-            current_count += 1
-            if max_count &lt; current_count:
-                max_count = current_count
-        else:
-            current_count = 1
-    print('#{} {}'.format(tc, max_count))</template>
+    arr = list(input())
+    result = 1
+    for i in range(len(arr) // 2):
+        if arr[i] != arr[-1-i]:
+            result = 0
+            break
+    print('#{} {}'.format(tc, result))</template>
 
   <main class="desktop-view app-shell">
     <header class="hero">
       <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
-      <p class="eyebrow">SWEA 9367 · D2</p>
-      <h1>점점 커지는 당근의 개수</h1>
-      <p class="subtitle">인접한 당근의 크기를 비교하며 연속 증가 길이 current_count와 최댓값 max_count의 변화를 살펴봅니다.</p>
+      <p class="eyebrow">SWEA 1989</p>
+      <h1>초심자의 회문 검사</h1>
+      <p class="subtitle">단어의 양 끝 문자를 비교하며 가운데로 이동합니다. 서로 다른 문자 쌍을 발견하면 즉시 종료하고, 모두 같으면 회문으로 판정합니다.</p>
     </header>
 
     <section class="panel control-strip" aria-label="실행 컨트롤">
@@ -58,32 +53,32 @@ for tc in range(1, T+1):
         <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
       </article>
       <article class="panel board-panel">
-        <div class="panel-head"><span>연속 증가 구간</span><span id="boardLabel">당근 크기 배열</span></div>
-        <div class="carrot-legend"><span>파랑: 비교 중</span><span>채움: 현재 증가 구간</span><span>초록: 최장 구간</span></div>
-        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="carrot-track"></div></div>
+        <div class="panel-head"><span>대칭 문자 비교</span><span id="boardLabel">대칭 문자 비교</span></div>
+        <div class="problem-legend"><span>파랑: 비교 중</span><span>초록: 일치 확인</span><span>빨강: 불일치</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="problem-board"></div></div>
       </article>
       <article class="panel state-panel">
         <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
-        <div class="state-grid"><div><span>i</span><strong id="iValue">—</strong></div><div><span>current_count</span><strong id="currentValue">1</strong></div><div><span>max_count</span><strong id="maxValue">1</strong></div></div>
-        <div class="comparison" id="comparison"></div><div class="explain" id="explainText"></div>
+        <div class="state-grid"><div><span>i</span><strong id="iValue">—</strong></div><div><span>오른쪽 인덱스</span><strong id="currentValue">1</strong></div><div><span>result</span><strong id="maxValue">1</strong></div></div>
+        <div class="comparison" id="comparison"></div><div id="detailView" class="detail-view"></div><div class="explain" id="explainText"></div>
       </article>
     </section>
 
     <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
     <section class="input-panel panel">
-      <div class="panel-head"><span>입력</span><span>5 ≤ N ≤ 1000 · 1 ≤ 크기 ≤ 10</span></div>
+      <div class="panel-head"><span>입력</span><span>입력 형식과 범위</span></div>
       <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
-        <p>첫 줄에 테스트케이스 수 T를 입력하고, 각 케이스마다 N(5~1000)과 N개의 당근 크기(1~10)를 입력합니다. 시각화는 전체 당근 2,000개까지 지원합니다.</p>
+        <p>첫 줄에 T, 다음 T줄에 단어를 하나씩 입력합니다. 단어 길이는 3~10이며 영문 대소문자와 숫자를 지원합니다. 대소문자를 구분하고, 회문이면 1, 아니면 0을 출력합니다. 시각화는 T ≤ 100을 지원합니다.</p>
         <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p>
       </div></div>
     </section>
   </main>
 
   <main class="mobile-view" aria-label="모바일 코드 시각화">
-    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 9367</span><h1>점점 커지는 당근의 개수</h1></div><div id="mobileCoord" class="mobile-coord">당근 크기 배열</div></header>
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 1989</span><h1>초심자의 회문 검사</h1></div><div id="mobileCoord" class="mobile-coord">대칭 문자 비교</div></header>
     <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
-    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>연속 증가 구간</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="carrot-track"></div></div><div id="mobileComparison" class="comparison"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
-    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">연속 증가</span></div><div class="mobile-state-grid"><div><span>i</span><strong id="mobileI">—</strong></div><div><span>current_count</span><strong id="mobileCurrent">1</strong></div><div><span>max_count</span><strong id="mobileMax">1</strong></div></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>대칭 문자 비교</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="problem-board"></div></div><div id="mobileComparison" class="comparison"></div><div id="mobileDetailView" class="detail-view"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">대칭 문자 비교</span></div><div class="mobile-state-grid"><div><span>i</span><strong id="mobileI">—</strong></div><div><span>오른쪽 인덱스</span><strong id="mobileCurrent">1</strong></div><div><span>result</span><strong id="mobileMax">1</strong></div></div></section>
     <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
     <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>
   </main>

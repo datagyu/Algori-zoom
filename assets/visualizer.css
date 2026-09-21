@@ -3,6 +3,42 @@
  * Algorithms, boards and their states belong in problems/<id>/styles.css.
  */
 
+:where(.visualizer) :where(.board-panel) {
+  min-width: 0;
+  padding: 16px;
+}
+
+:where(.visualizer) :where(.board-viewport, .mobile-board-viewport) {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+:where(.visualizer) :where(.state-grid, .mobile-state-grid) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+}
+
+:where(.visualizer) :where(.state-grid, .mobile-state-grid) > div {
+  min-width: 0;
+  padding: 14px;
+}
+
+:where(.visualizer) :where(.state-grid, .mobile-state-grid) span {
+  display: block;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+:where(.visualizer) :where(.state-grid, .mobile-state-grid) strong {
+  font: 700 18px/1.4 var(--mono);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  :where(.visualizer) :where(.mobile-board-viewport) { max-height: 260px; }
+}
+
 .panel {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);

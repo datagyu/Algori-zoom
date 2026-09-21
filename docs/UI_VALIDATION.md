@@ -1,5 +1,15 @@
 # UI consistency validation
 
+## Added problems: 27816 and 1989 (2026-09-22)
+
+- Added island BFS (27816) and palindrome comparison (1989) using the shared theme, layout, input controls, keyboard shortcuts and desktop/mobile player. Python examples and sample files come from the supplied archives; local `sys.stdin` file redirection is omitted from the displayed code.
+- Kept 9367 first in the catalog, followed by 1989 and 27816. Updated 9367 with all four supplied individual samples and the supplied N/size constraints.
+- All supplied outputs match: 27816 → 2, 1, 18; 1989 → 1, 0, 1, 0, 1, 0, 1, 0, 0, 1; 9367 → 5, 3, 1, 3.
+- Algorithm checks also cover 20×20 all-water/all-land maps and odd/even, matching/mismatching, mixed-case and numeric palindrome examples.
+- Browser checks cover sample selection, end navigation, replay/pause, direct input errors, matching desktop/mobile output, current-code scrolling, and internal scrolling of a 20×20 board. No page overflow at 360, 390, 430, 768, 1024, 1280 and 1440px for the three affected problems; maximum-board behavior checked at 375px.
+- Shared low-specificity defaults provide board padding, internal overflow and state-cell layout without overriding existing problem-specific styles. Existing 5102 mobile layout/end navigation checked after the shared change.
+- All 23 pages pass unique-ID and local resource checks. New scripts pass JavaScript syntax parsing. Browser checks use desktop Chrome viewport overrides, not physical mobile devices.
+
 ## 2026-09-22 review (21 problems)
 
 - Reviewed all 21 problem pages at 1440px and 390px: no document horizontal overflow; end navigation disables next. Mobile pages expose one input editor and full state details.

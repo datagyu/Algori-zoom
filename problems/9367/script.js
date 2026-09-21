@@ -2,11 +2,7 @@
   "use strict";
   const Core = window.AlgoriZoomCore;
   const PROBLEM = Object.freeze({autoplayMs: 600});
-  const samples = [
-    { id:'all', label:'전체 샘플', value:`4\n5\n1 2 3 4 5\n5\n4 5 1 2 3\n5\n5 4 3 2 1\n8\n1 2 1 2 3 1 2 1` },
-    { id:'inc', label:'샘플 1', value:`1\n5\n1 2 3 4 5` },
-    { id:'reset', label:'샘플 2', value:`1\n8\n1 2 1 2 3 1 2 1` }
-  ];
+  const samples = [{"id": "sample1", "label": "샘플 1", "value": "1\n5\n1 2 3 4 5"}, {"id": "sample2", "label": "샘플 2", "value": "1\n5\n4 5 1 2 3"}, {"id": "sample3", "label": "샘플 3", "value": "1\n5\n5 4 3 2 1"}, {"id": "sample4", "label": "샘플 4", "value": "1\n8\n1 2 1 2 3 1 2 1"}, {"id": "all", "label": "전체 샘플", "value": "4\n5\n1 2 3 4 5\n5\n4 5 1 2 3\n5\n5 4 3 2 1\n8\n1 2 1 2 3 1 2 1\n"}];
 
   const els = Core.getByIds([...document.querySelectorAll('[id]')].map(el => el.id));
   let steps = [], cursor = 0, timer = null, selectedSample = null;
@@ -21,6 +17,8 @@
     for (let tc = 1; tc <= T; tc++) {
       const N = tokens[p++];
       if (!N || p + N > tokens.length) throw new Error(`${tc}번 테스트케이스의 N과 당근 개수를 확인해 주세요.`);
+      if (N < 5 || N > 1000) throw new Error('당근 개수 N은 5~1000 사이여야 합니다.');
+      if (tokens.slice(p, p + N).some(value => value > 10)) throw new Error('당근 크기는 1~10 사이여야 합니다.');
       total += N;
       if (total > 2000) throw new Error('시각화는 전체 당근 2,000개까지 지원합니다.');
       result.push({tc, N, carrots: tokens.slice(p, p + N)});
@@ -61,7 +59,7 @@
     target.innerHTML = test.carrots.map((value, idx) => {
       const classes = ['carrot'];
       if (i !== null && (idx === i || idx === i + 1)) classes.push('compare');
-      if (i !== null && idx >= streakStart && idx <= i + 1) classes.push('current');
+      if (i !== null && idx >= streakStart && idx < streakStart + step.currentCount) classes.push('current');
       if (idx >= bestStart && idx <= bestEnd) classes.push('best');
       return `<div class="${classes.join(' ')}"><div class="carrot-bar" style="--size:${Math.min(10, value)}"></div><span class="carrot-value">${value}</span><span class="carrot-index">[${idx}]</span></div>`;
     }).join('');
