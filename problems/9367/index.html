@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="SWEA 9367 점점 커지는 당근의 개수 풀이를 단계별로 시각화합니다." />
+  <title>SWEA 9367 · 점점 커지는 당근의 개수 | Algori-zoom</title>
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="problem-header">
+    <a class="brand" href="../../" aria-label="Algori-zoom 홈">Algori-zoom</a>
+    <div class="problem-heading">
+      <span class="badge">SWEA 9367</span>
+      <h1>점점 커지는 당근의 개수</h1>
+      <p>연속 증가 구간을 <strong>current_count</strong>로 추적하고 <strong>max_count</strong>를 갱신하는 과정을 확인해 보세요.</p>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="panel source-panel" aria-labelledby="source-title">
+      <div class="panel-title-row"><h2 id="source-title">Python 풀이</h2><span id="stepLabel" class="step-label">준비</span></div>
+      <pre class="source-code" id="sourceCode" aria-label="Python 소스 코드"></pre>
+    </section>
+
+    <section class="panel visual-panel" aria-labelledby="visual-title">
+      <div class="panel-title-row"><h2 id="visual-title">연속 증가 시각화</h2><span id="caseLabel" class="case-label"></span></div>
+
+      <div class="counter-grid" aria-label="현재 변수 값">
+        <div class="counter-card"><span>i</span><strong id="iValue">-</strong></div>
+        <div class="counter-card"><span>current_count</span><strong id="currentValue">1</strong></div>
+        <div class="counter-card"><span>max_count</span><strong id="maxValue">1</strong></div>
+      </div>
+
+      <div class="carrot-track" id="carrotTrack" aria-label="당근 크기 배열"></div>
+      <div class="comparison" id="comparison">재생을 시작하면 인접한 두 당근을 비교합니다.</div>
+      <div class="explanation" id="explanation" aria-live="polite">샘플을 선택하고 재생해 보세요.</div>
+
+      <div class="controls" aria-label="재생 컨트롤">
+        <button type="button" id="firstBtn">처음</button>
+        <button type="button" id="prevBtn">이전</button>
+        <button type="button" id="playBtn" class="primary">재생</button>
+        <button type="button" id="nextBtn">다음</button>
+        <button type="button" id="lastBtn">끝으로</button>
+        <label class="speed-control">속도
+          <select id="speedSelect" aria-label="재생 속도">
+            <option value="1000">0.5×</option>
+            <option value="600" selected>1×</option>
+            <option value="350">1.5×</option>
+            <option value="180">2×</option>
+          </select>
+        </label>
+      </div>
+      <input id="timeline" class="timeline" type="range" min="0" max="0" value="0" aria-label="단계 이동" />
+      <div class="progress-text"><span id="progressText">0 / 0</span></div>
+    </section>
+
+    <section class="panel input-panel" aria-labelledby="input-title">
+      <div class="panel-title-row"><h2 id="input-title">입력</h2></div>
+      <div class="sample-buttons" id="sampleButtons"></div>
+      <textarea id="inputText" spellcheck="false" aria-label="문제 입력"></textarea>
+      <button type="button" id="applyInputBtn" class="primary apply-button">입력 적용</button>
+      <pre id="outputText" class="output-box" aria-label="실행 결과"></pre>
+    </section>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
