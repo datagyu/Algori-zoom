@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>암호생성기 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">for _ in range(10):
+    tc = int(input())
+    password = list(map(int, input().split()))
+
+    decrease = 0
+
+    while password[-1] != 0:
+        decrease += 1
+
+        if decrease == 6:
+            decrease = 1
+
+        next_number = password.pop(0) - decrease
+
+        if next_number &gt; 0:
+            password.append(next_number)
+        else:
+            password.append(0)
+            break
+
+    print('#{}'.format(tc), *password)</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 1225 · D3</p>
+      <h1>암호생성기</h1>
+      <p class="subtitle">큐의 맨 앞 숫자를 꺼내 1→5를 반복해 감소시키고 다시 맨 뒤에 넣다가, 0이 만들어지는 순간 암호가 완성되는 과정을 살펴봅니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+
+      <article class="panel board-panel">
+        <div class="panel-head"><span>PASSWORD QUEUE</span><span id="boardLabel">8 numbers</span></div>
+        <div class="queue-legend"><span><i class="legend-front"></i>FRONT</span><span><i class="legend-current"></i>꺼낸 숫자</span><span><i class="legend-appended"></i>맨 뒤로 이동</span><span><i class="legend-zero"></i>종료 0</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="password-queue"></div></div>
+      </article>
+
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>꺼낸 값</span><strong id="currentValue">—</strong></div><div><span>decrease</span><strong id="decreaseValue">0</strong></div>
+          <div><span>next_number</span><strong id="nextNumberValue">—</strong></div><div><span>연산 횟수</span><strong id="iterationValue">0</strong></div>
+          <div><span>판정</span><strong id="checkValue">—</strong></div><div><span>마지막 값</span><strong id="lastValue">—</strong></div>
+        </div>
+        <div class="explain" id="explainText">8개의 숫자로 암호 생성 큐를 준비합니다.</div>
+      </article>
+    </section>
+
+    <section class="panel cycle-panel">
+      <div class="panel-head"><span>DECREASE CYCLE</span><span id="cycleLabel">1 → 2 → 3 → 4 → 5</span></div>
+      <div id="cycleView" class="decrease-cycle" aria-label="감소 사이클"></div>
+    </section>
+
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>테스트 케이스 번호 + 8개 숫자</span></div>
+      <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+        <p>각 테스트 케이스는 번호 한 줄과 8개의 숫자 한 줄로 입력합니다. 큰 공식 예제는 같은 동작이 오래 반복되므로 중간 구간을 요약하고 마지막 암호 생성 과정을 자세히 보여줍니다.</p>
+        <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p>
+      </div></div>
+    </section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 1225</span><h1>암호생성기</h1></div><div id="mobileCoord" class="mobile-coord">QUEUE · CYCLE</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>PASSWORD QUEUE</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="password-queue"></div></div><div id="mobileCycleView" class="decrease-cycle mobile-cycle"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">decrease</span></div><div class="mobile-state-grid">
+      <div><span>꺼낸 값</span><strong id="mobileCurrent">—</strong></div><div><span>decrease</span><strong id="mobileDecrease">0</strong></div><div><span>next</span><strong id="mobileNextNumber">—</strong></div><div><span>횟수</span><strong id="mobileIteration">0</strong></div>
+    </div><div class="mobile-result-text"><span>마지막 값</span><strong id="mobileLast">—</strong></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>
+  </main>
+
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>
