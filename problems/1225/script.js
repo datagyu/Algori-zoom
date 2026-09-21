@@ -1,7 +1,7 @@
 (() => {
   const Core = window.AlgoriZoomCore;
   const PROBLEM = Object.freeze({
-    platform:"SWEA", number:"1225", level:"D3", title:"암호생성기", autoplayMs:620, defaultSampleId:"small",
+    platform:"SWEA", number:"1225", level:"D3", title:"암호생성기", autoplayMs:620, defaultSampleId:"one",
     sourceSteps:[
       {text:"password = list(map(int, input().split()))",types:"password",occurrence:1},
       {text:"decrease = 0",types:"decreaseInit",occurrence:1},
@@ -17,7 +17,7 @@
       {text:"print('#{}'.format(tc), *password)",types:"output",occurrence:1}
     ],
     samples:[
-      {id:"small",label:"작은 예시 · 큐 흐름",value:"1\n6 2 2 9 4 1 3 7"},
+      {id:"one",label:"공식 예제 1번 · 큐 흐름",value:"1\n9550 9556 9550 9553 9558 9551 9551 9551"},
       {id:"all",label:"첨부 예제 전체",value:"1\n9550 9556 9550 9553 9558 9551 9551 9551\n2\n2419 2418 2423 2415 2422 2419 2420 2415\n3\n7834 7840 7840 7835 7841 7835 7835 7838\n4\n4088 4087 4090 4089 4093 4085 4090 4084\n5\n2945 2946 2950 2948 2942 2943 2948 2947\n6\n670 667 669 671 670 670 668 671\n7\n8869 8869 8873 8875 8870 8872 8871 8873\n8\n1709 1707 1712 1712 1714 1710 1706 1712\n9\n10239 10248 10242 10240 10242 10242 10245 10235\n10\n6580 6579 6574 6580 6583 6580 6577 6581"}
     ]
   });
