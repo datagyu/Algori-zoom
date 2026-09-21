@@ -7,31 +7,6 @@ const updatePlayback=(button,playing)=>{
   if(mobile){ mobile.textContent=playing ? "정지" : "재생"; mobile.setAttribute("aria-pressed", String(playing)); }
 };
 const getByIds=(ids)=>Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
-const createLineMap=(root)=>{
-  const map=new Map();
-  root.querySelectorAll("[data-line]").forEach(el=>map.set(Number(el.dataset.line),el));
-  return map;
-};
-const renderSource=(template,targets)=>{
-  const raw=template.content ? template.content.textContent : template.textContent;
-  const lines=raw.replace(/^\n/,"").split("\n");
-  targets.forEach(target=>{
-    target.innerHTML="";
-    lines.forEach((line,i)=>{
-      const span=document.createElement("span");
-      span.className="code-line";
-      span.dataset.line=String(i+1);
-      span.textContent=line || " ";
-      target.appendChild(span);
-      target.appendChild(document.createTextNode("\n"));
-    });
-  });
-  return lines;
-};
-const findLine=(lines,text)=>{
-  const idx=lines.findIndex(line=>line.includes(text));
-  return idx>=0 ? idx+1 : 1;
-};
 const PROBLEM={autoplayMs:560,sourceSteps:[
 {text:"graph = [[] for _ in range(V + 1)]",types:"graph"},{text:"graph[n1].append(n2)",types:"edge"},{text:"visited = [False] * (V + 1)",types:"init"},{text:"queue = [S]",types:"start"},{text:"while queue:",types:"while"},{text:"current = queue.pop(0)",types:"pop"},{text:"for next_node in graph[current]:",types:"neighbor"},{text:"if not visited[next_node]:",types:"check"},{text:"queue.append(next_node)",types:"enqueue"},{text:"visited[next_node] = True",types:"visit"},{text:"distance[next_node] = distance[current] + 1",types:"distance"},{text:"print('#{} {}'.format(tc, distance[G]))",types:"output"}],
 samples:[{id:"one",label:"샘플 1 · BFS 흐름",value:`1
@@ -69,11 +44,18 @@ samples:[{id:"one",label:"샘플 1 · BFS 흐름",value:`1
 const els=getByIds(["sourceCode","resetBtn","prevBtn","nextBtn","playBtn","replayBtn","skipBtn","speedRange","speedLabel","stepLabel","timeline","codeLineLabel","codeViewport","codeView","boardLabel","boardViewport","board","phaseLabel","currentValue","distanceValue","nextValue","queueLengthValue","checkValue","answerValue","explainText","queueView","queueLabel","outputView","inputArea","applyBtn","sampleButtons","inputError","mobileCoord","mobileCodeStatus","mobileCodeViewport","mobileCodeView","mobilePhase","mobileBoardViewport","mobileBoard","mobileQueueView","mobileExplanation","mobileStateMeta","mobileCurrent","mobileDistance","mobileNext","mobileQueueLength","mobileAnswer","mobileOutputView","mobilePrevBtn","mobileTimeline","mobileTimelineStatus","mobileNextBtn"]);
 const state={cases:[],steps:[],stepIndex:0,timer:null,speed:1,codeLines:null,mobileCodeLines:null};let stepLineMap;
 function renderCode(){
-  const lines=renderSource(els.sourceCode,[els.codeView,els.mobileCodeView]);
-  state.codeLines=createLineMap(els.codeView);
-  state.mobileCodeLines=createLineMap(els.mobileCodeView);
-  stepLineMap=new Map();
-  PROBLEM.sourceSteps.forEach(step=>stepLineMap.set(step.types,findLine(lines,step.text)));
+  const markup=Core.createCodeMarkup(
+    els.sourceCode,
+    PROBLEM.sourceSteps,
+    {wrap:false,editor:true}
+  );
+
+  els.codeView.innerHTML=markup;
+  els.mobileCodeView.innerHTML=markup;
+
+  state.codeLines=Core.createLineMap(els.codeView);
+  state.mobileCodeLines=Core.createLineMap(els.mobileCodeView);
+  stepLineMap=Core.createStepLineMap(els.codeView);
 }
 function parseInput(text){const l=text.trim().split(/\r?\n/).map(x=>x.trim()).filter(Boolean),T=Number(l[0]);if(!T)throw Error("첫 줄의 T를 확인해주세요.");let c=1,cases=[];for(let t=0;t<T;t++){const [V,E]=l[c++].split(/\s+/).map(Number),edges=[];for(let i=0;i<E;i++)edges.push(l[c++].split(/\s+/).map(Number));const [S,G]=l[c++].split(/\s+/).map(Number);cases.push({V,E,edges,S,G})}if(c!==l.length)throw Error("입력 형식을 확인해주세요.");return cases}
 function buildSteps(){let steps=[],output="";state.cases.forEach((d,idx)=>{const {V,E,edges,S,G}=d,g=Array.from({length:V+1},()=>[]);let q=[],vis=Array(V+1).fill(false),dist=Array(V+1).fill(0),current=null,next=null,check="준비";
