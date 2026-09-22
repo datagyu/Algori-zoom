@@ -15,32 +15,30 @@
 </head>
 <body class="visualizer visualizer--editor">
   <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
-  <template id="sourceCode">for _ in range(10):
+  <template id="sourceCode">for _ in range(1, 11):
     tc = int(input())
     maze = [list(map(int, input())) for _ in range(16)]
     queue = []
-    start = None
 
     for i in range(16):
         for j in range(16):
             if maze[i][j] == 2:
-                start = [i, j]
+                queue.append((i, j))
+                break
+        if queue:
+            break
 
-    queue.append([start[0], start[1]])
     direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     ans = 0
 
     while queue and ans == 0:
-        current = queue.pop(0)
-        r, c = current
-
+        r, c = queue.pop(0)
         for dr, dc in direction:
             nr = r + dr
             nc = c + dc
-
             if (0 &lt;= nr &lt; 16) and (0 &lt;= nc &lt; 16):
                 if maze[nr][nc] == 0:
-                    queue.append([nr, nc])
+                    queue.append((nr, nc))
                     maze[nr][nc] = 1
                 elif maze[nr][nc] == 3:
                     ans = 1
@@ -83,7 +81,7 @@
       <article class="panel state-panel">
         <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
         <div class="state-grid">
-          <div><span>current</span><strong id="currentValue">—</strong></div><div><span>next (nr,nc)</span><strong id="nextValue">—</strong></div>
+          <div><span>r, c</span><strong id="currentValue">—</strong></div><div><span>next (nr,nc)</span><strong id="nextValue">—</strong></div>
           <div><span>queue 길이</span><strong id="queueLengthValue">0</strong></div><div><span>현재 칸 판정</span><strong id="checkValue">—</strong></div>
           <div><span>방문 칸</span><strong id="visitedValue">0</strong></div><div><span>ans</span><strong id="answerValue">0</strong></div>
         </div>
@@ -107,7 +105,7 @@
     <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
     <section class="panel mobile-focus"><div class="mobile-focus-head"><span>MAZE · BFS</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="maze-board"></div></div><div id="mobileQueueView" class="bfs-queue mobile-queue"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
     <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">QUEUE</span></div><div class="mobile-state-grid">
-      <div><span>current</span><strong id="mobileCurrent">—</strong></div><div><span>next</span><strong id="mobileNext">—</strong></div><div><span>queue</span><strong id="mobileQueueLength">0</strong></div><div><span>visited</span><strong id="mobileVisited">0</strong></div>
+      <div><span>r, c</span><strong id="mobileCurrent">—</strong></div><div><span>next</span><strong id="mobileNext">—</strong></div><div><span>queue</span><strong id="mobileQueueLength">0</strong></div><div><span>visited</span><strong id="mobileVisited">0</strong></div>
     </div><div class="mobile-result-text"><span>ans</span><strong id="mobileAnswer">0</strong></div></section>
     <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
     <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>
