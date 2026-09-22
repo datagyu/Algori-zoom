@@ -21,29 +21,32 @@ for tc in range(1, T + 1):
     N = int(input())
     maze = [list(map(int, input())) for _ in range(N)]
     queue = []
-    start = None
 
     for i in range(N):
         for j in range(N):
             if maze[i][j] == 2:
-                start = [i, j]
+                queue.append((i, j, 0))
+                break
+        if queue:
+            break
 
-    queue.append([start[0], start[1], 0])
     direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     ans = 0
-    while queue:
-        current = queue.pop(0)
-        r, c, distance = current
+    found = False
+    while queue and not found:
+        r, c, distance = queue.pop(0)
         for dr, dc in direction:
             nr = r + dr
             nc = c + dc
             if (0 &lt;= nr &lt; N) and (0 &lt;= nc &lt; N):
                 if maze[nr][nc] == 0:
-                    queue.append([nr, nc, distance + 1])
+                    queue.append((nr, nc, distance + 1))
                     maze[nr][nc] = 1
                 elif maze[nr][nc] == 3:
                     ans = distance
-    print('#{} {}'.format(tc,ans))</template>
+                    found = True
+                    break
+    print('#{} {}'.format(tc, ans))</template>
 
   <main class="desktop-view app-shell">
     <header class="hero">
@@ -80,9 +83,9 @@ for tc in range(1, T + 1):
       <article class="panel state-panel">
         <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
         <div class="state-grid">
-          <div><span>current</span><strong id="currentValue">—</strong></div><div><span>distance</span><strong id="distanceValue">—</strong></div>
+          <div><span>r, c</span><strong id="currentValue">—</strong></div><div><span>distance</span><strong id="distanceValue">—</strong></div>
           <div><span>next (nr,nc)</span><strong id="nextValue">—</strong></div><div><span>queue 길이</span><strong id="queueLengthValue">0</strong></div>
-          <div><span>판정</span><strong id="checkValue">—</strong></div><div><span>ans</span><strong id="answerValue">0</strong></div>
+          <div><span>found · 판정</span><strong id="checkValue">False · 준비</strong></div><div><span>ans</span><strong id="answerValue">0</strong></div>
         </div>
         <div class="explain" id="explainText">출발점 2를 찾고 BFS를 준비합니다.</div>
       </article>
@@ -104,7 +107,7 @@ for tc in range(1, T + 1):
     <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
     <section class="panel mobile-focus"><div class="mobile-focus-head"><span>MAZE · BFS</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="maze-board"></div></div><div id="mobileQueueView" class="bfs-queue mobile-queue"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
     <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">QUEUE</span></div><div class="mobile-state-grid">
-      <div><span>current</span><strong id="mobileCurrent">—</strong></div><div><span>distance</span><strong id="mobileDistance">—</strong></div><div><span>next</span><strong id="mobileNext">—</strong></div><div><span>queue</span><strong id="mobileQueueLength">0</strong></div>
+      <div><span>r, c</span><strong id="mobileCurrent">—</strong></div><div><span>distance</span><strong id="mobileDistance">—</strong></div><div><span>next</span><strong id="mobileNext">—</strong></div><div><span>queue</span><strong id="mobileQueueLength">0</strong></div>
     </div><div class="mobile-result-text"><span>ans</span><strong id="mobileAnswer">0</strong></div></section>
     <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
     <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button></nav>

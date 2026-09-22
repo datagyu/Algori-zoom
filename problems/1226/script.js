@@ -5,22 +5,23 @@
     sourceSteps: [
       { text: "maze = [list(map(int, input())) for _ in range(16)]", types: "maze", occurrence: 1 },
       { text: "if maze[i][j] == 2:", types: "findStart", occurrence: 1 },
-      { text: "start = [i, j]", types: "findStart", occurrence: 1 },
-      { text: "queue.append([start[0], start[1]])", types: "enqueueStart", occurrence: 1 },
+      { text: "queue.append((i, j))", types: "enqueueStart", occurrence: 1 },
       { text: "direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]", types: "directionReady", occurrence: 1 },
       { text: "ans = 0", types: "answerInit", occurrence: 1 },
       { text: "while queue and ans == 0:", types: "while", occurrence: 1 },
-      { text: "current = queue.pop(0)", types: "pop", occurrence: 1 },
-      { text: "r, c = current", types: "current", occurrence: 1 },
+      { text: "r, c = queue.pop(0)", types: "pop", occurrence: 1 },
       { text: "for dr, dc in direction:", types: "direction", occurrence: 1 },
       { text: "nr = r + dr", types: "next", occurrence: 1 },
       { text: "if (0 <= nr < 16) and (0 <= nc < 16):", types: "bounds", occurrence: 1 },
       { text: "if maze[nr][nc] == 0:", types: "path", occurrence: 1 },
-      { text: "queue.append([nr, nc])", types: "enqueue", occurrence: 1 },
+      { text: "queue.append((nr, nc))", types: "enqueue", occurrence: 1 },
       { text: "maze[nr][nc] = 1", types: "visit", occurrence: 1 },
       { text: "elif maze[nr][nc] == 3:", types: "goal", occurrence: 1 },
       { text: "ans = 1", types: "answer", occurrence: 1 },
-      { text: "break", types: "break", occurrence: 1 },
+      { text: "break", types: "breakStart", occurrence: 1 },
+      { text: "if queue:", types: "hasStart", occurrence: 1 },
+      { text: "break", types: "breakSearch", occurrence: 2 },
+      { text: "break", types: "break", occurrence: 3 },
       { text: "print('#{} {}'.format(tc, ans))", types: "output", occurrence: 1 },
     ],
     samples: [
@@ -79,51 +80,55 @@
     const steps = [];
     let output = "";
     state.cases.forEach((data) => {
-      const original = data.maze.map((row) => [...row]);
-      const maze = data.maze.map((row) => [...row]);
-      let start = null;
+      const original = data.maze;
+      const maze = original.map((row) => [...row]);
+      // Frames share append-only entries; indices preserve each historical queue.
+      const entries = [];
+      const discovered = new Map();
+      let head = 0, visitedCount = 0;
+      let current = null, next = null, ans = 0, check = "준비", foundGoal = null;
+      const key = (r, c) => r * 16 + c;
+      const push = (phase, message) => steps.push({
+        tc: data.tc, original, entries, discovered, head, tail: entries.length,
+        visitedCount, sequence: steps.length, current, next, ans, check,
+        foundGoal, phase, line: stepLineMap.get(phase), message, output,
+      });
+      const enqueue = (r, c) => {
+        discovered.set(key(r, c), { entry: entries.length, visitedAt: Infinity });
+        entries.push([r, c]);
+      };
+      push("maze", "16×16 미로를 읽습니다. 0은 길, 1은 벽, 2는 출발점, 3은 도착점입니다.");
       for (let i = 0; i < 16; i++) {
         for (let j = 0; j < 16; j++) {
-          if (maze[i][j] === 2) start = [i, j];
+          if (maze[i][j] === 2) {
+            check = `출발점 (${i}, ${j})`;
+            push("findStart", `출발점 2의 위치 (${i}, ${j})를 찾았습니다.`);
+            enqueue(i, j);
+            check = "출발점 enqueue";
+            push("enqueueStart", "출발점 좌표를 튜플로 묶어 큐에 바로 넣습니다.");
+            push("breakStart", "안쪽 for문을 종료합니다.");
+            break;
+          }
+        }
+        if (entries.length) {
+          push("hasStart", "큐에 출발점이 있으므로 if queue 조건이 참입니다.");
+          push("breakSearch", "바깥쪽 for문도 종료해 출발점 탐색을 마칩니다.");
+          break;
         }
       }
-
-      const queue = [];
-      const visited = new Set();
-      let current = null;
-      let next = null;
-      let ans = 0;
-      let check = "준비";
-      let foundGoal = null;
-      const key = (r, c) => `${r},${c}`;
-      const push = (phase, message, extra = {}) => steps.push({
-        tc: data.tc, original: original.map((row) => [...row]), maze: maze.map((row) => [...row]), queue: queue.map((item) => [...item]),
-        visited: new Set(visited), current: current && [...current], next: next && [...next], ans, check,
-        foundGoal: foundGoal && [...foundGoal], phase, line: stepLineMap.get(phase), message, output, ...extra,
-      });
-
-      push("maze", "16×16 미로를 읽습니다. 0은 길, 1은 벽, 2는 출발점, 3은 도착점입니다.");
-      check = `start = (${start[0]}, ${start[1]})`;
-      push("findStart", `출발점 2의 위치 (${start[0]}, ${start[1]})를 찾았습니다.`, { focus: start });
-      queue.push([...start]);
-      check = "출발점 enqueue";
-      push("enqueueStart", "출발점을 큐에 넣습니다. 이제 먼저 들어온 좌표부터 탐색합니다.");
       const direction = [[-1,0],[1,0],[0,-1],[0,1]];
       check = "상·하·좌·우 4방향";
       push("directionReady", "상, 하, 좌, 우 네 방향을 델타로 준비합니다.");
-      ans = 0;
       check = "ans = 0";
       push("answerInit", "아직 도착점에 도달하지 않았으므로 ans는 0입니다.");
 
-      while (queue.length && ans === 0) {
-        check = `queue ${queue.length}개 · ans 0`;
+      while (head < entries.length && ans === 0) {
+        check = `queue ${entries.length - head}개 · ans 0`;
         push("while", "큐가 비어 있지 않고 ans가 0이므로 BFS를 계속합니다.");
-        current = queue.shift();
+        current = entries[head++];
         next = null;
         check = "pop(0)";
-        push("pop", `큐의 맨 앞 좌표 (${current[0]}, ${current[1]})를 꺼냅니다.`);
-        check = `r=${current[0]}, c=${current[1]}`;
-        push("current", `현재 위치를 r=${current[0]}, c=${current[1]}로 나눠 저장합니다.`);
+        push("pop", `큐의 맨 앞 튜플을 꺼내 r=${current[0]}, c=${current[1]}로 바로 나눠 저장합니다.`);
 
         for (const [dr, dc] of direction) {
           check = `델타 (${dr}, ${dc})`;
@@ -140,22 +145,23 @@
           if (maze[nr][nc] === 0) {
             check = "이동 가능한 길 0";
             push("path", `(${nr}, ${nc})는 아직 방문하지 않은 길 0입니다.`);
-            queue.push([nr, nc]);
+            enqueue(nr, nc);
             check = "enqueue";
             push("enqueue", `(${nr}, ${nc})를 큐의 뒤에 넣습니다.`);
             maze[nr][nc] = 1;
-            visited.add(key(nr, nc));
+            discovered.get(key(nr, nc)).visitedAt = steps.length;
+            visitedCount++;
             check = "방문 처리 0 → 1";
             push("visit", "큐에 넣은 길을 1로 바꿔 같은 칸이 다시 큐에 들어가는 것을 막습니다.");
           } else if (maze[nr][nc] === 3) {
             foundGoal = [nr, nc];
             check = "도착점 3 발견";
-            push("goal", `(${nr}, ${nc})에서 도착점 3을 발견했습니다.`, { foundGoal: [nr, nc] });
+            push("goal", `(${nr}, ${nc})에서 도착점 3을 발견했습니다.`);
             ans = 1;
             check = "ans = 1";
-            push("answer", "도착 가능한 길을 찾았으므로 ans를 1로 바꿉니다.", { foundGoal: [nr, nc] });
+            push("answer", "도착 가능한 길을 찾았으므로 ans를 1로 바꿉니다.");
             check = "현재 방향 탐색 종료";
-            push("break", "목적지를 찾았으므로 현재 for문을 즉시 빠져나옵니다.", { foundGoal: [nr, nc] });
+            push("break", "목적지를 찾았으므로 현재 for문을 즉시 빠져나옵니다.");
             break;
           } else {
             check = "벽 또는 방문한 칸";
@@ -164,8 +170,7 @@
         }
       }
 
-      current = null;
-      next = null;
+      push("while", ans === 1 ? "ans가 1이므로 남은 큐와 관계없이 BFS를 종료합니다." : "큐가 비어 BFS를 종료합니다.");
       check = ans === 1 ? "도달 가능" : "도달 불가";
       output += `#${data.tc} ${ans}\n`;
       push("output", ans === 1 ? "도착점에 갈 수 있으므로 1을 출력합니다." : "큐가 모두 비었지만 도착점을 찾지 못해 0을 출력합니다.");
@@ -173,38 +178,50 @@
     state.steps = steps;
   }
 
+  const mazeViews = new WeakMap();
   function renderMaze(container, step) {
-    container.replaceChildren();
-    container.style.gridTemplateColumns = "repeat(16, 1fr)";
-    for (let r = 0; r < 16; r++) {
-      for (let c = 0; c < 16; c++) {
-        const value = step.original[r][c];
+    let view = mazeViews.get(container);
+    if (!view || view.original !== step.original) {
+      container.replaceChildren();
+      container.style.gridTemplateColumns = "repeat(16, 1fr)";
+      const fragment = document.createDocumentFragment();
+      const cells = [];
+      for (const row of step.original) for (const value of row) {
         const cell = document.createElement("div");
-        cell.className = "maze-cell";
-        if (value === 1) cell.classList.add("wall");
-        if (value === 2) cell.classList.add("start");
-        if (value === 3) cell.classList.add("goal");
-        if (step.visited.has(`${r},${c}`) && value === 0) cell.classList.add("visited");
-        if (step.queue.some((item) => item[0] === r && item[1] === c)) cell.classList.add("queued");
-        if (step.current && step.current[0] === r && step.current[1] === c) cell.classList.add("current");
-        if (step.next && step.next[0] === r && step.next[1] === c) cell.classList.add("next");
-        if (step.foundGoal && step.foundGoal[0] === r && step.foundGoal[1] === c) cell.classList.add("found");
         cell.textContent = value === 2 ? "2" : value === 3 ? "3" : "";
-        container.appendChild(cell);
+        cells.push(cell);
+        fragment.appendChild(cell);
       }
+      container.appendChild(fragment);
+      view = { original: step.original, cells };
+      mazeViews.set(container, view);
+    }
+    for (let r = 0; r < 16; r++) for (let c = 0; c < 16; c++) {
+      const value = step.original[r][c];
+      const visit = step.discovered.get(r * 16 + c);
+      const classes = ["maze-cell"];
+      if (value === 1) classes.push("wall");
+      if (value === 2) classes.push("start");
+      if (value === 3) classes.push("goal");
+      if (visit && visit.visitedAt <= step.sequence) classes.push("visited");
+      if (visit && visit.entry >= step.head && visit.entry < step.tail) classes.push("queued");
+      if (step.current && step.current[0] === r && step.current[1] === c) classes.push("current");
+      if (step.next && step.next[0] === r && step.next[1] === c) classes.push("next");
+      if (step.foundGoal && step.foundGoal[0] === r && step.foundGoal[1] === c) classes.push("found");
+      view.cells[r * 16 + c].className = classes.join(" ");
     }
   }
 
   function renderQueue(container, step) {
     container.replaceChildren();
-    if (!step.queue.length) {
+    if (!(step.tail - step.head)) {
       const empty = document.createElement("p");
       empty.className = "queue-empty";
       empty.textContent = "큐가 비어 있습니다.";
       container.appendChild(empty);
       return;
     }
-    step.queue.forEach((item, index) => {
+    step.entries.slice(step.head, step.tail).forEach((item, index) => {
       const node = document.createElement("div");
       node.className = `queue-item${index === 0 ? " front" : ""}`;
       node.textContent = `(${item[0]}, ${item[1]})`;
@@ -231,12 +248,12 @@
     els.phaseLabel.textContent = step.phase.toUpperCase();
     els.currentValue.textContent = current;
     els.nextValue.textContent = next;
-    els.queueLengthValue.textContent = step.queue.length;
+    els.queueLengthValue.textContent = (step.tail - step.head);
     els.checkValue.textContent = step.check;
-    els.visitedValue.textContent = step.visited.size;
+    els.visitedValue.textContent = step.visitedCount;
     els.answerValue.textContent = step.ans;
     els.explainText.textContent = step.message;
-    els.queueLabel.textContent = step.queue.length ? `FRONT → ${step.queue.length}개 대기` : "QUEUE EMPTY";
+    els.queueLabel.textContent = (step.tail - step.head) ? `FRONT → ${(step.tail - step.head)}개 대기` : "QUEUE EMPTY";
     els.outputView.textContent = step.output || "아직 출력이 없습니다.";
 
     els.mobileCoord.textContent = `#${step.tc} · 16×16`;
@@ -246,8 +263,8 @@
     els.mobileStateMeta.textContent = step.check;
     els.mobileCurrent.textContent = current;
     els.mobileNext.textContent = next;
-    els.mobileQueueLength.textContent = step.queue.length;
-    els.mobileVisited.textContent = step.visited.size;
+    els.mobileQueueLength.textContent = (step.tail - step.head);
+    els.mobileVisited.textContent = step.visitedCount;
     els.mobileAnswer.textContent = step.ans;
     els.mobileOutputView.textContent = step.output || "아직 출력이 없습니다.";
 
