@@ -1,8 +1,6 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
-  {id:"swea-9367",title:"점점 커지는 당근의 개수",platform:"SWEA",problemNo:"9367",href:"problems/9367/",status:"ready",searchTerms:["당근","연속 증가","증가 구간","카운트","최댓값","배열","순회","current_count","max_count"]},
   {"id": "swea-1989", "title": "초심자의 회문 검사", "platform": "SWEA", "problemNo": "1989", "href": "problems/1989/", "status": "ready", "searchTerms": ["회문", "문자열", "대칭", "palindrome", "양 끝", "break"]},
-  {"id": "swea-27816", "title": "섬 찾기", "platform": "SWEA", "problemNo": "27816", "href": "problems/27816/", "status": "ready", "searchTerms": ["섬", "BFS", "너비 우선 탐색", "큐", "상하좌우", "연결 요소", "방문 처리"]},
   {id:"swea-1225",title:"암호생성기",platform:"SWEA",problemNo:"1225",level:"D3",href:"problems/1225/",status:"ready",searchTerms:["암호","큐","queue","사이클","cycle","pop","append","감소","시뮬레이션"]},
   {id:"swea-1226",title:"미로1",platform:"SWEA",problemNo:"1226",level:"D4",href:"problems/1226/",status:"ready",searchTerms:["미로","BFS","큐","queue","델타","상하좌우","방문 처리","도달 가능","탐색"]},
   {id:"swea-5097",title:"회전",platform:"SWEA",problemNo:"5097",level:"D3",href:"problems/5097/",status:"ready",searchTerms:["회전","큐","queue","pop","append","리스트","순환","시뮬레이션"]},
