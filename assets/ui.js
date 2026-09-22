@@ -96,3 +96,69 @@
   help.textContent = "방향키: 이전·다음 단계 · Space: 재생·일시정지 · Home / End: 처음·끝";
   desktop.querySelector(".timeline-panel").append(help);
 })();
+
+/* Copy the original Python source without line numbers or highlighting. */
+(() => {
+  const source = document.getElementById('sourceCode');
+  if (!source) return;
+  const icon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"/></svg>';
+  const status = document.createElement('span');
+  status.className = 'copy-status';
+  status.setAttribute('role', 'status');
+  document.body.append(status);
+  function fallbackCopy(text) {
+    const field = document.createElement('textarea');
+    field.value = text;
+    field.style.cssText = 'position:fixed;left:-9999px;top:0;';
+    const focused = document.activeElement;
+    document.body.append(field);
+    field.select();
+    try {
+      if (!document.execCommand('copy')) throw new Error('Copy failed');
+    } finally {
+      field.remove();
+      if (focused) focused.focus({ preventScroll: true });
+    }
+  }
+  document.querySelectorAll('.code-panel > .panel-head, .mobile-code > .mobile-section-head').forEach(head => {
+    const title = head.firstElementChild;
+    if (!title) return;
+    const group = document.createElement('span');
+    group.className = 'code-title-actions';
+    title.before(group);
+    group.append(title);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-code-button';
+    button.innerHTML = icon;
+    button.title = 'Python 코드 복사';
+    button.setAttribute('aria-label', 'Python 코드 복사');
+    group.append(button);
+    let resetTimer;
+    button.addEventListener('click', async () => {
+      const text = source.content.textContent.replace(/^\r?\n/, '').trimEnd();
+      clearTimeout(resetTimer);
+      status.textContent = '';
+      try {
+        try {
+          if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+          await navigator.clipboard.writeText(text);
+        } catch (_) {
+          fallbackCopy(text);
+        }
+        button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
+        button.title = '복사 완료';
+        button.setAttribute('aria-label', '복사 완료');
+        status.textContent = 'Python 코드를 복사했습니다.';
+      } catch (_) {
+        button.title = '복사 실패: 다시 시도하세요';
+        status.textContent = '코드를 복사하지 못했습니다. 다시 시도하세요.';
+      }
+      resetTimer = setTimeout(() => {
+        button.innerHTML = icon;
+        button.title = 'Python 코드 복사';
+        button.setAttribute('aria-label', 'Python 코드 복사');
+      }, 1800);
+    });
+  });
+})();
