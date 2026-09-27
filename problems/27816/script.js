@@ -78,6 +78,9 @@
 
   function configureAlgorithm() {
     const isDfs = algorithm === 'dfs';
+    document.querySelectorAll('.code-panel > .panel-head, .mobile-code > .mobile-section-head').forEach(head => {
+      head.dataset.sourceId = isDfs ? 'dfsSourceCode' : 'sourceCode';
+    });
     const markup = Core.createCodeMarkup(isDfs ? els.dfsSourceCode : els.sourceCode, isDfs ? dfsSourceSteps : PROBLEM.sourceSteps, {wrap: false});
     els.codeView.innerHTML = els.mobileCodeView.innerHTML = markup;
     stepLines = Core.createStepLineMap(els.codeView);
@@ -86,9 +89,10 @@
       button.classList.toggle('selected', selected);
       button.setAttribute('aria-pressed', String(selected));
     });
-    document.querySelector('.subtitle').textContent = isDfs
+    const description = isDfs
       ? '상하좌우로 연결된 땅을 DFS로 방문하며 섬의 개수를 셉니다. visited에 방문을 표시하고 재귀 호출과 복귀 과정을 살펴봅니다.'
       : '상하좌우로 연결된 땅을 BFS로 방문하며 섬의 개수를 셉니다. 방문한 L을 W로 바꾸고 큐에서 다음 위치를 꺼내는 과정을 살펴봅니다.';
+    document.querySelectorAll('.subtitle, .mobile-description').forEach(element => { element.textContent = description; });
     document.querySelector('.problem-legend').innerHTML = `<span>초록 L: 땅</span><span>파랑 W: 바다</span><span>보라 ${isDfs ? 'L: visited=True' : 'W: 방문한 땅'}</span><span>노랑: 현재 · 빨강: 이웃 · 하늘: ${isDfs ? '호출 스택' : '큐'}</span>`;
     for (const id of ['currentValue', 'mobileCurrent']) els[id].previousElementSibling.textContent = isDfs ? '재귀 깊이' : 'queue 길이';
     for (const id of ['maxValue', 'mobileMax']) els[id].previousElementSibling.textContent = isDfs ? 'ans' : 'island';

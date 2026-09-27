@@ -136,7 +136,8 @@
     group.append(button);
     let resetTimer;
     button.addEventListener('click', async () => {
-      const text = source.content.textContent.replace(/^\r?\n/, '').trimEnd();
+      const activeSource = document.getElementById(head.dataset.sourceId) || source;
+      const text = activeSource.content.textContent.replace(/^\r?\n/, '').trimEnd();
       clearTimeout(resetTimer);
       status.textContent = '';
       try {

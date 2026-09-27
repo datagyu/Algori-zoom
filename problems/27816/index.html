@@ -40,33 +40,24 @@ for tc in range(1, T+1):
     print('#{} {}'.format(tc, island))</template>
 
   <template id="dfsSourceCode">T = int(input())
-
 for tc in range(1, T + 1):
     N, M = map(int, input().split())
     arr = [list(input()) for _ in range(N)]
-
     direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
     visited = [[False] * M for _ in range(N)]
-
     def dfs(r, c):
         visited[r][c] = True
-
         for dr, dc in direction:
             nr, nc = r + dr, c + dc
-
             if 0 &lt;= nr &lt; N and 0 &lt;= nc &lt; M:
                 if visited[nr][nc] == False and arr[nr][nc] == 'L':
                     dfs(nr, nc)
-
     ans = 0
-
     for i in range(N):
         for j in range(M):
             if visited[i][j] == False and arr[i][j] == 'L':
                 dfs(i, j)
                 ans += 1
-
     print('#{} {}'.format(tc, ans))</template>
 
   <main class="desktop-view app-shell">
