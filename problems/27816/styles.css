@@ -9,3 +9,7 @@
 .island-cell.queued { box-shadow: inset 0 0 0 2px var(--cyan); }
 .island-cell.current { border-color: var(--yellow); }
 .island-cell.candidate { outline: 2px solid var(--red); outline-offset: 1px; }
+.algorithm-switch { display: flex; gap: 4px; margin-right: auto; }
+.algorithm-switch .btn { padding: 5px 10px; min-height: 32px; font-size: 12px; }
+.algorithm-switch .btn.selected { background: var(--blue-soft); color: var(--blue); border-color: var(--blue); }
+.code-panel > .panel-head, .mobile-code > .mobile-section-head { gap: 12px; flex-wrap: wrap; }

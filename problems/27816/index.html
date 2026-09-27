@@ -39,6 +39,36 @@ for tc in range(1, T+1):
                                 arr[nr][nc] = 'W'
     print('#{} {}'.format(tc, island))</template>
 
+  <template id="dfsSourceCode">T = int(input())
+
+for tc in range(1, T + 1):
+    N, M = map(int, input().split())
+    arr = [list(input()) for _ in range(N)]
+
+    direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    visited = [[False] * M for _ in range(N)]
+
+    def dfs(r, c):
+        visited[r][c] = True
+
+        for dr, dc in direction:
+            nr, nc = r + dr, c + dc
+
+            if 0 &lt;= nr &lt; N and 0 &lt;= nc &lt; M:
+                if visited[nr][nc] == False and arr[nr][nc] == 'L':
+                    dfs(nr, nc)
+
+    ans = 0
+
+    for i in range(N):
+        for j in range(M):
+            if visited[i][j] == False and arr[i][j] == 'L':
+                dfs(i, j)
+                ans += 1
+
+    print('#{} {}'.format(tc, ans))</template>
+
   <main class="desktop-view app-shell">
     <header class="hero">
       <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
@@ -63,7 +93,7 @@ for tc in range(1, T+1):
 
     <section class="workspace">
       <article class="panel code-panel">
-        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="panel-head"><span>Python 코드</span><div class="algorithm-switch" role="group" aria-label="탐색 방식"><button type="button" class="btn selected" data-algorithm="bfs" aria-pressed="true">BFS</button><button type="button" class="btn" data-algorithm="dfs" aria-pressed="false">DFS</button></div><span id="codeLineLabel">READY</span></div>
         <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
       </article>
       <article class="panel board-panel">
@@ -90,7 +120,7 @@ for tc in range(1, T+1):
 
   <main class="mobile-view" aria-label="모바일 코드 시각화">
     <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 27816</span><h1>섬 찾기</h1></div><div id="mobileCoord" class="mobile-coord">섬 탐색 지도</div></header>
-    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><div class="algorithm-switch" role="group" aria-label="탐색 방식"><button type="button" class="btn selected" data-algorithm="bfs" aria-pressed="true">BFS</button><button type="button" class="btn" data-algorithm="dfs" aria-pressed="false">DFS</button></div><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
     <section class="panel mobile-focus"><div class="mobile-focus-head"><span>섬 탐색 지도</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="problem-board"></div></div><div id="mobileComparison" class="comparison"></div><div id="mobileDetailView" class="detail-view"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
     <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">섬 탐색 지도</span></div><div class="mobile-state-grid"><div><span>탐색 위치</span><strong id="mobileI">—</strong></div><div><span>queue 길이</span><strong id="mobileCurrent">1</strong></div><div><span>island</span><strong id="mobileMax">1</strong></div></div></section>
     <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
