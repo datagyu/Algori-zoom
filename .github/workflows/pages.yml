@@ -39,6 +39,7 @@ jobs:
           import re
           import shutil
           import os
+          import json
 
           root = Path('.')
           out = Path('_site')
@@ -57,12 +58,15 @@ jobs:
                   shutil.copy2(path, dest)
 
           version = os.environ['BUILD_VERSION'][:12]
+          (out / 'version.json').write_text(json.dumps({'version': version}), encoding='utf-8')
           pattern = re.compile(
               r'(?P<prefix>(?:src|href)=["\'])(?P<url>[^"\']+\.(?:css|js|svg|png|webp|ico|webmanifest))(?P<suffix>["\'])'
           )
 
           for html in out.rglob('*.html'):
               text = html.read_text(encoding='utf-8')
+              updater = os.path.relpath(out / 'assets/app-update.js', html.parent).replace(os.sep, '/')
+              text = text.replace('</body>', f'<script src="{updater}" data-version="{version}"></script>\n</body>')
 
               def repl(match):
                   url = match.group('url')
