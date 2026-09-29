@@ -61,3 +61,14 @@ These checks use the desktop app's Chromium browser with viewport overrides. Phy
 - No document overflow at 1440, 1280, 1024, 768, 430, 390, 375 and 360px. At 360px the N=10 matrix scrolls internally. One input editor is visible; unsubmitted input and playback speed survive breakpoint changes.
 - Home searches by number, title and backtracking keyword, empty results, and navigation passed. No browser console errors or resource failures; unique IDs, local asset links, JS syntax and git whitespace checks passed.
 - Browser checks use desktop Chromium with viewport overrides, not physical mobile devices.
+
+## 2026-09-29: SWEA 5188 minimum sum
+
+- Added problems/5188 and a searchable home catalog entry. The displayed Python preserves the user's DFS, downward-before-right traversal, ans pruning, and per-cell best pruning. Local file redirection is omitted from the displayed code.
+- The board shows both cell values and best arrival records. Separate colors, explanations, counters and jump buttons distinguish ans pruning, best pruning and answer updates. Current paths, call frames and the best complete path show that distance belongs to each call while best and ans persist after returning.
+- JavaScript exploration and the displayed Python match all supplied sample outputs: 15, 18 and 33. Seventy generated grids match an independent iterative DP reference. Sample trace checks cover path sums, legal moves, both pruning predicates, historical snapshot immutability and best-path sums.
+- Maximum-size inputs (N=13, T=50, all cells 10) return 250 for every case. At most 12,000 detailed animation frames plus per-case summary/output frames are retained; DFS calculation continues to completion. Summary and implicit return frames do not falsely highlight a Python statement. Each explicit return is mapped to its own source line.
+- Browser checks passed for all sample selections, direct input/error recovery, both pruning jumps, answer-update jumps, previous/next/reset/end/seek, playback/pause/speed/replay, mobile controls, source copying, keyboard shortcuts and cancelling a large calculation by choosing a sample.
+- No document overflow at 320, 360, 390, 760, 761, 1024 and 1440px. The N=13 board scrolls internally on mobile. Input drafts and playback speed survive layout changes; the active code line scrolls into view after crossing the mobile breakpoint. Desktop/mobile output and explanations remain synchronized; full mobile state is available.
+- Home searches by number, title and pruning keyword, empty results, clearing and navigation passed. JavaScript syntax, unique IDs, source anchors, local resource links and git whitespace checks passed. No browser console errors were reported.
+- Browser checks used headless Chromium with viewport overrides, not physical mobile devices.

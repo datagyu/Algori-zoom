@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>최소합 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+
+def dfs(r, c, distance):
+    direction = [(1, 0), (0, 1)]
+    global ans
+    if distance >= ans:
+        return
+    if distance >= best[r][c]:
+        return
+    best[r][c] = distance
+    if r == N-1 and c == N-1:
+        ans = min(ans, distance)
+        return
+    for dr, dc in direction:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < N and 0 <= nc < N:
+            dfs(nr, nc, distance + board[nr][nc])
+
+for tc in range(1, T+1):
+    N = int(input())
+    board = [list(map(int, input().split())) for _ in range(N)]
+    ans = 9999999
+    best = [[9999999]*N for _ in range(N)]
+    dfs(0, 0, board[0][0])
+    print('#{} {}'.format(tc, ans))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 5188 · D3</p><h1>최소합</h1>
+      <p class="subtitle">아래·오른쪽으로 이동하며 최소 합을 찾습니다. 전체 경로의 답 ans와 같은 칸까지의 기록 best를 비교해, 더 탐색할 필요가 없는 경로를 멈춥니다.</p>
+    </header>
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+    <nav id="chapterNav" class="panel sum-jumps" aria-label="가지치기 단계 찾기"><span>다음 장면 찾기</span><button class="btn" type="button" data-jump="pruneAns">ans 가지치기</button><button class="btn" type="button" data-jump="pruneBest">best 가지치기</button><button class="btn" type="button" data-jump="improve">정답 갱신</button><small>현재 단계 이후에 있는 장면으로 이동합니다.</small></nav>
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+      <article class="panel board-panel">
+        <div class="panel-head"><span>격자 · board와 best</span><span id="boardLabel">N=3</span></div>
+        <p class="sum-guide">큰 숫자: board의 값 · 작은 숫자: 그 칸까지의 best<br />좌표는 0부터 시작 · 아래를 먼저, 오른쪽을 나중에 탐색합니다.</p>
+        <div class="sum-legend"><span class="sum-current-key">현재 칸</span><span class="sum-path-key">현재 경로</span><span class="sum-ans-key">ans 가지치기</span><span class="sum-best-key">best 가지치기</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0" aria-label="격자 스크롤"><div id="board"></div></div>
+      </article>
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>현재 좌표 (r, c)</span><strong id="currentValue">0</strong></div><div><span>재귀 깊이</span><strong id="visitValue">0</strong></div>
+          <div><span>distance · 현재 합</span><strong id="energyValue">0</strong></div><div><span>다음 좌표 (nr, nc)</span><strong id="nextValue">—</strong></div>
+          <div><span>ans · 완성 경로 최소 합</span><strong id="bestValue">9999999</strong></div><div><span>best[r][c] · 도착 기록</span><strong id="countValue">0</strong></div>
+        </div>
+        <div class="explain" id="explainText"></div><p id="pruneStats" class="sum-stats"></p>
+      </article>
+    </section>
+    <section class="panel sum-route-panel">
+      <div class="panel-head"><span>현재 경로 · 재귀 호출</span><span id="routeMeta">깊이 0</span></div>
+      <div id="routeView" class="sum-route"></div>
+      <p id="recordGuide" class="sum-guide">best는 경로를 되돌아와도 지우지 않습니다. 다음 경로와 비교할 기록입니다.</p>
+      <p id="costView" class="sum-cost"></p>
+      <div id="stackView" class="sum-stack" tabindex="0" aria-label="재귀 호출 스택"></div>
+      <p id="bestRouteView" class="sum-best-route"></p>
+    </section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>1 ≤ T ≤ 50 · 3 ≤ N ≤ 13</span></div>
+      <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+        <p>첫 줄에 T, 각 케이스에 N과 N×N 격자를 입력하세요. 각 칸은 1~10입니다. 시작 칸과 도착 칸도 합에 포함하며, 아래·오른쪽으로만 이동합니다.</p>
+        <p>격자의 —는 초기값 9999999를 뜻합니다. 단계가 많으면 뒷부분의 애니메이션을 요약하지만, 두 가지 가지치기를 적용한 DFS 계산은 끝까지 수행합니다.</p>
+        <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div>
+        <p id="buildStatus" class="sum-build-status" role="status"></p><p class="input-error" id="inputError" role="alert"></p>
+      </div></div>
+    </section>
+  </main>
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 5188 · D3</span><h1>최소합</h1></div><div id="mobileCoord" class="mobile-coord">재귀 · 완전검색</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView" aria-label="Python 예시 코드"></pre></div></section>
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>격자 · board와 best</span><strong id="mobilePhase">READY</strong></div>
+      <p class="sum-guide">큰 숫자: board · 작은 숫자: best · 좌표는 0부터</p>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0" aria-label="격자 스크롤"><div id="mobileBoard"></div></div>
+      <div id="mobileRouteView" class="sum-route"></div>
+      <p id="mobileCostView" class="sum-cost"></p><p id="mobileBestRouteView" class="sum-best-route"></p>
+      <p id="mobileExplanation" class="mobile-explanation"></p>
+    </section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">깊이 0</span></div>
+      <div class="mobile-state-grid">
+        <div><span>현재 좌표 (r, c)</span><strong id="mobileCurrent">0</strong></div><div><span>재귀 깊이</span><strong id="mobileVisit">0</strong></div>
+        <div><span>distance</span><strong id="mobileEnergy">0</strong></div><div><span>ans</span><strong id="mobileBest">9999999</strong></div>
+      </div>
+      <div id="mobileStackView" class="sum-stack" tabindex="0" aria-label="재귀 호출 스택"></div>
+    </section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button>
+      <div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button>
+    </nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>
