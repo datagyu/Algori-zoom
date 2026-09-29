@@ -97,6 +97,38 @@
   desktop.querySelector(".timeline-panel").append(help);
 })();
 
+/* Reveal both layouts together without interrupting the current step. */
+(() => {
+  if (!document.body.classList.contains('code-reveal-enabled')) return;
+  const viewports = [...document.querySelectorAll('.code-viewport')];
+  viewports.forEach(viewport => {
+    const shell = document.createElement('div');
+    shell.className = 'code-reveal-shell';
+    viewport.before(shell);
+    shell.append(viewport);
+    viewport.inert = true;
+    const cover = document.createElement('div');
+    cover.className = 'code-reveal-cover';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn primary';
+    button.textContent = '코드보기';
+    button.setAttribute('aria-controls', viewports.map(item => item.id).join(' '));
+    button.setAttribute('aria-expanded', 'false');
+    cover.append(button);
+    shell.append(cover);
+    button.addEventListener('click', () => {
+      document.body.classList.add('code-revealed');
+      viewports.forEach(item => {
+        item.inert = false;
+        window.AlgoriZoomCore?.centerInsideViewport(item, item.querySelector('.code-line.active'), {horizontal: false});
+      });
+      document.querySelectorAll('.code-reveal-cover button').forEach(item => item.setAttribute('aria-expanded', 'true'));
+      viewport.focus({preventScroll: true});
+    });
+  });
+})();
+
 /* Copy the original Python source without line numbers or highlighting. */
 (() => {
   const source = document.getElementById('sourceCode');
