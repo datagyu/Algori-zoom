@@ -1,5 +1,6 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-5189",title:"전자카트",platform:"SWEA",problemNo:"5189",level:"D3",href:"problems/5189/",status:"ready",searchTerms:["전자카트","완전검색","완전탐색","재귀","순열","백트래킹","DFS","방문 복구","최솟값","배터리"]},
   {"id": "swea-1989", "title": "초심자의 회문 검사", "platform": "SWEA", "problemNo": "1989", "href": "problems/1989/", "status": "ready", "searchTerms": ["회문", "문자열", "대칭", "palindrome", "양 끝", "break"]},
   {id:"swea-1225",title:"암호생성기",platform:"SWEA",problemNo:"1225",level:"D3",href:"problems/1225/",status:"ready",searchTerms:["암호","큐","queue","사이클","cycle","pop","append","감소","시뮬레이션"]},
   {id:"swea-1226",title:"미로1",platform:"SWEA",problemNo:"1226",level:"D4",href:"problems/1226/",status:"ready",searchTerms:["미로","BFS","큐","queue","델타","상하좌우","방문 처리","도달 가능","탐색"]},

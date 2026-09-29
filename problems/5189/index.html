@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>전자카트 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">T = int(input())
+
+def search(current, visit, energy):
+    global best
+    if visit == N - 1:
+        if best > energy + field[current][0]:
+            best = energy + field[current][0]
+        return
+    for i in range(1, N):
+        if not visited[i]:
+            visited[i] = True
+            search(i, visit + 1, energy + field[current][i])
+            visited[i] = False
+
+for tc in range(1, T + 1):
+    N = int(input())
+    field = [list(map(int, input().split())) for _ in range(N)]
+    visited = [False] * N
+    best = 99999999
+
+    search(0, 0, 0)
+    print('#{} {}'.format(tc, best))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 5189 · D3</p><h1>전자카트</h1>
+      <p class="subtitle">사무실에서 출발해 모든 구역을 방문하고 돌아옵니다. 재귀로 방문 순서를 만들고, 방문 표시를 되돌리며 최소 배터리 사용량을 찾는 과정을 살펴봅니다.</p>
+    </header>
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main">
+        <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button>
+        <button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button>
+        <button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+      </div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+    <section class="panel timeline-panel" aria-label="재생바">
+      <div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div>
+      <input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" />
+    </section>
+    <section class="workspace">
+      <article class="panel code-panel">
+        <div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div>
+        <div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div>
+      </article>
+      <article class="panel board-panel">
+        <div class="panel-head"><span>이동 비용표 · field</span><span id="boardLabel">N=3</span></div>
+        <p class="cart-guide">1번 = 사무실 = 인덱스 0<br />행은 출발, 열은 도착 · 반대 방향의 비용은 다를 수 있어요.</p>
+        <div class="cart-legend"><span class="cart-current-key">현재 출발지</span><span class="cart-edge-key">확인 중인 이동</span></div>
+        <div class="board-viewport" id="boardViewport" tabindex="0" aria-label="이동 비용표 스크롤"><div id="board"></div></div>
+      </article>
+      <article class="panel state-panel">
+        <div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div>
+        <div class="state-grid">
+          <div><span>current · 인덱스</span><strong id="currentValue">0</strong></div><div><span>visit · 방문 수</span><strong id="visitValue">0</strong></div>
+          <div><span>energy · 누적</span><strong id="energyValue">0</strong></div><div><span>i · 후보 인덱스</span><strong id="nextValue">—</strong></div>
+          <div><span>best · 최소 사용량</span><strong id="bestValue">99999999</strong></div><div><span>완성한 경로 수</span><strong id="countValue">0</strong></div>
+        </div>
+        <div class="explain" id="explainText"></div>
+      </article>
+    </section>
+    <section class="panel cart-route-panel">
+      <div class="panel-head"><span>현재 경로 · 재귀 호출</span><span id="routeMeta">깊이 0</span></div>
+      <div id="routeView" class="cart-route"></div>
+      <div id="visitedView" class="cart-visited"></div>
+      <p id="costView" class="cart-cost"></p>
+      <div id="stackView" class="cart-stack" tabindex="0" aria-label="재귀 호출 스택"></div>
+      <p id="bestRouteView" class="cart-best-route"></p>
+    </section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+    <section class="input-panel panel">
+      <div class="panel-head"><span>입력</span><span>1 ≤ T ≤ 50 · 3 ≤ N ≤ 10</span></div>
+      <div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+        <p>첫 줄에 T, 각 케이스에 N과 N×N 비용표를 입력하세요. 대각선은 0, 다른 칸은 1~100입니다. 모든 관리구역을 한 번씩 방문한 뒤 사무실로 돌아옵니다.</p>
+        <p>경로가 많으면 앞부분을 자세히 재생하고 나머지는 요약합니다. 최소 사용량은 모든 경로를 계산한 결과입니다.</p>
+        <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div>
+        <p id="buildStatus" class="cart-build-status" role="status"></p><p class="input-error" id="inputError" role="alert"></p>
+      </div></div>
+    </section>
+  </main>
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 5189 · D3</span><h1>전자카트</h1></div><div id="mobileCoord" class="mobile-coord">재귀 · 완전검색</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView" aria-label="Python 예시 코드"></pre></div></section>
+    <section class="panel mobile-focus">
+      <div class="mobile-focus-head"><span>이동 비용표 · field</span><strong id="mobilePhase">READY</strong></div>
+      <p class="cart-guide">1번 = 사무실 = 인덱스 0 · 행: 출발 / 열: 도착</p>
+      <div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0" aria-label="이동 비용표 스크롤"><div id="mobileBoard"></div></div>
+      <div id="mobileRouteView" class="cart-route"></div><div id="mobileVisitedView" class="cart-visited"></div>
+      <p id="mobileCostView" class="cart-cost"></p><p id="mobileBestRouteView" class="cart-best-route"></p>
+      <p id="mobileExplanation" class="mobile-explanation"></p>
+    </section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">깊이 0</span></div>
+      <div class="mobile-state-grid">
+        <div><span>current · 인덱스</span><strong id="mobileCurrent">0</strong></div><div><span>visit · 방문 수</span><strong id="mobileVisit">0</strong></div>
+        <div><span>energy</span><strong id="mobileEnergy">0</strong></div><div><span>best</span><strong id="mobileBest">99999999</strong></div>
+      </div>
+      <div id="mobileStackView" class="cart-stack" tabindex="0" aria-label="재귀 호출 스택"></div>
+    </section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동">
+      <button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button" aria-label="이전 단계">이전</button>
+      <div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button" aria-label="다음 단계">다음</button>
+    </nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>

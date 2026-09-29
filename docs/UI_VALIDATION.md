@@ -50,3 +50,14 @@ These checks use the desktop app's Chromium browser with viewport overrides. Phy
 3. Open full variable details on mobile. Resize to desktop and confirm the state panel returns to the workspace.
 4. Check 320px and 761px widths, then run the problem to its last step.
 5. Search the home catalog, clear it, and open a result.
+
+## 2026-09-29: SWEA 5189 electronic cart
+
+- Added problems/5189 with the accepted recursive Python solution, all three supplied samples, and a searchable home catalog entry. Uses the existing shared theme, code renderer, playback, copy button, responsive controls and keyboard shortcuts.
+- Visualizes directed matrix costs, place numbers versus zero-based indices, current route, recursion frames, visited flags and their restoration, return-to-office cost, completed-route count and minimum route.
+- Both JavaScript exploration and the displayed Python produce 89, 96 and 139. Trace checks cover route uniqueness, visit count, accumulated energy and visited restoration. Fifteen generated asymmetric matrices (N=3..7) match a separate permutation enumerator.
+- N=10 visits all 362,880 routes and returns 1,000 for all off-diagonal costs of 100. Snapshot storage is bounded (up to 2,200 detailed frames per case, a total detail budget of 12,000, plus summary/output frames); calculation still covers every route. Summary frames explicitly identify omitted animation and do not highlight a Python line. The example does not use cost pruning.
+- Browser checks passed: all individual/full samples, manual input/error recovery, previous/next/reset/end/seek, replay/pause/speed, mobile player, matching desktop/mobile values and source lines, full mobile state, and active code scrolling. Switching from a large 50-case calculation to a sample cancels the old calculation.
+- No document overflow at 1440, 1280, 1024, 768, 430, 390, 375 and 360px. At 360px the N=10 matrix scrolls internally. One input editor is visible; unsubmitted input and playback speed survive breakpoint changes.
+- Home searches by number, title and backtracking keyword, empty results, and navigation passed. No browser console errors or resource failures; unique IDs, local asset links, JS syntax and git whitespace checks passed.
+- Browser checks use desktop Chromium with viewport overrides, not physical mobile devices.
