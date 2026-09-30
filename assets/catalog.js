@@ -1,5 +1,6 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-5201",title:"컨테이너 운반",platform:"SWEA",problemNo:"5201",level:"D3",href:"problems/5201/",status:"ready",searchTerms:["컨테이너 운반","그리디","탐욕","정렬","내림차순","트럭","컨테이너","적재용량","최대 중량"]},
   {id:"swea-5188",title:"최소합",platform:"SWEA",problemNo:"5188",level:"D3",href:"problems/5188/",status:"ready",searchTerms:["최소합","완전검색","완전탐색","DFS","재귀","백트래킹","가지치기","누적 합","best","ans","격자"]},
   {id:"swea-5189",title:"전자카트",platform:"SWEA",problemNo:"5189",level:"D3",href:"problems/5189/",status:"ready",searchTerms:["전자카트","완전검색","완전탐색","재귀","순열","백트래킹","DFS","방문 복구","최솟값","배터리"]},
   {"id": "swea-1989", "title": "초심자의 회문 검사", "platform": "SWEA", "problemNo": "1989", "href": "problems/1989/", "status": "ready", "searchTerms": ["회문", "문자열", "대칭", "palindrome", "양 끝", "break"]},

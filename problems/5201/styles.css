@@ -1,0 +1,39 @@
+/* SWEA 5201 컨테이너 운반 전용 시각화 */
+.board-panel { min-width: 0; padding: 16px; }
+.board-viewport { height: 430px; overflow: auto; background: #17191c; padding: 16px; }
+.transport-group + .transport-group { margin-top: 22px; }
+.transport-title { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 10px; color: #c6c8cc; font: 700 12px/1.5 var(--mono); }
+.transport-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.transport-item { position: relative; min-width: 62px; min-height: 62px; padding: 9px 8px 7px; display: grid; place-items: center; align-content: center; gap: 3px; border: 1px solid #34383e; border-radius: 9px; background: #202328; color: #f2f2f2; font: 700 20px/1 var(--mono); }
+.transport-item small { color: #8b949e; font: 10px/1.2 var(--mono); font-weight: 500; }
+.transport-item.current { outline: 2px solid #e5e5e5; outline-offset: -3px; }
+.transport-item.candidate { background: #174f82; border-color: #73b9ff; }
+.transport-item.selected { background: #23483d; border-color: #4ec993; }
+.transport-item.used { opacity: .42; text-decoration: line-through; }
+.transport-item.rejected { background: #432326; border-color: #c75b64; }
+.transport-legend { margin: 14px 0 0; color: #8b949e; font-size: 11px; line-height: 1.7; }
+.state-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: #2a2d31; }
+.state-grid > div { background: #141619; padding: 16px; }
+.state-grid span { display: block; color: #7e858e; font: 11px/1.2 var(--mono); margin-bottom: 8px; }
+.state-grid strong { color: #f2f2f2; font: 700 20px/1 var(--mono); }
+.explain { padding: 16px; color: #c6c8cc; word-break: keep-all; line-height: 1.6; }
+.transport-panel { padding: 16px; margin-top: 12px; }
+.match-view, .mobile-match { display: flex; flex-wrap: wrap; gap: 8px; }
+.match-chip { display: inline-flex; align-items: center; gap: 7px; padding: 9px 11px; border: 1px solid #2f6d54; border-radius: 8px; background: #18352b; color: #d9f7e8; font: 12px/1.3 var(--mono); }
+.match-chip strong { color: #62d394; }
+.match-empty { color: #8b949e; font-size: 12px; }
+
+@media (max-width: 1050px) and (min-width: 761px) {
+  .state-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .mobile-board-viewport { max-height: 420px; overflow: auto; background: #17191c; padding: 14px; overscroll-behavior: contain; }
+  .transport-item { min-width: 54px; min-height: 56px; font-size: 17px; }
+  .mobile-state-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: #2a2d31; }
+  .mobile-state-grid > div { background: #141619; padding: 12px 7px; text-align: center; }
+  .mobile-state-grid span { display: block; color: #7e858e; font: 10px var(--mono); margin-bottom: 6px; }
+  .mobile-state-grid strong { color: #f2f2f2; font: 700 17px var(--mono); }
+  .mobile-match { padding: 14px; border-top: 1px solid #2a2d31; }
+  .match-chip { font-size: 11px; padding: 8px 9px; }
+}
