@@ -118,6 +118,7 @@
         }
       }
 
+      cTruck = null; i = null; currentBox = null;
       output += `#${caseIndex + 1} ${weight}\n`;
       base("output", `#${caseIndex + 1}의 최대 운반 중량 ${weight}을 출력합니다.`);
     });
