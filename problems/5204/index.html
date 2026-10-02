@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>병합 정렬 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer code-reveal-enabled visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">def merge(start, end):
+    global cnt
+    if end - start == 1:
+        return
+    mid = (start + end) // 2
+    merge(start, mid)
+    merge(mid, end)
+    if arr[mid - 1] > arr[end - 1]:
+        cnt += 1
+    a = start
+    b = mid
+    result = []
+    while True:
+        if a >= mid and b >= end:
+            break
+        elif a >= mid:
+            result.append(arr[b])
+            b += 1
+        elif b >= end:
+            result.append(arr[a])
+            a += 1
+        elif arr[a] &lt;= arr[b]:
+            result.append(arr[a])
+            a += 1
+        else:
+            result.append(arr[b])
+            b += 1
+    for i in range(len(result)):
+        arr[start + i] = result[i]
+
+T = int(input())
+for tc in range(1, T + 1):
+    N = int(input())
+    arr = list(map(int, input().split()))
+    cnt = 0
+    merge(0, N)
+    print('#{} {} {}'.format(tc, arr[N // 2], cnt))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 5204 · D3</p>
+      <h1>병합 정렬</h1>
+      <p class="subtitle">배열을 절반씩 재귀적으로 나누고, 정렬된 두 구간을 다시 합치는 과정을 따라갑니다.<br>병합 직전 왼쪽 구간의 마지막 값이 오른쪽 구간의 마지막 값보다 큰 경우 <code>cnt</code>가 증가하는 순간도 함께 확인합니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤"><div class="controls-main">
+      <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button><button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button><button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+    </div><label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label></section>
+    <section class="panel timeline-panel" aria-label="재생바"><div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div><input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" /></section>
+
+    <section class="workspace">
+      <article class="panel code-panel"><div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div><div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div></article>
+      <article class="panel board-panel"><div class="panel-head"><span>병합 정렬 시각화</span><span id="boardLabel">배열</span></div><div class="board-viewport" id="boardViewport" tabindex="0"><div id="board"></div></div></article>
+      <article class="panel state-panel"><div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div><div class="state-grid">
+        <div><span>start</span><strong id="startValue">—</strong></div><div><span>end</span><strong id="endValue">—</strong></div><div><span>mid</span><strong id="midValue">—</strong></div><div><span>a</span><strong id="aValue">—</strong></div><div><span>b</span><strong id="bValue">—</strong></div><div><span>cnt</span><strong id="cntValue">0</strong></div>
+      </div><div class="explain" id="explainText">배열을 절반씩 나누고 다시 병합합니다.</div></article>
+    </section>
+
+    <section class="panel detail-panel"><div class="panel-head"><span>현재 병합 상태</span><span id="detailMeta">재귀 시작 전</span></div><div id="detailView" class="detail-view"></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView"></pre></section>
+    <section class="input-panel panel"><div class="panel-head"><span>입력</span><span>시각화: 5 ≤ N ≤ 60 · T ≤ 10</span></div><div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions"><p>첫 줄에 T, 각 테스트케이스마다 N과 N개의 정수를 입력합니다. SWEA 원문은 N ≤ 1,000,000이며, 단계별 시각화는 N ≤ 60을 지원합니다.</p><button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p></div></div></section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 5204</span><h1>병합 정렬</h1></div><div id="mobileCoord" class="mobile-coord">cnt = 0</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>병합 정렬 시각화</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard"></div></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">재귀/병합</span></div><div class="mobile-state-grid"><div><span>start</span><strong id="mobileStart">—</strong></div><div><span>end</span><strong id="mobileEnd">—</strong></div><div><span>mid</span><strong id="mobileMid">—</strong></div><div><span>cnt</span><strong id="mobileCnt">0</strong></div></div><div id="mobileDetailView" class="mobile-detail"></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button">다음</button></nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>

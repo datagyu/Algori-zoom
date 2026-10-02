@@ -1,5 +1,8 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-5207",title:"이진 탐색",platform:"SWEA",problemNo:"5207",level:"D3",href:"problems/5207/",status:"ready",searchTerms:["이진 탐색","이진검색","binary search","정렬","left","right","direction","교대 탐색"]},
+  {id:"swea-5205",title:"퀵 정렬",platform:"SWEA",problemNo:"5205",level:"D3",href:"problems/5205/",status:"ready",searchTerms:["퀵 정렬","quick sort","pivot","left","right","분할","재귀","정렬"]},
+  {id:"swea-5204",title:"병합 정렬",platform:"SWEA",problemNo:"5204",level:"D3",href:"problems/5204/",status:"ready",searchTerms:["병합 정렬","merge sort","분할 정복","재귀","merge","result","cnt","정렬"]},
   {id:"swea-5203",title:"베이비진 게임",platform:"SWEA",problemNo:"5203",level:"D3",href:"problems/5203/",status:"ready",searchTerms:["베이비진","Baby-gin","run","triplet","카드","정렬","set","그리디","플레이어"]},
   {id:"swea-5202",title:"화물 도크",platform:"SWEA",problemNo:"5202",level:"D3",href:"problems/5202/",status:"ready",searchTerms:["화물 도크","그리디","탐욕","정렬","종료시간","스케줄링","회의실","작업시간"]},
   {id:"swea-5201",title:"컨테이너 운반",platform:"SWEA",problemNo:"5201",level:"D3",href:"problems/5201/",status:"ready",searchTerms:["컨테이너 운반","그리디","탐욕","정렬","내림차순","트럭","컨테이너","적재용량","최대 중량"]},
