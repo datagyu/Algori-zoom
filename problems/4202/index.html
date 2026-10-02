@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>요리사 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer code-reveal-enabled visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">def dfs(start):
+    global ans
+    if len(A) == N//2:
+        B = []
+        for j in range(N):
+            if j not in A:
+                B.append(j)
+        A_Sum = 0
+        B_Sum = 0
+        for i in range(N // 2):
+            for j in range(i + 1, N // 2):
+                A_Sum += (recipe[A[i]][A[j]] + recipe[A[j]][A[i]])
+                B_Sum += (recipe[B[i]][B[j]] + recipe[B[j]][B[i]])
+        diff = abs(A_Sum - B_Sum)
+        if ans > diff:
+            ans = diff
+        return
+    for i in range(start, N):
+        A.append(i)
+        dfs(i+1)
+        A.pop()
+
+T = int(input())
+for tc in range(1, T + 1):
+    N = int(input())
+    recipe = [list(map(int, input().split())) for _ in range(N)]
+    A = []
+    ans = float('inf')
+    dfs(0)
+    print('#{} {}'.format(tc, ans))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero">
+      <a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a>
+      <p class="eyebrow">SWEA 4202</p>
+      <h1>요리사</h1>
+      <p class="subtitle">N개의 식재료 중 절반을 A음식으로 조합하고, 나머지 절반을 B음식으로 나눕니다.<br>DFS 조합·백트래킹과 두 음식의 시너지 합을 비교해 맛의 차이 최솟값 <code>ans</code>를 찾는 과정을 따라갑니다.</p>
+    </header>
+
+    <section class="panel control-strip" aria-label="실행 컨트롤"><div class="controls-main">
+      <button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button><button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button><button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button>
+    </div><label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label></section>
+    <section class="panel timeline-panel" aria-label="재생바"><div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div><input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" /></section>
+
+    <section class="workspace">
+      <article class="panel code-panel"><div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div><div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView" aria-label="Python 예시 코드"></pre></div></article>
+      <article class="panel board-panel"><div class="panel-head"><span>식재료 · 시너지 시각화</span><span id="boardLabel">조합 전</span></div><div class="board-viewport" id="boardViewport" tabindex="0"><div id="board"></div></div></article>
+      <article class="panel state-panel"><div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div><div class="state-grid">
+        <div><span>start</span><strong id="startValue">0</strong></div><div><span>i</span><strong id="iValue">—</strong></div><div><span>len(A)</span><strong id="depthValue">0</strong></div><div><span>A_Sum</span><strong id="aSumValue">0</strong></div><div><span>B_Sum</span><strong id="bSumValue">0</strong></div><div><span>ans</span><strong id="ansValue">∞</strong></div>
+      </div><div class="explain" id="explainText">A 음식에 들어갈 식재료 조합을 DFS로 선택합니다.</div></article>
+    </section>
+
+    <section class="panel detail-panel"><div class="panel-head"><span>현재 조합 · 시너지 계산</span><span id="detailMeta">A 0개 · B 0개</span></div><div id="groupView" class="group-view"></div><div id="pairView" class="pair-view"></div><p id="diffView" class="diff-view"></p></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView"></pre></section>
+    <section class="input-panel panel"><div class="panel-head"><span>입력</span><span>2 ≤ N ≤ 16 · N은 짝수</span></div><div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions">
+      <p>첫 줄에 T, 각 테스트케이스마다 N과 N×N 시너지 표를 입력합니다. 식재료 번호는 화면에서 1부터 표시됩니다.</p>
+      <p>N ≤ 8은 DFS와 시너지 계산을 자세히 보여주고, 더 큰 N은 브라우저 성능을 위해 정답이 개선되는 조합 중심으로 요약하지만 계산은 끝까지 수행합니다.</p>
+      <button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p>
+    </div></div></section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 4202</span><h1>요리사</h1></div><div id="mobileCoord" class="mobile-coord">A 0 / B 0</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>식재료 · 시너지 시각화</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard"></div></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">DFS</span></div><div class="mobile-state-grid"><div><span>start</span><strong id="mobileStart">0</strong></div><div><span>len(A)</span><strong id="mobileDepth">0</strong></div><div><span>diff</span><strong id="mobileDiff">—</strong></div><div><span>ans</span><strong id="mobileAns">∞</strong></div></div><div id="mobileGroupView" class="group-view mobile-groups"></div><div id="mobilePairView" class="pair-view mobile-pairs"></div></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" aria-label="자동 재생" aria-pressed="false" title="자동 재생" type="button">재생</button><button id="mobilePrevBtn" type="button">이전</button><div class="mobile-scrubber"><input aria-label="실행 단계" id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button">다음</button></nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body>
+</html>
