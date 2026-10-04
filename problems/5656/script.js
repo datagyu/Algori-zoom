@@ -25,7 +25,7 @@
       { text: "ans = min(ans, c_block)", types: "updateAns" },
       { text: "return", types: "levelReturn", occurrence: 3 },
       { text: "for c in range(W):", types: "column" },
-      { text: "for r in range(H):", types: "hitScan" },
+      { text: "for r in range(H):", types: "hitScan emptyColumn" },
       { text: "if board[r][c] != 0:", types: "hit" },
       { text: "c_board = [row[:] for row in board]", types: "copy" },
       { text: "queue = []", types: "queueInit" },
@@ -144,25 +144,13 @@
         let cBlock = 0;
         const emit = (phase, message, extra = {}) => frame(phase, level, board, message, { cBlock, ...extra });
         yield emit("enter", `dfs(level=${level})에 들어옵니다.`);
-        yield emit("globalAns", "전체 탐색에서 공유하는 ans를 사용합니다.");
-        yield emit("countInit", "c_block = 0으로 벽돌 개수를 초기화합니다.");
         yield emit("checkZero", `ans=${Number.isFinite(ans) ? ans : "∞"}: 0인지 확인합니다.`);
         if (ans === 0) {
           yield emit("prune", "ans가 0이므로 이 DFS 호출에서 돌아갑니다.");
           return;
         }
-        for (let i = 0; i < data.H; i++) {
-          yield emit("count", `i=${i}: 이 행의 벽돌을 셉니다.`);
-          for (let j = 0; j < data.W; j++) {
-            const extra = { cursor: [i, j] };
-            yield emit("countColumn", `j=${j}: (${i + 1}, ${j + 1}) 칸으로 이동합니다.`, extra);
-            yield emit("countCheck", `board[${i}][${j}]=${board[i][j]}: 벽돌인지 확인합니다.`, extra);
-            if (board[i][j] !== 0) {
-              cBlock++;
-              yield emit("countAdd", `c_block을 ${cBlock}로 늘립니다.`, extra);
-            }
-          }
-        }
+        cBlock = countBlocks(board);
+        yield emit("count", `보드 전체의 0이 아닌 칸을 세었습니다. c_block = ${cBlock}입니다.`);
         yield emit("empty", `남은 벽돌 ${cBlock}개가 0인지 확인합니다.`);
         if (cBlock === 0) {
           ans = 0;
@@ -183,11 +171,12 @@
         }
         for (let c = 0; c < data.W; c++) {
           yield emit("column", `${c + 1}번 열을 선택합니다.`, { column: c });
+          let hitFound = false;
           for (let r = 0; r < data.H; r++) {
             const hit = [r, c];
-            yield emit("hitScan", `r=${r}: 위에서 아래로 명중할 벽돌을 찾습니다.`, { column: c, cursor: hit });
-            yield emit("hit", `board[${r}][${c}]=${board[r][c]}: ${board[r][c] ? "첫 벽돌에 명중합니다." : "빈 칸이므로 다음 행을 확인합니다."}`, { column: c, cursor: hit, ...(board[r][c] ? { hit } : {}) });
             if (!board[r][c]) continue;
+            hitFound = true;
+            yield emit("hit", `위쪽 빈 칸을 지나 (${r + 1}, ${c + 1})의 첫 벽돌 ${board[r][c]}에 명중합니다.`, { column: c, cursor: hit, hit });
             const cBoard = cloneBoard(board);
             const queue = [];
             const removed = [];
@@ -209,22 +198,15 @@
               const explosion = (phase, message, extra = {}) => shot(phase, message, { source: [cr, cc], power: block, blast, ...extra });
               yield explosion("pop", `(${cr + 1}, ${cc + 1})의 값 ${block} 벽돌을 꺼냅니다.`);
               for (const [dr, dc] of DIR) {
-                yield explosion("spread", `방향 (dr=${dr}, dc=${dc})의 폭발 범위를 확인합니다.`);
                 for (let num = 1; num < block; num++) {
-                  yield explosion("distance", `num=${num}: 현재 벽돌에서 ${num}칸 떨어진 위치를 확인합니다.`);
                   const nr = cr + dr * num, nc = cc + dc * num;
                   const cursor = [nr, nc];
-                  yield explosion("coords", `nr=${nr}, nc=${nc}를 계산합니다.`, { cursor });
                   const inside = 0 <= nr && nr < data.H && 0 <= nc && nc < data.W;
-                  yield explosion("bounds", inside ? "보드 안의 좌표입니다." : "보드 밖의 좌표입니다.", { cursor });
-                  if (!inside) {
-                    yield explosion("spreadBreak", "이 방향의 거리 반복을 끝냅니다.");
-                    break;
-                  }
+                  if (!inside) break;
                   blast.push(cursor);
-                  yield explosion("chain", `c_board[${nr}][${nc}]=${cBoard[nr][nc]}: 연쇄 폭발할 벽돌인지 확인합니다.`, { cursor });
                   if (cBoard[nr][nc] !== 0) {
                     const value = cBoard[nr][nc];
+                    yield explosion("chain", `방향 (${dr}, ${dc})으로 ${num}칸 떨어진 (${nr + 1}, ${nc + 1})에 값 ${value} 벽돌이 있습니다. 연쇄 폭발 대상입니다.`, { cursor });
                     queue.push([nr, nc, value]);
                     yield explosion("chainEnqueue", `값 ${value} 벽돌을 queue에 추가합니다.`, { cursor });
                     cBoard[nr][nc] = 0;
@@ -240,21 +222,16 @@
                 gravityColumn: k, gravityRow: l, remainBlocks: [...remain],
                 removed: [],
               });
-              yield gravity("gravity", `k=${k}: ${k + 1}번 열에 중력을 적용합니다.`);
-              yield gravity("gravityInit", "remain_blocks = []로 임시 목록을 비웁니다.");
+              yield gravity("gravityInit", `k=${k}: ${k + 1}번 열의 remain_blocks = []를 준비합니다. 아래부터 빈 칸을 건너뛰며 벽돌을 모읍니다.`);
               for (let l = data.H - 1; l >= 0; l--) {
-                yield gravity("gravityScan", `l=${l}: 아래에서 위로 칸을 확인합니다.`, l);
-                yield gravity("gravityCheck", `c_board[${l}][${k}]=${cBoard[l][k]}: ${cBoard[l][k] ? "벽돌을 모읍니다." : "빈 칸을 넘어갑니다."}`, l);
                 if (cBoard[l][k] !== 0) {
                   remain.push(cBoard[l][k]);
-                  yield gravity("gravityCollect", `값 ${cBoard[l][k]}을 목록 뒤에 추가합니다.`, l);
+                  yield gravity("gravityCollect", `l=${l}: (${l + 1}, ${k + 1})의 값 ${cBoard[l][k]}을 목록 뒤에 추가합니다.`, l);
                   cBoard[l][k] = 0;
                   yield gravity("gravityClear", "목록에 보관한 벽돌의 기존 칸을 비웁니다.", l);
                 }
               }
               for (let l = data.H - 1; l >= 0; l--) {
-                yield gravity("gravityFill", `l=${l}: 아래부터 다시 채웁니다.`, l);
-                yield gravity("gravityEmpty", `목록에 ${remain.length}개가 남아 있습니다.`, l);
                 if (!remain.length) {
                   yield gravity("gravityBreak", "목록이 비었으므로 이 열의 채우기를 끝냅니다.", l);
                   break;
@@ -270,6 +247,7 @@
             yield emit("backtrack", `재귀 호출에서 돌아왔습니다. 원본 보드로 복귀하고 r 반복을 끝냅니다.`, { column: c });
             break;
           }
+          if (!hitFound) yield emit("emptyColumn", `${c + 1}번 열을 위에서 아래까지 확인했지만 벽돌이 없습니다. 다음 열로 넘어갑니다.`, { column: c });
         }
       }
       yield* dfs(0, cloneBoard(data.board));
