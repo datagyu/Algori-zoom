@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" />
+  <meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" />
+  <link rel="stylesheet" href="../../assets/visualizer.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../../assets/ui.css" />
+  <title>벽돌 깨기 | 알고리줌</title>
+</head>
+<body class="visualizer code-reveal-enabled visualizer--editor">
+  <p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+  <template id="sourceCode">direction = [(-1,0), (1,0), (0,-1), (0,1)]
+def dfs(level, board):
+    global ans
+    c_block = 0
+    if ans == 0:
+        return
+    for i in range(H):
+        for j in range(W):
+            if board[i][j] != 0:
+                c_block += 1
+    if c_block == 0:
+        ans = 0
+        return
+    if level == N:
+        ans = min(ans, c_block)
+        return
+    for c in range(W):
+        for r in range(H):
+            if board[r][c] != 0:
+                c_board = [row[:] for row in board]
+                queue = []
+                queue.append((r, c, board[r][c]))
+                c_board[r][c] = 0
+                while queue:
+                    cr, cc, block = queue.pop(0)
+                    for dr, dc in direction:
+                        for num in range(1, block):
+                            nr, nc = cr + dr * num, cc + dc * num
+                            if not (0 &lt;= nr &lt; H and 0 &lt;= nc &lt; W):
+                                break
+                            if c_board[nr][nc] != 0:
+                                queue.append((nr, nc, c_board[nr][nc]))
+                                c_board[nr][nc] = 0
+                for k in range(W):
+                    remain_blocks = []
+                    for l in range(H-1, -1, -1):
+                        if c_board[l][k] != 0:
+                            remain_blocks.append(c_board[l][k])
+                            c_board[l][k] = 0
+                    for l in range(H-1, -1, -1):
+                        if not remain_blocks:
+                            break
+                        c_board[l][k] = remain_blocks.pop(0)
+                dfs(level + 1, c_board)
+                break
+T = int(input())
+for tc in range(1, T + 1):
+    N, W, H = map(int, input().split())
+    blocks = [list(map(int, input().split())) for _ in range(H)]
+    ans = float('inf')
+    dfs(0, blocks)
+    print('#{} {}'.format(tc, ans))</template>
+
+  <main class="desktop-view app-shell">
+    <header class="hero"><a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><p class="eyebrow">SWEA 5656 · 모의 SW 역량테스트</p><h1>벽돌 깨기</h1><p class="subtitle">각 구슬마다 떨어뜨릴 열을 DFS로 선택하고, 맨 위 벽돌부터 연쇄 폭발을 처리합니다.<br>폭발이 끝나면 남은 벽돌을 아래로 떨어뜨린 뒤 다음 구슬을 탐색해 최종 남은 벽돌 수를 최소화합니다.</p></header>
+    <section class="panel control-strip" aria-label="실행 컨트롤">
+      <div class="controls-main"><button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button><button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button><button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button></div>
+      <label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label>
+    </section>
+    <section class="panel timeline-panel" aria-label="재생바"><div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div><input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" /></section>
+    <section class="workspace">
+      <article class="panel code-panel"><div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div><div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView"></pre></div></article>
+      <article class="panel board-panel"><div class="panel-head"><span>벽돌 보드 · 폭발 시뮬레이션</span><span id="boardLabel">보드 준비</span></div><div class="board-viewport" id="boardViewport" tabindex="0"><div id="board"></div></div></article>
+      <article class="panel state-panel"><div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div><div class="state-grid"><div><span>level</span><strong id="levelValue">0</strong></div><div><span>c · 열</span><strong id="columnValue">—</strong></div><div><span>c_block</span><strong id="blockCountValue">—</strong></div><div><span>폭발 block</span><strong id="powerValue">—</strong></div><div><span>queue</span><strong id="queueValue">0</strong></div><div><span>ans</span><strong id="ansValue">∞</strong></div></div><div class="explain" id="explainText"></div></article>
+    </section>
+    <section class="panel detail-panel"><div class="panel-head"><span>구슬 경로 · 연쇄 폭발</span><span id="routeMeta">구슬 0회</span></div><div id="routeView" class="route-view"></div><div id="queueView" class="queue-view"></div><p id="impactView" class="impact-view"></p></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView"></pre></section>
+    <section class="input-panel panel"><div class="panel-head"><span>입력</span><span>1 ≤ N ≤ 4 · 2 ≤ W ≤ 12 · 2 ≤ H ≤ 15</span></div><div class="input-grid"><textarea id="inputArea" spellcheck="false" aria-label="문제 입력"></textarea><div class="input-actions"><p>첫 줄에 T를 입력하고, 각 테스트케이스마다 N W H와 이어지는 H줄의 벽돌 배열을 입력합니다.</p><p>0은 빈 공간이고 1~9는 벽돌의 폭발 범위를 나타냅니다. 구슬은 선택한 열의 가장 위 벽돌에 맞습니다.</p><button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p></div></div></section>
+  </main>
+
+  <main class="mobile-view" aria-label="모바일 코드 시각화">
+    <header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 5656</span><h1>벽돌 깨기</h1></div><div id="mobileCoord" class="mobile-coord">level 0</div></header>
+    <section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+    <section class="panel mobile-focus"><div class="mobile-focus-head"><span>벽돌 보드</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard"></div></div><div id="mobileRouteView" class="route-view mobile-route"></div><p id="mobileExplanation" class="mobile-explanation"></p></section>
+    <section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">DFS</span></div><div class="mobile-state-grid"><div><span>level</span><strong id="mobileLevel">0</strong></div><div><span>열</span><strong id="mobileColumn">—</strong></div><div><span>남은 벽돌</span><strong id="mobileCount">—</strong></div><div><span>ans</span><strong id="mobileAns">∞</strong></div></div><div id="mobileQueueView" class="queue-view mobile-queue"></div><p id="mobileImpactView" class="impact-view"></p></section>
+    <section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView"></pre></section>
+    <nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" type="button">재생</button><button id="mobilePrevBtn" type="button">이전</button><div class="mobile-scrubber"><input id="mobileTimeline" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" type="button">다음</button></nav>
+  </main>
+  <script src="../../assets/visualizer-core.js"></script><script src="./script.js"></script><script src="../../assets/ui.js"></script>
+</body></html>

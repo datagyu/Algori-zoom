@@ -1,5 +1,6 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-5656",title:"벽돌 깨기",platform:"SWEA",problemNo:"5656",href:"problems/5656/",status:"ready",searchTerms:["벽돌 깨기","DFS","백트래킹","BFS","연쇄 폭발","queue","중력","시뮬레이션","구슬","완전탐색"]},
   {id:"swea-5209",title:"최소 생산 비용",platform:"SWEA",problemNo:"5209",level:"D3",href:"problems/5209/",status:"ready",searchTerms:["최소 생산 비용","DFS","백트래킹","가지치기","순열","공장","제품","used","cost","ans"]},
   {id:"swea-5208",title:"전기버스2",platform:"SWEA",problemNo:"5208",level:"D3",href:"problems/5208/",status:"ready",searchTerms:["전기버스2","DFS","백트래킹","가지치기","배터리","정류장","교환 횟수","current","change","ans"]},
   {id:"swea-4202",title:"요리사",platform:"SWEA",problemNo:"4202",href:"problems/4202/",status:"ready",searchTerms:["요리사","조합","DFS","재귀","백트래킹","시너지","완전탐색","A_Sum","B_Sum","맛 차이"]},
