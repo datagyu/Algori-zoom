@@ -23,7 +23,15 @@
       { text: "for dr, dc in direction:", types: "spread" },
       { text: "if c_board[nr][nc] != 0:", types: "chain" },
       { text: "for k in range(W):", types: "gravity" },
-      { text: "c_board[l][k] = remain_blocks.pop(0)", types: "gravityDone" },
+      { text: "remain_blocks = []", types: "gravityInit" },
+      { text: "for l in range(H-1, -1, -1):", types: "gravityScan", occurrence: 1 },
+      { text: "if c_board[l][k] != 0:", types: "gravityCheck" },
+      { text: "remain_blocks.append(c_board[l][k])", types: "gravityCollect" },
+      { text: "c_board[l][k] = 0", types: "gravityClear" },
+      { text: "for l in range(H-1, -1, -1):", types: "gravityFill", occurrence: 2 },
+      { text: "if not remain_blocks:", types: "gravityEmpty" },
+      { text: "break", types: "gravityBreak", occurrence: 3 },
+      { text: "c_board[l][k] = remain_blocks.pop(0)", types: "gravityPlace gravityDone" },
       { text: "dfs(level + 1, c_board)", types: "recurse" },
       { text: "dfs(0, blocks)", types: "start" },
       { text: "print('#{} {}'.format(tc, ans))", types: "output" },
@@ -263,17 +271,35 @@
             cBlock,
           });
 
+          const remainingCount = countBlocks(cBoard);
           for (let k = 0; k < data.W; k++) {
             const remain = [];
+            // Snapshot the temporary list so seeking backwards restores each operation.
+            const gravityStep = (phase, message, l = null) => push(phase, level, cBoard, message, {
+              column: c, gravityColumn: k, gravityRow: l, remainBlocks: [...remain],
+              cBlock: remainingCount,
+            });
+            gravityStep("gravity", `k=${k}: ${k + 1}번 열에 중력을 적용합니다.`);
+            gravityStep("gravityInit", "remain_blocks = []로 이 열의 임시 목록을 비웁니다.");
             for (let l = data.H - 1; l >= 0; l--) {
+              gravityStep("gravityScan", `l=${l}: 아래에서 위로 (${l + 1}, ${k + 1}) 칸을 확인합니다.`, l);
+              gravityStep("gravityCheck", `c_board[${l}][${k}] = ${cBoard[l][k]}: ${cBoard[l][k] ? "벽돌을 목록에 모읍니다." : "빈 칸이므로 넘어갑니다."}`, l);
               if (cBoard[l][k] !== 0) {
                 remain.push(cBoard[l][k]);
+                gravityStep("gravityCollect", `값 ${cBoard[l][k]}을 remain_blocks 뒤에 추가합니다.`, l);
                 cBoard[l][k] = 0;
+                gravityStep("gravityClear", `목록에 보관한 (${l + 1}, ${k + 1}) 칸을 0으로 비웁니다.`, l);
               }
             }
             for (let l = data.H - 1; l >= 0; l--) {
-              if (!remain.length) break;
+              gravityStep("gravityFill", `l=${l}: 아래에서 위로 벽돌을 다시 채웁니다.`, l);
+              gravityStep("gravityEmpty", `remain_blocks에 ${remain.length}개가 남아 있습니다.`, l);
+              if (!remain.length) {
+                gravityStep("gravityBreak", "목록이 비었으므로 이 열의 채우기를 끝냅니다. 위쪽 칸은 0으로 남습니다.", l);
+                break;
+              }
               cBoard[l][k] = remain.shift();
+              gravityStep("gravityPlace", `목록 맨 앞 값 ${cBoard[l][k]}을 꺼내 (${l + 1}, ${k + 1}) 칸에 놓습니다.`, l);
             }
           }
 
@@ -348,6 +374,9 @@
     column: "열 선택", emptyColumn: "빈 열", hit: "구슬 명중", copy: "보드 복사", enqueue: "queue 추가",
     removeHit: "첫 벽돌 제거", queueLoop: "연쇄 폭발", pop: "폭발 벽돌 꺼내기", chain: "연쇄 제거",
     gravity: "중력 준비", gravityDone: "중력 적용", recurse: "다음 구슬", backtrack: "백트래킹",
+    gravityInit: "목록 초기화", gravityScan: "아래부터 확인", gravityCheck: "벽돌 확인",
+    gravityCollect: "벽돌 모으기", gravityClear: "기존 칸 비우기", gravityFill: "아래부터 채우기",
+    gravityEmpty: "남은 목록 확인", gravityBreak: "열 채우기 완료", gravityPlace: "벽돌 배치",
     summary: "탐색 요약", output: "출력",
   };
 
@@ -360,7 +389,7 @@
     const queued = new Set((s.queue || []).map((v) => key(v[0], v[1])));
     const hit = s.hit ? key(s.hit[0], s.hit[1]) : null;
     const source = s.source ? key(s.source[0], s.source[1]) : null;
-    const heads = Array.from({ length: W }, (_, c) => `<div class="col-head ${c === s.column ? "active" : ""}">${c + 1}</div>`).join("");
+    const heads = Array.from({ length: W }, (_, c) => `<div class="col-head ${c === (s.gravityColumn ?? s.column) ? "active" : ""}">${c + 1}</div>`).join("");
     let cells = "";
     for (let r = 0; r < H; r++) {
       for (let c = 0; c < W; c++) {
@@ -375,10 +404,13 @@
         if (removed.has(cellKey) && value === 0) cls += " removed";
         if (queued.has(cellKey)) cls += " queued";
         if (s.settled && value !== 0) cls += " settled";
+        if (c === s.gravityColumn) cls += " gravity-column";
+        if (c === s.gravityColumn && r === s.gravityRow) cls += " gravity-current";
         cells += `<div class="${cls}" title="r${r + 1}, c${c + 1}">${value === 0 ? "" : value}</div>`;
       }
     }
-    container.innerHTML = `<div class="brick-scene"><div class="brick-col-heads" style="grid-template-columns:repeat(${W},34px)">${heads}</div><div class="brick-board" style="grid-template-columns:repeat(${W},34px)">${cells}</div><p class="brick-legend">금색: 구슬 명중 · 주황: 현재 폭발 범위 · 보라 테두리: queue 대기 · ×: 이번 구슬에서 제거된 칸 · 파랑: 중력 적용 후 벽돌</p></div>`;
+    const gravity = s.gravityColumn == null ? "" : `<div class="gravity-state"><span class="queue-empty">k=${s.gravityColumn} · l=${s.gravityRow ?? "—"} · remain_blocks (앞 → 뒤)</span><div class="queue-view">${s.remainBlocks.length ? s.remainBlocks.map((value, i) => `<span class="queue-chip ${i === 0 ? "gravity-front" : ""}">${value}</span>`).join("") : '<span class="queue-empty">[]</span>'}</div></div>`;
+    container.innerHTML = `<div class="brick-scene"><div class="brick-col-heads" style="grid-template-columns:repeat(${W},34px)">${heads}</div><div class="brick-board" style="grid-template-columns:repeat(${W},34px)">${cells}</div>${gravity}<p class="brick-legend">금색: 구슬 명중 · 주황: 현재 폭발 범위 · 보라 테두리: queue 대기 · ×: 이번 구슬에서 제거된 칸 · 파랑: 중력 적용 후 벽돌${s.gravityColumn == null ? "" : " · 파랑 열: 중력 처리 중 · 금색 칸: 현재 l"}</p></div>`;
   }
 
   function route(container, s) {
