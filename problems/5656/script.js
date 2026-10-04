@@ -5,23 +5,42 @@
     title: "벽돌 깨기",
     autoplayMs: 500,
     defaultSampleId: "all",
-    maxFrames: 5200,
     samples: [{"id":"s1","label":"샘플 1","value":"1\n3 10 10\n0 0 0 0 0 0 0 0 0 0\n1 0 1 0 1 0 0 0 0 0\n1 0 3 0 1 1 0 0 0 1\n1 1 1 0 1 2 0 0 0 9\n1 1 4 0 1 1 0 0 1 1\n1 1 4 1 1 1 2 1 1 1\n1 1 5 1 1 1 1 2 1 1\n1 1 6 1 1 1 1 1 2 1\n1 1 1 1 1 1 1 1 1 5\n1 1 7 1 1 1 1 1 1 1"},{"id":"s2","label":"샘플 2","value":"1\n2 9 10\n0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0\n0 1 0 0 0 0 0 0 0\n0 1 0 0 0 0 0 0 0\n1 1 0 0 1 0 0 0 0\n1 1 0 1 1 1 0 1 0\n1 1 0 1 1 1 0 1 0\n1 1 1 1 1 1 1 1 0\n1 1 3 1 6 1 1 1 1\n1 1 1 1 1 1 1 1 1"},{"id":"s3","label":"샘플 3","value":"1\n3 6 7\n1 1 0 0 0 0\n1 1 0 0 1 0\n1 1 0 0 4 0\n4 1 0 0 1 0\n1 5 1 0 1 6\n1 2 8 1 1 6\n1 1 1 9 2 1"},{"id":"s4","label":"샘플 4","value":"1\n4 4 15\n0 0 0 0\n0 0 0 0\n0 0 0 0\n1 0 0 0\n1 0 0 0\n1 0 0 0\n1 0 0 0\n1 0 5 0\n1 1 1 0\n1 1 1 9\n1 1 1 1\n1 6 1 2\n1 1 1 5\n1 1 1 1\n2 1 1 2"},{"id":"s5","label":"샘플 5","value":"1\n4 12 15\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9"},{"id":"all","label":"전체 샘플","value":"5\n3 10 10\n0 0 0 0 0 0 0 0 0 0\n1 0 1 0 1 0 0 0 0 0\n1 0 3 0 1 1 0 0 0 1\n1 1 1 0 1 2 0 0 0 9\n1 1 4 0 1 1 0 0 1 1\n1 1 4 1 1 1 2 1 1 1\n1 1 5 1 1 1 1 2 1 1\n1 1 6 1 1 1 1 1 2 1\n1 1 1 1 1 1 1 1 1 5\n1 1 7 1 1 1 1 1 1 1\n2 9 10\n0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0\n0 1 0 0 0 0 0 0 0\n0 1 0 0 0 0 0 0 0\n1 1 0 0 1 0 0 0 0\n1 1 0 1 1 1 0 1 0\n1 1 0 1 1 1 0 1 0\n1 1 1 1 1 1 1 1 0\n1 1 3 1 6 1 1 1 1\n1 1 1 1 1 1 1 1 1\n3 6 7\n1 1 0 0 0 0\n1 1 0 0 1 0\n1 1 0 0 4 0\n4 1 0 0 1 0\n1 5 1 0 1 6\n1 2 8 1 1 6\n1 1 1 9 2 1\n4 4 15\n0 0 0 0 \n0 0 0 0 \n0 0 0 0 \n1 0 0 0 \n1 0 0 0 \n1 0 0 0 \n1 0 0 0 \n1 0 5 0 \n1 1 1 0 \n1 1 1 9 \n1 1 1 1 \n1 6 1 2 \n1 1 1 5 \n1 1 1 1 \n2 1 1 2 \n4 12 15\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9\n9 9 9 9 9 9 9 9 9 9 9 9"}],
     sourceSteps: [
-      { text: "if ans == 0:", types: "checkZero prune" },
+      { text: "direction = [(-1,0), (1,0), (0,-1), (0,1)]", types: "directions" },
+      { text: "T = int(input())", types: "testCount" },
+      { text: "def dfs(level, board):", types: "enter" },
+      { text: "global ans", types: "globalAns" },
+      { text: "c_block = 0", types: "countInit" },
+      { text: "if ans == 0:", types: "checkZero" },
+      { text: "return", types: "prune", occurrence: 1 },
       { text: "for i in range(H):", types: "count" },
+      { text: "for j in range(W):", types: "countColumn" },
+      { text: "if board[i][j] != 0:", types: "countCheck" },
+      { text: "c_block += 1", types: "countAdd" },
       { text: "if c_block == 0:", types: "empty" },
+      { text: "ans = 0", types: "emptyAns" },
+      { text: "return", types: "emptyReturn", occurrence: 2 },
       { text: "if level == N:", types: "levelEnd" },
       { text: "ans = min(ans, c_block)", types: "updateAns" },
+      { text: "return", types: "levelReturn", occurrence: 3 },
       { text: "for c in range(W):", types: "column" },
+      { text: "for r in range(H):", types: "hitScan" },
       { text: "if board[r][c] != 0:", types: "hit" },
       { text: "c_board = [row[:] for row in board]", types: "copy" },
+      { text: "queue = []", types: "queueInit" },
       { text: "queue.append((r, c, board[r][c]))", types: "enqueue" },
       { text: "c_board[r][c] = 0", types: "removeHit" },
       { text: "while queue:", types: "queueLoop" },
       { text: "cr, cc, block = queue.pop(0)", types: "pop" },
       { text: "for dr, dc in direction:", types: "spread" },
+      { text: "for num in range(1, block):", types: "distance" },
+      { text: "nr, nc = cr + dr * num, cc + dc * num", types: "coords" },
+      { text: "if not (0 <= nr < H and 0 <= nc < W):", types: "bounds" },
+      { text: "break", types: "spreadBreak", occurrence: 1 },
       { text: "if c_board[nr][nc] != 0:", types: "chain" },
+      { text: "queue.append((nr, nc, c_board[nr][nc]))", types: "chainEnqueue" },
+      { text: "c_board[nr][nc] = 0", types: "chainRemove" },
       { text: "for k in range(W):", types: "gravity" },
       { text: "remain_blocks = []", types: "gravityInit" },
       { text: "for l in range(H-1, -1, -1):", types: "gravityScan", occurrence: 1 },
@@ -30,9 +49,14 @@
       { text: "c_board[l][k] = 0", types: "gravityClear" },
       { text: "for l in range(H-1, -1, -1):", types: "gravityFill", occurrence: 2 },
       { text: "if not remain_blocks:", types: "gravityEmpty" },
-      { text: "break", types: "gravityBreak", occurrence: 3 },
-      { text: "c_board[l][k] = remain_blocks.pop(0)", types: "gravityPlace gravityDone" },
+      { text: "break", types: "gravityBreak", occurrence: 2 },
+      { text: "c_board[l][k] = remain_blocks.pop(0)", types: "gravityPlace" },
       { text: "dfs(level + 1, c_board)", types: "recurse" },
+      { text: "break", types: "backtrack", occurrence: 3 },
+      { text: "for tc in range(1, T + 1):", types: "case" },
+      { text: "N, W, H = map(int, input().split())", types: "dimensions" },
+      { text: "blocks = [list(map(int, input().split())) for _ in range(H)]", types: "loadBoard" },
+      { text: "ans = float('inf')", types: "initAns" },
       { text: "dfs(0, blocks)", types: "start" },
       { text: "print('#{} {}'.format(tc, ans))", types: "output" },
     ],
@@ -52,7 +76,8 @@
     "outputView", "mobileOutputView", "inputArea", "applyBtn", "sampleButtons", "inputError",
   ]);
 
-  const state = { steps: [], stepIndex: 0, timer: null, speed: 1, selectedSample: PROBLEM.defaultSampleId };
+  const state = { steps: [], iterator: null, complete: false, seeking: false, generation: 0,
+    stepIndex: 0, timer: null, speed: 1, selectedSample: PROBLEM.defaultSampleId };
   let desktopLines, mobileLines, stepLines;
   const DIR = [[-1, 0], [1, 0], [0, -1], [0, 1]];
   const cloneBoard = (board) => board.map((row) => row.slice());
@@ -90,285 +115,179 @@
     return count;
   }
 
-  function buildSteps(cases) {
-    const steps = [];
+  // Generate execution frames on demand; no testcase is truncated at a frame limit.
+  function* buildSteps(cases) {
     let output = "";
-    const budget = Math.max(650, Math.floor(PROBLEM.maxFrames / cases.length));
-
-    cases.forEach((data, ci) => {
+    const initial = { tc: 1, data: cases[0], level: null, board: cloneBoard(cases[0].board),
+      ans: Infinity, path: [], output, queue: [], removed: [], blast: [] };
+    yield { ...initial, phase: "directions", message: "상하좌우 네 폭발 방향을 정의하고 DFS 함수를 준비합니다." };
+    yield { ...initial, phase: "testCount", message: `T=${cases.length}: 테스트케이스 수를 읽습니다.` };
+    for (const [ci, data] of cases.entries()) {
       let ans = Infinity;
-      let frames = 0;
-      let omitted = false;
-      let calls = 0;
       let bestBoard = cloneBoard(data.board);
       let bestPath = [];
       const path = [];
-
-      const push = (phase, level, board, message, extra = {}) => {
-        if (frames >= budget) {
-          omitted = true;
-          return;
-        }
-        frames += 1;
-        steps.push({
-          tc: ci + 1,
-          data,
-          phase,
-          level,
-          board: cloneBoard(board),
-          ans,
-          path: [...path],
-          message,
-          output,
-          ...extra,
-          queue: (extra.queue || []).map((v) => [...v]),
-          removed: (extra.removed || []).map((v) => [...v]),
-          blast: (extra.blast || []).map((v) => [...v]),
-        });
-      };
-
-      push("start", 0, data.board, "dfs(0, blocks)로 탐색을 시작합니다. 아직 구슬은 사용하지 않았습니다.", {
-        cBlock: countBlocks(data.board),
+      const frame = (phase, level, board, message, extra = {}) => ({
+        tc: ci + 1, data, phase, level, board: cloneBoard(board), ans,
+        path: [...path], message, output, ...extra,
+        queue: (extra.queue || []).map((v) => [...v]),
+        removed: (extra.removed || []).map((v) => [...v]),
+        blast: (extra.blast || []).map((v) => [...v]),
       });
+      yield frame("case", null, data.board, `#${ci + 1} 테스트케이스를 시작합니다.`);
+      yield frame("dimensions", null, data.board, `N=${data.N}, W=${data.W}, H=${data.H}를 읽습니다.`);
+      yield frame("loadBoard", null, data.board, "입력으로 벽돌 보드를 만듭니다.");
+      yield frame("initAns", null, data.board, "ans를 무한대로 초기화합니다.");
+      yield frame("start", 0, data.board, "dfs(0, blocks)로 첫 구슬 탐색을 시작합니다.");
 
-      function dfs(level, board) {
-        calls += 1;
-        push("enter", level, board, `DFS level=${level}에 들어왔습니다. 현재 보드에서 남은 벽돌을 셉니다.`);
-        push("checkZero", level, board, `현재 ans가 ${Number.isFinite(ans) ? ans : "∞"}입니다. ans가 0이면 더 줄일 수 없으므로 탐색을 끝낼 수 있습니다.`);
-
+      function* dfs(level, board) {
+        let cBlock = 0;
+        const emit = (phase, message, extra = {}) => frame(phase, level, board, message, { cBlock, ...extra });
+        yield emit("enter", `dfs(level=${level})에 들어옵니다.`);
+        yield emit("globalAns", "전체 탐색에서 공유하는 ans를 사용합니다.");
+        yield emit("countInit", "c_block = 0으로 벽돌 개수를 초기화합니다.");
+        yield emit("checkZero", `ans=${Number.isFinite(ans) ? ans : "∞"}: 0인지 확인합니다.`);
         if (ans === 0) {
-          push("prune", level, board, "이미 남은 벽돌 0개를 찾았으므로 이 이후 경로는 탐색하지 않습니다.", { cBlock: 0 });
+          yield emit("prune", "ans가 0이므로 이 DFS 호출에서 돌아갑니다.");
           return;
         }
-
-        const cBlock = countBlocks(board);
-        push("count", level, board, `현재 남아 있는 벽돌은 ${cBlock}개입니다.`, { cBlock });
-
+        for (let i = 0; i < data.H; i++) {
+          yield emit("count", `i=${i}: 이 행의 벽돌을 셉니다.`);
+          for (let j = 0; j < data.W; j++) {
+            const extra = { cursor: [i, j] };
+            yield emit("countColumn", `j=${j}: (${i + 1}, ${j + 1}) 칸으로 이동합니다.`, extra);
+            yield emit("countCheck", `board[${i}][${j}]=${board[i][j]}: 벽돌인지 확인합니다.`, extra);
+            if (board[i][j] !== 0) {
+              cBlock++;
+              yield emit("countAdd", `c_block을 ${cBlock}로 늘립니다.`, extra);
+            }
+          }
+        }
+        yield emit("empty", `남은 벽돌 ${cBlock}개가 0인지 확인합니다.`);
         if (cBlock === 0) {
           ans = 0;
           bestBoard = cloneBoard(board);
           bestPath = [...path];
-          push("empty", level, board, "벽돌이 하나도 남지 않았습니다. 가능한 최솟값 0을 찾았으므로 ans=0으로 갱신합니다.", {
-            cBlock,
-            improved: true,
-          });
+          yield emit("emptyAns", "벽돌이 없으므로 ans = 0으로 갱신합니다.");
+          yield emit("emptyReturn", "이 DFS 호출에서 돌아갑니다.");
           return;
         }
-
+        yield emit("levelEnd", `level=${level}이 N=${data.N}인지 확인합니다.`);
         if (level === data.N) {
           const old = ans;
           ans = Math.min(ans, cBlock);
-          if (ans < old) {
-            bestBoard = cloneBoard(board);
-            bestPath = [...path];
-          }
-          push("levelEnd", level, board, `구슬 ${data.N}개를 모두 사용했습니다. 남은 벽돌 ${cBlock}개로 ans를 비교합니다.`, { cBlock });
-          push("updateAns", level, board, `ans: ${Number.isFinite(old) ? old : "∞"} → ${ans}`, {
-            cBlock,
-            improved: ans < old,
-          });
+          if (ans < old) { bestBoard = cloneBoard(board); bestPath = [...path]; }
+          yield emit("updateAns", `ans: ${Number.isFinite(old) ? old : "∞"} → ${ans}`);
+          yield emit("levelReturn", "구슬을 모두 사용했으므로 호출에서 돌아갑니다.");
           return;
         }
-
         for (let c = 0; c < data.W; c++) {
-          push("column", level, board, `${c + 1}번 열에 구슬을 떨어뜨려 맨 위 벽돌을 찾습니다.`, { column: c, cBlock });
-
-          let hitR = -1;
+          yield emit("column", `${c + 1}번 열을 선택합니다.`, { column: c });
           for (let r = 0; r < data.H; r++) {
-            if (board[r][c] !== 0) {
-              hitR = r;
-              break;
-            }
-          }
-
-          if (hitR < 0) {
-            push("emptyColumn", level, board, `${c + 1}번 열은 비어 있어 이 열에는 구슬을 사용하지 않습니다.`, { column: c, cBlock });
-            continue;
-          }
-
-          push("hit", level, board, `${c + 1}번 열의 맨 위 벽돌 (${hitR + 1}, ${c + 1}), 값 ${board[hitR][c]}에 구슬이 명중합니다.`, {
-            column: c,
-            hit: [hitR, c],
-            cBlock,
-          });
-
-          const cBoard = cloneBoard(board);
-          push("copy", level, cBoard, "원본 보드를 보존하기 위해 c_board로 복사합니다.", {
-            column: c,
-            hit: [hitR, c],
-            cBlock,
-          });
-
-          const queue = [[hitR, c, board[hitR][c]]];
-          const removed = [[hitR, c]];
-          push("enqueue", level, cBoard, `명중 벽돌을 queue에 넣습니다. 폭발력은 ${board[hitR][c]}입니다.`, {
-            column: c,
-            hit: [hitR, c],
-            queue,
-            removed,
-            cBlock,
-            power: board[hitR][c],
-          });
-
-          cBoard[hitR][c] = 0;
-          push("removeHit", level, cBoard, "명중한 벽돌을 먼저 제거하고 연쇄 폭발을 시작합니다.", {
-            column: c,
-            hit: [hitR, c],
-            queue,
-            removed,
-            cBlock,
-            power: board[hitR][c],
-          });
-
-          while (queue.length) {
-            push("queueLoop", level, cBoard, `queue에 ${queue.length}개의 폭발 대상이 남아 있습니다.`, {
-              column: c,
-              queue,
-              removed,
-              cBlock,
+            const hit = [r, c];
+            yield emit("hitScan", `r=${r}: 위에서 아래로 명중할 벽돌을 찾습니다.`, { column: c, cursor: hit });
+            yield emit("hit", `board[${r}][${c}]=${board[r][c]}: ${board[r][c] ? "첫 벽돌에 명중합니다." : "빈 칸이므로 다음 행을 확인합니다."}`, { column: c, cursor: hit, ...(board[r][c] ? { hit } : {}) });
+            if (!board[r][c]) continue;
+            const cBoard = cloneBoard(board);
+            const queue = [];
+            const removed = [];
+            const shot = (phase, message, extra = {}) => frame(phase, level, cBoard, message, {
+              column: c, queue, removed, cBlock, ...extra,
             });
-
-            const [cr, cc, block] = queue.shift();
-            const blast = [];
-            push("pop", level, cBoard, `(${cr + 1}, ${cc + 1})의 값 ${block} 벽돌을 꺼내 상하좌우 ${Math.max(0, block - 1)}칸을 확인합니다.`, {
-              column: c,
-              queue,
-              removed,
-              source: [cr, cc],
-              power: block,
-              blast,
-              cBlock,
-            });
-
-            for (const [dr, dc] of DIR) {
-              for (let num = 1; num < block; num++) {
-                const nr = cr + dr * num;
-                const nc = cc + dc * num;
-                if (!(0 <= nr && nr < data.H && 0 <= nc && nc < data.W)) break;
-                blast.push([nr, nc]);
-                if (cBoard[nr][nc] !== 0) {
-                  const value = cBoard[nr][nc];
-                  queue.push([nr, nc, value]);
-                  cBoard[nr][nc] = 0;
-                  removed.push([nr, nc]);
-                  push("chain", level, cBoard, `폭발 범위의 (${nr + 1}, ${nc + 1}) 벽돌 ${value}도 제거하고 queue에 추가합니다.`, {
-                    column: c,
-                    queue,
-                    removed,
-                    source: [cr, cc],
-                    power: block,
-                    blast,
-                    cBlock,
-                  });
+            yield shot("copy", "원본 보드를 c_board로 복사합니다.", { hit });
+            yield shot("queueInit", "queue = []로 폭발 대기열을 만듭니다.", { hit });
+            queue.push([r, c, board[r][c]]);
+            yield shot("enqueue", `명중한 값 ${board[r][c]} 벽돌을 queue에 추가합니다.`, { hit, power: board[r][c] });
+            cBoard[r][c] = 0;
+            removed.push(hit);
+            yield shot("removeHit", "명중한 벽돌의 칸을 0으로 비웁니다.", { hit, power: board[r][c] });
+            while (true) {
+              yield shot("queueLoop", `queue에 ${queue.length}개가 있습니다.${queue.length ? " 다음 폭발을 처리합니다." : " 연쇄 폭발을 마쳤습니다."}`);
+              if (!queue.length) break;
+              const [cr, cc, block] = queue.shift();
+              const blast = [];
+              const explosion = (phase, message, extra = {}) => shot(phase, message, { source: [cr, cc], power: block, blast, ...extra });
+              yield explosion("pop", `(${cr + 1}, ${cc + 1})의 값 ${block} 벽돌을 꺼냅니다.`);
+              for (const [dr, dc] of DIR) {
+                yield explosion("spread", `방향 (dr=${dr}, dc=${dc})의 폭발 범위를 확인합니다.`);
+                for (let num = 1; num < block; num++) {
+                  yield explosion("distance", `num=${num}: 현재 벽돌에서 ${num}칸 떨어진 위치를 확인합니다.`);
+                  const nr = cr + dr * num, nc = cc + dc * num;
+                  const cursor = [nr, nc];
+                  yield explosion("coords", `nr=${nr}, nc=${nc}를 계산합니다.`, { cursor });
+                  const inside = 0 <= nr && nr < data.H && 0 <= nc && nc < data.W;
+                  yield explosion("bounds", inside ? "보드 안의 좌표입니다." : "보드 밖의 좌표입니다.", { cursor });
+                  if (!inside) {
+                    yield explosion("spreadBreak", "이 방향의 거리 반복을 끝냅니다.");
+                    break;
+                  }
+                  blast.push(cursor);
+                  yield explosion("chain", `c_board[${nr}][${nc}]=${cBoard[nr][nc]}: 연쇄 폭발할 벽돌인지 확인합니다.`, { cursor });
+                  if (cBoard[nr][nc] !== 0) {
+                    const value = cBoard[nr][nc];
+                    queue.push([nr, nc, value]);
+                    yield explosion("chainEnqueue", `값 ${value} 벽돌을 queue에 추가합니다.`, { cursor });
+                    cBoard[nr][nc] = 0;
+                    removed.push(cursor);
+                    yield explosion("chainRemove", "queue에 추가한 벽돌의 칸을 0으로 비웁니다.", { cursor });
+                  }
                 }
               }
             }
-          }
-
-          push("gravity", level, cBoard, `연쇄 폭발이 끝났습니다. 총 ${removed.length}개를 제거했고, 이제 빈 공간 위의 벽돌을 아래로 떨어뜨립니다.`, {
-            column: c,
-            removed,
-            cBlock,
-          });
-
-          const remainingCount = countBlocks(cBoard);
-          for (let k = 0; k < data.W; k++) {
-            const remain = [];
-            // Snapshot the temporary list so seeking backwards restores each operation.
-            const gravityStep = (phase, message, l = null) => push(phase, level, cBoard, message, {
-              column: c, gravityColumn: k, gravityRow: l, remainBlocks: [...remain],
-              cBlock: remainingCount,
-            });
-            gravityStep("gravity", `k=${k}: ${k + 1}번 열에 중력을 적용합니다.`);
-            gravityStep("gravityInit", "remain_blocks = []로 이 열의 임시 목록을 비웁니다.");
-            for (let l = data.H - 1; l >= 0; l--) {
-              gravityStep("gravityScan", `l=${l}: 아래에서 위로 (${l + 1}, ${k + 1}) 칸을 확인합니다.`, l);
-              gravityStep("gravityCheck", `c_board[${l}][${k}] = ${cBoard[l][k]}: ${cBoard[l][k] ? "벽돌을 목록에 모읍니다." : "빈 칸이므로 넘어갑니다."}`, l);
-              if (cBoard[l][k] !== 0) {
-                remain.push(cBoard[l][k]);
-                gravityStep("gravityCollect", `값 ${cBoard[l][k]}을 remain_blocks 뒤에 추가합니다.`, l);
-                cBoard[l][k] = 0;
-                gravityStep("gravityClear", `목록에 보관한 (${l + 1}, ${k + 1}) 칸을 0으로 비웁니다.`, l);
+            for (let k = 0; k < data.W; k++) {
+              const remain = [];
+              const gravity = (phase, message, l = null) => shot(phase, message, {
+                gravityColumn: k, gravityRow: l, remainBlocks: [...remain],
+                removed: [],
+              });
+              yield gravity("gravity", `k=${k}: ${k + 1}번 열에 중력을 적용합니다.`);
+              yield gravity("gravityInit", "remain_blocks = []로 임시 목록을 비웁니다.");
+              for (let l = data.H - 1; l >= 0; l--) {
+                yield gravity("gravityScan", `l=${l}: 아래에서 위로 칸을 확인합니다.`, l);
+                yield gravity("gravityCheck", `c_board[${l}][${k}]=${cBoard[l][k]}: ${cBoard[l][k] ? "벽돌을 모읍니다." : "빈 칸을 넘어갑니다."}`, l);
+                if (cBoard[l][k] !== 0) {
+                  remain.push(cBoard[l][k]);
+                  yield gravity("gravityCollect", `값 ${cBoard[l][k]}을 목록 뒤에 추가합니다.`, l);
+                  cBoard[l][k] = 0;
+                  yield gravity("gravityClear", "목록에 보관한 벽돌의 기존 칸을 비웁니다.", l);
+                }
+              }
+              for (let l = data.H - 1; l >= 0; l--) {
+                yield gravity("gravityFill", `l=${l}: 아래부터 다시 채웁니다.`, l);
+                yield gravity("gravityEmpty", `목록에 ${remain.length}개가 남아 있습니다.`, l);
+                if (!remain.length) {
+                  yield gravity("gravityBreak", "목록이 비었으므로 이 열의 채우기를 끝냅니다.", l);
+                  break;
+                }
+                cBoard[l][k] = remain.shift();
+                yield gravity("gravityPlace", `맨 앞 값 ${cBoard[l][k]}을 (${l + 1}, ${k + 1})에 놓습니다.`, l);
               }
             }
-            for (let l = data.H - 1; l >= 0; l--) {
-              gravityStep("gravityFill", `l=${l}: 아래에서 위로 벽돌을 다시 채웁니다.`, l);
-              gravityStep("gravityEmpty", `remain_blocks에 ${remain.length}개가 남아 있습니다.`, l);
-              if (!remain.length) {
-                gravityStep("gravityBreak", "목록이 비었으므로 이 열의 채우기를 끝냅니다. 위쪽 칸은 0으로 남습니다.", l);
-                break;
-              }
-              cBoard[l][k] = remain.shift();
-              gravityStep("gravityPlace", `목록 맨 앞 값 ${cBoard[l][k]}을 꺼내 (${l + 1}, ${k + 1}) 칸에 놓습니다.`, l);
-            }
+            path.push(c);
+            yield shot("recurse", `중력을 마쳤습니다. dfs(${level + 1}, c_board)를 호출합니다.`, { removed: [], settled: true });
+            yield* dfs(level + 1, cBoard);
+            path.pop();
+            yield emit("backtrack", `재귀 호출에서 돌아왔습니다. 원본 보드로 복귀하고 r 반복을 끝냅니다.`, { column: c });
+            break;
           }
-
-          push("gravityDone", level, cBoard, "중력이 적용되어 각 열의 벽돌이 아래쪽부터 다시 쌓였습니다.", {
-            column: c,
-            settled: true,
-            cBlock: countBlocks(cBoard),
-          });
-
-          path.push(c);
-          push("recurse", level, cBoard, `${c + 1}번 열 선택을 경로에 기록하고 다음 구슬을 위해 dfs(${level + 1}, c_board)를 호출합니다.`, {
-            column: c,
-            cBlock: countBlocks(cBoard),
-          });
-          dfs(level + 1, cBoard);
-          path.pop();
-
-          push("backtrack", level, board, `${c + 1}번 열에서 시작한 탐색을 마치고 원래 보드로 돌아와 다음 열을 확인합니다.`, {
-            column: c,
-            cBlock,
-          });
-
-          if (ans === 0) return;
         }
       }
-
-      dfs(0, cloneBoard(data.board));
-
-      if (omitted) {
-        steps.push({
-          tc: ci + 1,
-          data,
-          phase: "summary",
-          level: null,
-          board: cloneBoard(bestBoard),
-          ans,
-          path: [...bestPath],
-          message: `화면 단계는 ${budget}개까지만 표시했습니다. 계산은 끝까지 수행했으며 총 ${calls}회 DFS 호출 후 최소 ${ans}개의 벽돌이 남는 경로를 찾았습니다.`,
-          output,
-          queue: [],
-          removed: [],
-          blast: [],
-          cBlock: ans,
-        });
-      }
-
+      yield* dfs(0, cloneBoard(data.board));
       output += `#${ci + 1} ${ans}\n`;
-      steps.push({
-        tc: ci + 1,
-        data,
-        phase: "output",
-        level: null,
-        board: cloneBoard(bestBoard),
-        ans,
-        path: [...bestPath],
-        message: `#${ci + 1} ${ans}를 출력합니다. 화면에는 최적 경로에서 최종적으로 남은 보드를 보여줍니다.`,
-        output,
-        queue: [],
-        removed: [],
-        blast: [],
-        cBlock: ans,
-        best: true,
+      yield frame("output", null, bestBoard, `#${ci + 1} ${ans}를 출력합니다. 최적 경로의 최종 보드입니다.`, {
+        path: [...bestPath], cBlock: ans, best: true,
       });
-    });
-
-    return steps;
+    }
   }
 
   const names = {
+    directions: "방향 정의", testCount: "테스트 수 입력", globalAns: "전역 ans",
+    case: "테스트케이스", dimensions: "크기 입력", loadBoard: "보드 입력", initAns: "ans 초기화",
+    countInit: "개수 초기화", countColumn: "개수 확인 칸", countCheck: "벽돌 여부", countAdd: "개수 증가",
+    emptyAns: "ans 0 갱신", emptyReturn: "DFS 반환", levelReturn: "DFS 반환",
+    hitScan: "명중 위치 탐색", queueInit: "queue 초기화", distance: "폭발 거리",
+    coords: "폭발 좌표", bounds: "범위 확인", spreadBreak: "방향 탐색 종료",
+    chainEnqueue: "연쇄 queue 추가", chainRemove: "연쇄 벽돌 제거",
     start: "탐색 시작", enter: "DFS 호출", checkZero: "0 조기 종료 확인", prune: "탐색 종료",
     count: "벽돌 개수 계산", empty: "벽돌 0개", levelEnd: "구슬 사용 완료", updateAns: "ans 갱신",
     column: "열 선택", emptyColumn: "빈 열", hit: "구슬 명중", copy: "보드 복사", enqueue: "queue 추가",
@@ -404,6 +323,7 @@
         if (removed.has(cellKey) && value === 0) cls += " removed";
         if (queued.has(cellKey)) cls += " queued";
         if (s.settled && value !== 0) cls += " settled";
+        if (s.cursor && r === s.cursor[0] && c === s.cursor[1]) cls += " gravity-current";
         if (c === s.gravityColumn) cls += " gravity-column";
         if (c === s.gravityColumn && r === s.gravityRow) cls += " gravity-current";
         cells += `<div class="${cls}" title="r${r + 1}, c${c + 1}">${value === 0 ? "" : value}</div>`;
@@ -433,7 +353,7 @@
     const parts = [];
     if (s.source) parts.push(`현재 폭발: (${s.source[0] + 1}, ${s.source[1] + 1}) · block=${s.power}`);
     if (s.removed?.length) parts.push(`이번 구슬 제거: ${s.removed.length}개`);
-    if (s.cBlock != null) parts.push(`현재 남은 벽돌: ${s.cBlock}개`);
+    if (s.cBlock != null) parts.push(`c_block: ${s.cBlock}`);
     if (!parts.length) parts.push("열을 선택하면 명중 위치와 연쇄 폭발 과정이 표시됩니다.");
     return parts.join(" · ");
   }
@@ -482,9 +402,19 @@
 
   function sync() {
     const empty = !state.steps.length;
-    els.prevBtn.disabled = els.mobilePrevBtn.disabled = empty || state.stepIndex === 0;
-    els.nextBtn.disabled = els.mobileNextBtn.disabled = empty || state.stepIndex === state.steps.length - 1;
-    [els.playBtn, els.replayBtn, els.resetBtn, els.skipBtn, els.timeline, els.mobileTimeline, els.mobilePlayBtn].forEach((el) => { el.disabled = empty; });
+    els.prevBtn.disabled = els.mobilePrevBtn.disabled = empty || state.seeking || state.stepIndex === 0;
+    els.nextBtn.disabled = els.mobileNextBtn.disabled = empty || state.seeking || atEnd();
+    [els.playBtn, els.replayBtn, els.resetBtn, els.skipBtn, els.timeline, els.mobileTimeline, els.mobilePlayBtn].forEach((el) => { el.disabled = empty || state.seeking; });
+  }
+
+  function atEnd() { return state.complete && state.stepIndex === state.steps.length - 1; }
+
+  function ensureSteps(index) {
+    while (!state.complete && state.steps.length <= index) {
+      const next = state.iterator.next();
+      if (next.done) state.complete = true;
+      else state.steps.push(next.value);
+    }
   }
 
   function render({ follow = true } = {}) {
@@ -492,8 +422,9 @@
     if (!s) return;
     renderD(s);
     renderM(s);
+    els.timeline.max = els.mobileTimeline.max = state.complete ? state.steps.length - 1 : state.steps.length + 499;
     els.timeline.value = els.mobileTimeline.value = state.stepIndex;
-    els.stepLabel.textContent = els.mobileTimelineStatus.textContent = `${state.stepIndex + 1} / ${state.steps.length}`;
+    els.stepLabel.textContent = els.mobileTimelineStatus.textContent = `${state.stepIndex + 1} / ${state.steps.length}${state.complete ? "" : "+"}`;
     sync();
     if (follow) {
       const ln = stepLines.get(s.phase);
@@ -511,25 +442,45 @@
   }
   function go(i, options = {}) {
     if (!state.steps.length) return;
+    if (state.seeking) return;
+    ensureSteps(i + 1);
     state.stepIndex = Core.clamp(i, 0, state.steps.length - 1);
     render(options);
   }
   function move(delta) { stop(); go(state.stepIndex + delta); }
   function schedule() {
     state.timer = setTimeout(() => {
-      if (state.stepIndex >= state.steps.length - 1) { stop(); return; }
+      if (atEnd()) { stop(); return; }
       go(state.stepIndex + 1);
-      if (state.stepIndex >= state.steps.length - 1) stop(); else schedule();
+      if (atEnd()) stop(); else schedule();
     }, PROBLEM.autoplayMs / state.speed);
   }
   function start() {
     if (!state.steps.length) return;
     stop();
-    if (state.stepIndex >= state.steps.length - 1) go(0);
+    if (state.seeking) return;
+    if (atEnd()) go(0);
     Core.updatePlaybackControls(els.playBtn, true);
     schedule();
   }
   function reset() { stop(); go(0); }
+
+  async function skipToEnd() {
+    stop();
+    if (state.seeking) return;
+    state.seeking = true;
+    const generation = state.generation;
+    sync();
+    // Yield between batches so changing the input can cancel a long seek.
+    while (!state.complete && generation === state.generation) {
+      ensureSteps(state.steps.length + 499);
+      els.stepLabel.textContent = els.mobileTimelineStatus.textContent = `끝으로 이동 중 · ${state.steps.length}단계`;
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+    if (generation !== state.generation) return;
+    state.seeking = false;
+    go(state.steps.length - 1);
+  }
 
   function sampleButtons() {
     els.sampleButtons.replaceChildren();
@@ -547,7 +498,13 @@
   function apply(text, id = null) {
     stop();
     try {
-      state.steps = buildSteps(parseInput(text));
+      const cases = parseInput(text);
+      state.generation++;
+      state.seeking = false;
+      state.steps = [];
+      state.iterator = buildSteps(cases);
+      state.complete = false;
+      ensureSteps(499);
       state.stepIndex = 0;
       state.selectedSample = id;
       els.inputError.textContent = "";
@@ -575,7 +532,7 @@
   els.playBtn.onclick = () => state.timer === null ? start() : stop();
   els.resetBtn.onclick = reset;
   els.replayBtn.onclick = () => { reset(); start(); };
-  els.skipBtn.onclick = () => { stop(); go(state.steps.length - 1); };
+  els.skipBtn.onclick = skipToEnd;
   els.speedRange.oninput = () => {
     state.speed = Number(els.speedRange.value);
     els.speedLabel.textContent = `${Core.formatDecimal(state.speed)}×`;
