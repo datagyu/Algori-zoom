@@ -22,7 +22,7 @@
       { text: "ans = 0", types: "emptyAns" },
       { text: "return", types: "emptyReturn", occurrence: 2 },
       { text: "if level == N:", types: "levelEnd" },
-      { text: "ans = min(ans, c_block)", types: "updateAns" },
+      { text: "ans = min(ans, c_block)", types: "updateAns summary" },
       { text: "return", types: "levelReturn", occurrence: 3 },
       { text: "for c in range(W):", types: "column" },
       { text: "for r in range(H):", types: "hitScan emptyColumn" },
@@ -57,7 +57,7 @@
       { text: "N, W, H = map(int, input().split())", types: "dimensions" },
       { text: "blocks = [list(map(int, input().split())) for _ in range(H)]", types: "loadBoard" },
       { text: "ans = float('inf')", types: "initAns" },
-      { text: "dfs(0, blocks)", types: "start" },
+      { text: "dfs(0, blocks)", types: "start replayBest" },
       { text: "print('#{} {}'.format(tc, ans))", types: "output" },
     ],
   });
@@ -127,13 +127,20 @@
       let bestBoard = cloneBoard(data.board);
       let bestPath = [];
       const path = [];
-      const frame = (phase, level, board, message, extra = {}) => ({
+      let detailed = true;
+      let firstPath = null;
+      let replayPath = null;
+      let calls = 0;
+      const frame = (phase, level, board, message, extra = {}) => {
+        if (!detailed) return null;
+        return {
         tc: ci + 1, data, phase, level, board: cloneBoard(board), ans,
         path: [...path], message, output, ...extra,
         queue: (extra.queue || []).map((v) => [...v]),
         removed: (extra.removed || []).map((v) => [...v]),
         blast: (extra.blast || []).map((v) => [...v]),
-      });
+        };
+      };
       yield frame("case", null, data.board, `#${ci + 1} 테스트케이스를 시작합니다.`);
       yield frame("dimensions", null, data.board, `N=${data.N}, W=${data.W}, H=${data.H}를 읽습니다.`);
       yield frame("loadBoard", null, data.board, "입력으로 벽돌 보드를 만듭니다.");
@@ -141,6 +148,7 @@
       yield frame("start", 0, data.board, "dfs(0, blocks)로 첫 구슬 탐색을 시작합니다.");
 
       function* dfs(level, board) {
+        calls++;
         let cBlock = 0;
         const emit = (phase, message, extra = {}) => frame(phase, level, board, message, { cBlock, ...extra });
         yield emit("enter", `dfs(level=${level})에 들어옵니다.`);
@@ -158,6 +166,7 @@
           bestPath = [...path];
           yield emit("emptyAns", "벽돌이 없으므로 ans = 0으로 갱신합니다.");
           yield emit("emptyReturn", "이 DFS 호출에서 돌아갑니다.");
+          if (firstPath === null) { firstPath = [...path]; detailed = false; }
           return;
         }
         yield emit("levelEnd", `level=${level}이 N=${data.N}인지 확인합니다.`);
@@ -167,9 +176,11 @@
           if (ans < old) { bestBoard = cloneBoard(board); bestPath = [...path]; }
           yield emit("updateAns", `ans: ${Number.isFinite(old) ? old : "∞"} → ${ans}`);
           yield emit("levelReturn", "구슬을 모두 사용했으므로 호출에서 돌아갑니다.");
+          if (firstPath === null) { firstPath = [...path]; detailed = false; }
           return;
         }
         for (let c = 0; c < data.W; c++) {
+          if (replayPath && c !== replayPath[level]) continue;
           yield emit("column", `${c + 1}번 열을 선택합니다.`, { column: c });
           let hitFound = false;
           for (let r = 0; r < data.H; r++) {
@@ -186,10 +197,9 @@
             yield shot("copy", "원본 보드를 c_board로 복사합니다.", { hit });
             yield shot("queueInit", "queue = []로 폭발 대기열을 만듭니다.", { hit });
             queue.push([r, c, board[r][c]]);
-            yield shot("enqueue", `명중한 값 ${board[r][c]} 벽돌을 queue에 추가합니다.`, { hit, power: board[r][c] });
             cBoard[r][c] = 0;
             removed.push(hit);
-            yield shot("removeHit", "명중한 벽돌의 칸을 0으로 비웁니다.", { hit, power: board[r][c] });
+            yield shot("removeHit", `명중한 값 ${board[r][c]} 벽돌을 queue에 추가하고 그 칸을 0으로 비웁니다.`, { hit, power: board[r][c], codePhases: ["enqueue"] });
             while (true) {
               yield shot("queueLoop", `queue에 ${queue.length}개가 있습니다.${queue.length ? " 다음 폭발을 처리합니다." : " 연쇄 폭발을 마쳤습니다."}`);
               if (!queue.length) break;
@@ -206,12 +216,10 @@
                   blast.push(cursor);
                   if (cBoard[nr][nc] !== 0) {
                     const value = cBoard[nr][nc];
-                    yield explosion("chain", `방향 (${dr}, ${dc})으로 ${num}칸 떨어진 (${nr + 1}, ${nc + 1})에 값 ${value} 벽돌이 있습니다. 연쇄 폭발 대상입니다.`, { cursor });
                     queue.push([nr, nc, value]);
-                    yield explosion("chainEnqueue", `값 ${value} 벽돌을 queue에 추가합니다.`, { cursor });
                     cBoard[nr][nc] = 0;
                     removed.push(cursor);
-                    yield explosion("chainRemove", "queue에 추가한 벽돌의 칸을 0으로 비웁니다.", { cursor });
+                    yield explosion("chainRemove", `(${nr + 1}, ${nc + 1})의 값 ${value} 벽돌을 queue에 추가하고 제거합니다.`, { cursor, codePhases: ["chain", "chainEnqueue"] });
                   }
                 }
               }
@@ -222,23 +230,18 @@
                 gravityColumn: k, gravityRow: l, remainBlocks: [...remain],
                 removed: [],
               });
-              yield gravity("gravityInit", `k=${k}: ${k + 1}번 열의 remain_blocks = []를 준비합니다. 아래부터 빈 칸을 건너뛰며 벽돌을 모읍니다.`);
+              // Keep collection, clearing and placement distinct, but group each column.
               for (let l = data.H - 1; l >= 0; l--) {
-                if (cBoard[l][k] !== 0) {
-                  remain.push(cBoard[l][k]);
-                  yield gravity("gravityCollect", `l=${l}: (${l + 1}, ${k + 1})의 값 ${cBoard[l][k]}을 목록 뒤에 추가합니다.`, l);
-                  cBoard[l][k] = 0;
-                  yield gravity("gravityClear", "목록에 보관한 벽돌의 기존 칸을 비웁니다.", l);
-                }
+                if (cBoard[l][k] !== 0) remain.push(cBoard[l][k]);
               }
+              yield gravity("gravityCollect", `k=${k}: ${k + 1}번 열을 아래부터 읽어 remain_blocks = [${remain.join(", ")}]로 모읍니다.`);
+              for (let l = data.H - 1; l >= 0; l--) cBoard[l][k] = 0;
+              yield gravity("gravityClear", `${k + 1}번 열의 벽돌을 목록에 보관하고 기존 칸을 모두 비웁니다.`);
               for (let l = data.H - 1; l >= 0; l--) {
-                if (!remain.length) {
-                  yield gravity("gravityBreak", "목록이 비었으므로 이 열의 채우기를 끝냅니다.", l);
-                  break;
-                }
+                if (!remain.length) break;
                 cBoard[l][k] = remain.shift();
-                yield gravity("gravityPlace", `맨 앞 값 ${cBoard[l][k]}을 (${l + 1}, ${k + 1})에 놓습니다.`, l);
               }
+              yield gravity("gravityPlace", `${k + 1}번 열에 목록 앞의 벽돌부터 아래쪽에 다시 쌓았습니다. remain_blocks = []입니다.`);
             }
             path.push(c);
             yield shot("recurse", `중력을 마쳤습니다. dfs(${level + 1}, c_board)를 호출합니다.`, { removed: [], settled: true });
@@ -250,7 +253,22 @@
           if (!hitFound) yield emit("emptyColumn", `${c + 1}번 열을 위에서 아래까지 확인했지만 벽돌이 없습니다. 다음 열로 넘어갑니다.`, { column: c });
         }
       }
-      yield* dfs(0, cloneBoard(data.board));
+      // Calculate every branch, retaining detailed frames only for the first attempt.
+      for (const step of dfs(0, cloneBoard(data.board))) if (step) yield step;
+      detailed = true;
+      const result = ans;
+      const optimum = [...bestPath];
+      const samePath = firstPath && firstPath.length === optimum.length && firstPath.every((c, i) => c === optimum[i]);
+      yield frame("summary", null, bestBoard, `첫 시도 이후의 반복 탐색을 요약했습니다. 총 ${calls}회 DFS 호출 결과 최소 ${result}개가 남습니다.${samePath ? " 첫 시도가 최적 경로이므로 상세 재생을 반복하지 않습니다." : " 이어서 최적 경로를 처음부터 다시 따라갑니다."}`, {
+        path: optimum, cBlock: result,
+      });
+      if (!samePath) {
+        replayPath = optimum;
+        ans = Infinity;
+        yield frame("replayBest", 0, data.board, "최적 경로를 다시 따라갑니다. 비교 과정을 보여주기 위해 ans를 무한대에서 시작합니다.");
+        for (const step of dfs(0, cloneBoard(data.board))) if (step) yield step;
+      }
+      ans = result;
       output += `#${ci + 1} ${ans}\n`;
       yield frame("output", null, bestBoard, `#${ci + 1} ${ans}를 출력합니다. 최적 경로의 최종 보드입니다.`, {
         path: [...bestPath], cBlock: ans, best: true,
@@ -274,7 +292,7 @@
     gravityInit: "목록 초기화", gravityScan: "아래부터 확인", gravityCheck: "벽돌 확인",
     gravityCollect: "벽돌 모으기", gravityClear: "기존 칸 비우기", gravityFill: "아래부터 채우기",
     gravityEmpty: "남은 목록 확인", gravityBreak: "열 채우기 완료", gravityPlace: "벽돌 배치",
-    summary: "탐색 요약", output: "출력",
+    summary: "나머지 탐색 요약", replayBest: "최적 경로 재생", output: "출력",
   };
 
   function key(r, c) { return `${r},${c}`; }
@@ -336,11 +354,14 @@
     return parts.join(" · ");
   }
 
-  function highlight(lines, n) { lines.forEach((line, k) => line.classList.toggle("active", k === n)); }
+  function highlight(lines, n, s) {
+    const active = new Set([n, ...(s.codePhases || []).map((phase) => stepLines.get(phase))]);
+    lines.forEach((line, k) => line.classList.toggle("active", active.has(k)));
+  }
 
   function renderD(s) {
     const ln = stepLines.get(s.phase);
-    highlight(desktopLines, ln);
+    highlight(desktopLines, ln, s);
     board(els.board, s);
     route(els.routeView, s);
     queueView(els.queueView, s);
@@ -361,7 +382,7 @@
 
   function renderM(s) {
     const ln = stepLines.get(s.phase);
-    highlight(mobileLines, ln);
+    highlight(mobileLines, ln, s);
     board(els.mobileBoard, s);
     route(els.mobileRouteView, s);
     queueView(els.mobileQueueView, s);
