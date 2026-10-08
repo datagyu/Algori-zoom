@@ -6,6 +6,12 @@
   $('codeView').innerHTML = $('mobileCodeView').innerHTML = code;
   const lines = [Core.createLineMap($('codeView')), Core.createLineMap($('mobileCodeView'))];
   const phaseLines = Core.createStepLineMap($('codeView'));
+  const phaseNames = {init:'배열 초기화',graph:'인접 리스트 준비',edge:'간선 확인',start:'출발 방문',startCall:'DFS 호출',countInit:'개수 초기화',costInit:'비용 초기화',startDistance:'출발 거리',startQueue:'출발 큐 추가',queueInit:'큐 초기화',sumInit:'합 초기화',loop:'반복 조건',pop:'큐에서 꺼내기',neighbor:'다음 후보',check:'조건 검사',goal:'도착 조건',visit:'방문 표시',call:'재귀 호출',enter:'함수 진입',found:'도착 처리',return:'함수 반환',back:'방문 복구',summary:'반복 요약',distance:'거리 갱신',sum:'거리 합산',enqueue:'큐에 추가',waterCheck:'물인지 검사',waterQueue:'물 큐 추가',waterDistance:'물 거리 0',unionCall:'union 호출',findA:'첫 대표 찾기',findB:'둘째 대표 찾기',same:'대표 비교',skip:'건너뛰기',union:'대표 연결',groupsInit:'집합 초기화',leader:'대표 찾기',count:'개수 기록',findEnter:'find 진입',rootCheck:'대표 조건',rootReturn:'대표 반환',findCall:'부모로 재귀',compress:'경로 압축',findReturn:'find 반환',sort:'간선 정렬',compare:'후보 비교',cost:'비용 합산',done:'완료 조건',stop:'반복 종료',staleCheck:'오래된 후보 검사',stale:'continue',candidate:'누적 거리 계산',numbers:'연산 후보 계산',output:'출력'};
+  phaseNames.waterSummary = '초기 검사 요약';
+  const localViews = ['queueView','mobileQueueView'].map(id => {
+    const view=document.createElement('div');view.className='lesson-locals';view.id=id==='queueView'?'traceDetails':'mobileTraceDetails';
+    view.setAttribute('aria-label','현재 코드 줄의 변수');$(id).after(view);return view;
+  });
   let steps = [], index = 0, timer = null, speed = 1;
   const text = (id, value) => { $(id).textContent = value; };
   function board(el, s) {
@@ -47,9 +53,11 @@
     board($('board'),s); board($('mobileBoard'),s);
     const items = s.items || [], markup = items.length ? items.map(item => `<div class="queue-item">${Core.escapeHtml(item)}</div>`).join('') : '<p class="queue-empty">대기 중인 항목이 없습니다.</p>';
     $('queueView').innerHTML = $('mobileQueueView').innerHTML = markup;
+    const locals=Object.entries(s.variables || {}).map(([name,value])=>`<div><span>${Core.escapeHtml(name)}</span><strong>${Core.escapeHtml(value)}</strong></div>`).join('');
+    localViews.forEach(view=>{view.innerHTML=locals;view.classList.toggle('is-summary',Boolean(s.summary));});
     ['explainText','mobileExplanation'].forEach(id=>text(id,s.message));
     ['outputView','mobileOutputView'].forEach(id=>text(id,s.output || '아직 출력이 없습니다.'));
-    ['phaseLabel','mobilePhase'].forEach(id=>text(id,s.phase.toUpperCase()));
+    ['phaseLabel','mobilePhase'].forEach(id=>text(id,phaseNames[s.phase] || s.phase));
     ['codeLineLabel','mobileCodeStatus'].forEach(id=>text(id,`LINE ${line}`));
     text('boardLabel',`#${s.tc} · ${problem.boardTitle}`); text('mobileCoord',`#${s.tc}`);
     text('queueLabel',s.itemLabel || problem.itemTitle);
@@ -75,7 +83,7 @@
         const result=problem.build(d);
         result.steps.forEach(s=>next.push({...s,tc:i+1,output}));
         output+=`#${i+1} ${result.answer}\n`;
-        next.push({...result.steps.at(-1),phase:'output',tc:i+1,output,message:`${problem.resultLabel}: ${result.answer}. #${i+1} ${result.answer}를 출력합니다.`});
+        next.push({...result.steps.at(-1),phase:'output',summary:false,tc:i+1,output,message:`${problem.resultLabel}: ${result.answer}. #${i+1} ${result.answer}를 출력합니다.`});
       });
       steps=next;index=0;select(id);text('inputError','');render();
     } catch(e){text('inputError',e.message);}
