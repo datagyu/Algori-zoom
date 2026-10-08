@@ -8,7 +8,8 @@
       {id:"all",label:"전체 샘플",value:"3\n5 2 3 1 1\n10 2 1 3 2 2 5 4 2 1\n10 1 1 2 1 2 2 1 2 1"}
     ],
     sourceSteps:[
-      {text:"if ans <= change:",types:"checkPrune"},{text:"if current + M[current] >= N - 1:",types:"checkReach"},{text:"ans = min(ans, change)",types:"updateAns"},{text:"for i in range(current + M[current], current, -1):",types:"loop"},{text:"dfs(i, change + 1)",types:"recurse"},{text:"dfs(0, 0)",types:"start"},{text:"print('#{} {}'.format(tc, ans))",types:"output"}
+      {text:"def dfs(current, change):",types:"enter"},{text:"return",occurrence:1,types:"prune"},
+      {text:"if ans <= change:",types:"checkPrune"},{text:"if current + M[current] >= N - 1:",types:"checkReach"},{text:"ans = min(ans, change)",types:"updateAns summary"},{text:"for i in range(current + M[current], current, -1):",types:"loop backtrack"},{text:"dfs(i, change + 1)",types:"recurse"},{text:"dfs(0, 0)",types:"start"},{text:"print('#{} {}'.format(tc, ans))",types:"output"}
     ]
   });
   const els=Core.getByIds(["sourceCode","codeView","mobileCodeView","codeViewport","mobileCodeViewport","resetBtn","prevBtn","nextBtn","playBtn","replayBtn","skipBtn","speedRange","speedLabel","timeline","mobileTimeline","stepLabel","mobileTimelineStatus","mobilePlayBtn","mobilePrevBtn","mobileNextBtn","codeLineLabel","mobileCodeStatus","board","mobileBoard","boardLabel","phaseLabel","mobilePhase","currentValue","changeValue","batteryValue","nextValue","ansValue","depthValue","explainText","mobileCoord","mobileExplanation","mobileStateMeta","mobileCurrent","mobileChange","mobileAns","mobileDepth","routeView","mobileRouteView","routeMeta","rangeView","mobileRangeView","outputView","mobileOutputView","inputArea","applyBtn","sampleButtons","inputError"]);

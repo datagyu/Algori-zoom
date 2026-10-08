@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="application-name" content="알고리줌" /><meta name="apple-mobile-web-app-title" content="알고리줌" />
+  <title>연산 | 알고리줌</title>
+  <link rel="manifest" href="../../manifest.webmanifest" /><link rel="icon" href="../../assets/algorizoom-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/theme.css" /><link rel="stylesheet" href="../../assets/visualizer.css" /><link rel="stylesheet" href="./styles.css" /><link rel="stylesheet" href="../../assets/ui.css" />
+</head>
+<body class="visualizer code-reveal-enabled visualizer--editor">
+<p class="code-disclaimer">이 페이지의 코드들은 예시일 뿐이니 참고만 해주세요.</p>
+<template id="sourceCode"># SWEA 5247 - 연산
+
+
+from collections import deque
+
+T = int(input())
+for tc in range(1, T + 1):
+    N, M = map(int, input().split())
+    used = [-1] * 1000001
+    queue = deque([N])
+    used[N] = 0
+    while queue:
+        current = queue.popleft()
+        if current == M:
+            break
+        next_numbers = [current + 1,
+                        current - 1,
+                        current * 2,
+                        current - 10]
+        for next_num in next_numbers:
+            if 1 &lt;= next_num &lt;= 1000000 and used[next_num] == -1:
+                used[next_num] = used[current] + 1
+                queue.append(next_num)
+
+    print('#{} {}'.format(tc, used[M]))</template>
+<main class="desktop-view app-shell">
+<header class="hero"><a class="home-link brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><p class="eyebrow">SWEA 5247</p><h1>연산</h1><p class="subtitle">수를 정점, +1·−1·×2·−10을 간선으로 생각합니다. BFS로 연산 횟수가 적은 수부터 확인하며, 첫 확장 뒤에는 횟수별 반복을 요약합니다.</p></header>
+<section class="panel control-strip" aria-label="실행 컨트롤"><div class="controls-main"><button id="resetBtn" class="btn" type="button">처음으로</button><button id="prevBtn" class="btn" type="button">이전</button><button id="nextBtn" class="btn primary" type="button">다음</button><button id="playBtn" class="btn" type="button">자동 재생</button><button id="replayBtn" class="btn" type="button">다시 재생</button><button id="skipBtn" class="btn" type="button">끝으로</button></div><label class="speed-control">속도 <input aria-label="재생 속도" id="speedRange" type="range" min="0.5" max="2" step="0.25" value="1" /><span id="speedLabel">1×</span></label></section>
+<section class="panel timeline-panel" aria-label="재생바"><div class="timeline-meta"><span id="stepLabel">0 / 0</span><span>재생바를 움직여 원하는 단계로 이동</span></div><input aria-label="실행 단계" id="timeline" class="timeline" type="range" min="0" max="0" value="0" /></section>
+<section class="workspace">
+<article class="panel code-panel"><div class="panel-head"><span>Python 코드</span><span id="codeLineLabel">READY</span></div><div class="code-viewport" id="codeViewport" tabindex="0"><pre id="codeView"></pre></div></article>
+<article class="panel board-panel"><div class="panel-head"><span>GRAPH · BFS</span><span id="boardLabel">그래프</span></div><div class="graph-legend"><span>주황: 현재 확인</span><span>초록: 현재 경로·선택 간선</span><span>아래 설명에서 변화를 확인하세요</span></div><div class="board-viewport" id="boardViewport" tabindex="0"><div id="board" class="graph-board"></div></div></article>
+<article class="panel state-panel"><div class="panel-head"><span>변수와 상태</span><span id="phaseLabel">READY</span></div><div class="state-grid"><div><span>출발 N</span><strong id="currentValue">—</strong></div><div><span>목표 M</span><strong id="nextValue">—</strong></div><div><span>연산 횟수</span><strong id="distanceValue">—</strong></div><div><span>큐 길이</span><strong id="queueLengthValue">0</strong></div><div><span>진행</span><strong id="checkValue">—</strong></div><div><span>최소 횟수</span><strong id="answerValue">0</strong></div></div><div class="explain" id="explainText">그래프를 만들고 BFS를 준비합니다.</div></article>
+</section>
+<section class="panel queue-panel"><div class="panel-head"><span>진행 중인 자료구조</span><span id="queueLabel">문제별 큐·경로·배열</span></div><div id="queueView" class="bfs-queue"></div></section>
+<section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="outputView" aria-label="출력 결과"></pre></section>
+<section class="input-panel panel"><div class="panel-head"><span>입력</span><span>학습용: T 1~5 · N, M 1~2,000</span></div><div class="input-grid"><textarea id="inputArea" aria-label="문제 입력" spellcheck="false"></textarea><div class="input-actions"><p>케이스마다 출발 수 N과 목표 수 M(학습용 1~2,000)을 입력합니다. 중간 결과도 1~1,000,000만 허용합니다. 마지막에는 최단 경로 하나를 보여줍니다. 긴 경로는 그래프에 앞 12개, 아래 목록에는 전체를 표시합니다.</p><button type="button" id="applyBtn" class="btn primary">입력 적용</button><div class="sample-buttons" id="sampleButtons"></div><p class="input-error" id="inputError" role="alert"></p></div></div></section>
+</main>
+<main class="mobile-view" aria-label="모바일 코드 시각화">
+<header class="mobile-header"><a class="brand-home-link" href="../../"><img src="../../assets/algorizoom-logo.svg" alt="" />알고리줌</a><div><span>SWEA 5247</span><h1>연산</h1></div><div id="mobileCoord" class="mobile-coord">BFS</div></header>
+<section class="panel mobile-code"><div class="mobile-section-head"><span>Python 코드</span><strong id="mobileCodeStatus">READY</strong></div><div id="mobileCodeViewport" class="code-viewport mobile-code-viewport" tabindex="0"><pre id="mobileCodeView"></pre></div></section>
+<section class="panel mobile-focus"><div class="mobile-focus-head"><span>GRAPH · BFS</span><strong id="mobilePhase">READY</strong></div><div id="mobileBoardViewport" class="mobile-board-viewport" tabindex="0"><div id="mobileBoard" class="graph-board"></div></div><div id="mobileQueueView" class="bfs-queue mobile-queue"></div><p id="mobileExplanation" class="mobile-explanation">다음 버튼을 눌러 시작합니다.</p></section>
+<section class="panel mobile-result"><div class="result-head"><span>변수와 상태</span><span id="mobileStateMeta">QUEUE</span></div><div class="mobile-state-grid"><div><span>출발 N</span><strong id="mobileCurrent">—</strong></div><div><span>연산 횟수</span><strong id="mobileDistance">—</strong></div><div><span>목표 M</span><strong id="mobileNext">—</strong></div><div><span>큐 길이</span><strong id="mobileQueueLength">0</strong></div></div><div class="mobile-result-text"><span>최소 횟수</span><strong id="mobileAnswer">0</strong></div></section>
+<section class="panel output-panel"><div class="panel-head"><span>출력</span><span>실행 결과</span></div><pre id="mobileOutputView" aria-label="출력 결과"></pre></section>
+<nav class="panel mobile-player" aria-label="실행 단계 이동"><button id="mobilePlayBtn" type="button">재생</button><button id="mobilePrevBtn" aria-label="이전 단계" type="button">이전</button><div class="mobile-scrubber"><input id="mobileTimeline" aria-label="실행 단계" type="range" min="0" max="0" value="0" /><span id="mobileTimelineStatus">0 / 0</span></div><button id="mobileNextBtn" aria-label="다음 단계" type="button">다음</button></nav>
+</main>
+<script src="../../assets/visualizer-core.js"></script><script src="../../assets/graph-lesson-data.js"></script><script src="./script.js"></script><script src="../../assets/graph-lesson.js"></script><script src="../../assets/ui.js"></script>
+</body></html>

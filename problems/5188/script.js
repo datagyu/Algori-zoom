@@ -23,12 +23,12 @@
       {text: "return", occurrence: 2, types: "pruneBest"},
       {text: "best[r][c] = distance", types: "remember"},
       {text: "if r == N-1 and c == N-1:", types: "base"},
-      {text: "ans = min(ans, distance)", types: "improve"},
+      {text: "ans = min(ans, distance)", types: "improve summary"},
       {text: "return", occurrence: 3, types: "finish"},
       {text: "for dr, dc in direction:", types: "candidate"},
       {text: "nr, nc = r + dr, c + dc", types: "neighbor"},
       {text: "if 0 <= nr < N and 0 <= nc < N:", types: "bounds"},
-      {text: "dfs(nr, nc, distance + board[nr][nc])", types: "call"},
+      {text: "dfs(nr, nc, distance + board[nr][nc])", types: "call resume"},
       {text: "print('#{} {}'.format(tc, ans))", types: "output"}
     ]
   });

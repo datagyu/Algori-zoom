@@ -1,5 +1,11 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {"id":"swea-5247","title":"연산","platform":"SWEA","problemNo":"5247","href":"problems/5247/","status":"ready","searchTerms":["연산","BFS","연산","최단거리"]},
+  {"id":"swea-5248","title":"그룹 나누기","platform":"SWEA","problemNo":"5248","href":"problems/5248/","status":"ready","searchTerms":["그룹 나누기","union find","서로소 집합","경로 압축"]},
+  {"id":"swea-5249","title":"최소 신장 트리","platform":"SWEA","problemNo":"5249","href":"problems/5249/","status":"ready","searchTerms":["최소 신장 트리","크루스칼","MST","최소 신장 트리"]},
+  {"id":"swea-5251","title":"최소이동거리","platform":"SWEA","problemNo":"5251","href":"problems/5251/","status":"ready","searchTerms":["최소이동거리","다익스트라","우선순위 큐","heapq","최단거리"]},
+  {"id":"swea-10966","title":"물놀이를 가자","platform":"SWEA","problemNo":"10966","href":"problems/10966/","status":"ready","searchTerms":["물놀이를 가자","BFS","다중 시작점","물","거리"]},
+  {"id":"swea-24220","title":"경로의 수","platform":"SWEA","problemNo":"24220","href":"problems/24220/","status":"ready","searchTerms":["경로의 수","DFS","백트래킹","used","경로"]},
   {id:"swea-5656",title:"벽돌 깨기",platform:"SWEA",problemNo:"5656",href:"problems/5656/",status:"ready",searchTerms:["벽돌 깨기","DFS","백트래킹","BFS","연쇄 폭발","queue","중력","시뮬레이션","구슬","완전탐색"]},
   {id:"swea-5209",title:"최소 생산 비용",platform:"SWEA",problemNo:"5209",level:"D3",href:"problems/5209/",status:"ready",searchTerms:["최소 생산 비용","DFS","백트래킹","가지치기","순열","공장","제품","used","cost","ans"]},
   {id:"swea-5208",title:"전기버스2",platform:"SWEA",problemNo:"5208",level:"D3",href:"problems/5208/",status:"ready",searchTerms:["전기버스2","DFS","백트래킹","가지치기","배터리","정류장","교환 횟수","current","change","ans"]},
