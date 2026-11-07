@@ -1,0 +1,38 @@
+.sum-board {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sum-calculation {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.sum-calculation strong {
+  color: var(--text);
+  font: 700 15px/1.5 var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.sum-reached {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.sum-reached strong {
+  color: var(--green);
+}
+
+.sum-explanation {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
