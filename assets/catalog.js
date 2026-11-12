@@ -1,5 +1,6 @@
 /* 홈 카드 데이터입니다. 새 문제는 이 배열에 항목 하나만 추가하면 홈 검색과 카드에 반영됩니다. */
 window.VISUALIZATIONS = [
+  {id:"swea-2382",title:"미생물 격리",platform:"SWEA",problemNo:"2382",href:"problems/2382/",status:"ready",searchTerms:["미생물 격리","시뮬레이션","델타 탐색","군집","합체","가장자리","방향 반전"]},
   {id:"swea-29948",title:"자연수의 합",platform:"SWEA",problemNo:"29948",href:"problems/29948/",status:"ready",searchTerms:["자연수의 합","누적합","누적 합","반복문","while","삼각수","최솟값"]},
   {"id":"swea-5247","title":"연산","platform":"SWEA","problemNo":"5247","href":"problems/5247/","status":"ready","searchTerms":["연산","BFS","연산","최단거리"]},
   {"id":"swea-5248","title":"그룹 나누기","platform":"SWEA","problemNo":"5248","href":"problems/5248/","status":"ready","searchTerms":["그룹 나누기","union find","서로소 집합","경로 압축"]},
